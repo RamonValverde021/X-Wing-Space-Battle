@@ -160,3 +160,22 @@ div#x-wing {
     background-image: url('../images/deathstar/deathstar-3.png');
     background-size: cover;
 }
+
+.data_game {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.4);
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    width: 310px;
+    padding: 10px;
+}
+
+.data_iten {
+    color: white;
+    font-weight: 500;
+    font-size: 20px;
+}
