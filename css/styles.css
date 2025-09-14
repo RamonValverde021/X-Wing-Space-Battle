@@ -12,6 +12,7 @@
     font-family: fontPixelArt;
 }
 
+/* Formatação do body com imagem de fundo que se repete */
 .estrelasRepetidas {
     background-image: url('../images/space/space_1.gif');
     /* Substitua pela URL ou caminho da sua imagem */
@@ -23,6 +24,7 @@
     /* Mantém o tamanho original da imagem para repetição natural; use 'cover' se quiser esticar sem repetir */
 }
 
+/* Formatação do body com imagem de fundo que não se repete */
 .estrelasNaoRepetidas {
     background-image: url('../images/space/space_1.gif');
     background-size: cover;
@@ -39,15 +41,7 @@
     /* Remove a margem padrão do body */
 }
 
-.deathstar {
-    position: absolute;
-    top: -200vh;
-    height: 1274px;
-    width: 1225px;
-    background-image: url('../images/deathstar/deathstar-3.png');
-    background-size: cover;
-}
-
+/* Formatação do menu de  status do jogo */
 div.menu {
     display: flex;
     flex-direction: row;
@@ -61,6 +55,7 @@ div.menu {
     color: yellow;
 }
 
+/* Formatação do cenario do jogo */
 div#cenario {
     position: relative;
     width: 100vw;
@@ -80,6 +75,7 @@ div#cenario {
     }
 }
 
+/* Formatação botão iniciar jogo */
 button.botao {
     position: absolute;
     font-weight: 500;
@@ -98,6 +94,7 @@ button.botao:hover {
     cursor: pointer;
 }
 
+/* Formatação X-Wing */
 div#x-wing {
     height: 131.311px;
     width: 100px;
@@ -112,6 +109,7 @@ div#x-wing {
     bottom: 20px;
 }
 
+/* Formatação TIE Fighters */
 .tie_fighter {
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
@@ -123,7 +121,7 @@ div#x-wing {
     background-position: center;
 }
 
-/* Formatação tiros X-Wing */
+/* Formatação projeteis X-Wing */
 .projetil_x-wing {
     position: absolute;
     width: 5px;
@@ -142,6 +140,7 @@ div#x-wing {
     text-align: center;
 }
 
+/* Formatação explosão dos TIE Fighters */
 .explosao {
     position: absolute;
     height: 100px;
@@ -150,4 +149,14 @@ div#x-wing {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+/* Formatação da Estrela da Morte */
+.deathstar {
+    position: absolute;
+    top: -200vh;
+    height: 1274px;
+    width: 1225px;
+    background-image: url('../images/deathstar/deathstar-3.png');
+    background-size: cover;
 }
