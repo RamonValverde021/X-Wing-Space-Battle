@@ -39,6 +39,15 @@
     /* Remove a margem padrão do body */
 }
 
+.deathstar {
+    position: absolute;
+    top: -200vh;
+    height: 1274px;
+    width: 1225px;
+    background-image: url('../images/deathstar/deathstar-3.png');
+    background-size: cover;
+}
+
 div.menu {
     display: flex;
     flex-direction: row;
@@ -61,6 +70,14 @@ div#cenario {
     align-items: center;
     /* Atributo necessario para que as naves inimigas consigam desaparecer até o final quando chegarem a fundo da tela sem extender a mesma */
     overflow: hidden;
+}
+/* Animação para movimentar o fundo do cenario */
+@keyframes animacaoCenario {
+    from {
+        background-position-y: 0%;
+    } to {
+        background-position-y: 1000%;
+    }
 }
 
 button.botao {
@@ -114,13 +131,14 @@ div#x-wing {
     background-color: blue;
 }
 
+/* Titulo de fim de jogo */
 .gameover {
     position: absolute;
     color: yellow;
     font-weight: 500;
-    font-size: 50px;
-    background-color: black;
-    top: 45%;
+    font-size: 100px;
+    background-color: rgba(0, 0, 0, 0.4);
+    top: 25%;
     text-align: center;
 }
 
