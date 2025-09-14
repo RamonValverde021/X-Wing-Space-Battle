@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'fontPixelArt';
+    src: url("../font/ARCADECLASSIC.TTF");
+}
+
+* {
+    /* Resetar modulos de espaçamentos*/
+    margin: 0px;
+    padding: 0px;
+    font-family: fontPixelArt;
+}
+
+.estrelasRepetidas {
+    background-image: url('../images/space/space_1.gif');
+    /* Substitua pela URL ou caminho da sua imagem */
+    background-repeat: repeat;
+    /* Repete a imagem em x e y para cobrir tudo */
+    background-position: center;
+    /* Centraliza o padrão de repetição */
+    background-size: auto;
+    /* Mantém o tamanho original da imagem para repetição natural; use 'cover' se quiser esticar sem repetir */
+}
+
+.estrelasNaoRepetidas {
+    background-image: url('../images/space/space_1.gif');
+    background-size: cover;
+    /* Para que a imagem cubra toda a tela */
+    background-repeat: no-repeat;
+    /* Para evitar repetição da imagem */
+    background-position: center center;
+    /* Para centralizar a imagem */
+    background-attachment: fixed;
+    /* Opcional: para a imagem ficar fixa ao rolar */
+    min-height: 100vh;
+    /* Garante que o body ocupe a altura da tela */
+    margin: 0;
+    /* Remove a margem padrão do body */
+}
+
+div.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 2%;
+    position: absolute;
+    top: 0;
+    width: 96%;
+    font-weight: 550;
+    font-size: 30px;
+    color: yellow;
+}
+
+div#cenario {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Atributo necessario para que as naves inimigas consigam desaparecer até o final quando chegarem a fundo da tela sem extender a mesma */
+    overflow: hidden;
+}
+
+button.botao {
+    position: absolute;
+    font-weight: 500;
+    font-size: 30px;
+    color: yellow;
+    background-color: black;
+    border: 3px solid yellow;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+button.botao:hover {
+    color: black;
+    background-color: yellow;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+div#x-wing {
+    height: 131.311px;
+    width: 100px;
+    background-image: url('../images/x-wing/x-wing_1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Rotaciona a imagem em 180° */
+    transform: rotate(180deg);
+    /* Precisa desse parametro para a movimentação do javascript funcionar */
+    position: absolute;
+    bottom: 20px;
+}
+
+.tie_fighter {
+    /* Precisa desse parametro para a movimentação do javascript funcionar */
+    position: absolute;
+    height: 95.56px;
+    width: 100px;
+    background-image: url('../images/tie_fighter/tie_fighter_1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Formatação tiros X-Wing */
+.projetil_x-wing {
+    position: absolute;
+    width: 5px;
+    height: 30px;
+    background-color: blue;
+}
+
+.gameover {
+    position: absolute;
+    color: yellow;
+    font-weight: 500;
+    font-size: 50px;
+    background-color: black;
+    top: 45%;
+    text-align: center;
+}
+
+.explosao {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background-image: url('../images/explosion/explosion_1.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
