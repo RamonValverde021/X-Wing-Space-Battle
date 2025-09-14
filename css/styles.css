@@ -102,8 +102,6 @@ div#x-wing {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    /* Rotaciona a imagem em 180° */
-    transform: rotate(180deg);
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
     bottom: 20px;
@@ -127,6 +125,7 @@ div#x-wing {
     width: 5px;
     height: 30px;
     background-color: blue;
+    transform-origin: center; /* Garante rotação no centro */
 }
 
 /* Titulo de fim de jogo */

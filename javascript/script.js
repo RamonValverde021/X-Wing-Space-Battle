@@ -6,10 +6,12 @@ const botaoIniciar = document.getElementById("btn_Inicar");
 const vida = document.getElementById("vida");
 const pontos = document.getElementById("pontos");
 // Estastiticas do jogo
-const velXWing = document.getElementById("vel_x-wing");
-const velTieFighter = document.getElementById("vel_tie-fighter");
-const velConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");
-const inimigosDestruidos = document.getElementById("inimigos_destruidos");
+const painelDados = document.getElementById("dados-jogo");
+const dadosVelXWing = document.getElementById("vel_x-wing");
+const dadosVelRotXWing = document.getElementById("vel_rotacao_x-wing");
+const dadosVelTieFighter = document.getElementById("vel_tie-fighter");
+const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");
+const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth; // Pega a largura de todod o cenario
@@ -22,15 +24,19 @@ const larguraTieFighter = 100;  // Pega a largura do X-Wing
 const alturaTieFighter = 95.56; // Pega a altura do X-Wing
 const velocidadeProjetil = 40;  // define a velocidade dos projeteis das naves
 
-let velocidadeXWing = 20;         // define a velocidade do X-Wing 
-let velocidadeTieFighter = 5;     // 1 - define a velocidade dos Tie Fighters 
-let quantidadeTieFighters = 1000; // 3000 - define o tempo de intervalo em que serão criadas as naves inimigas (em milisegundos)
+let velocidadeXWing = 10;         // define a velocidade do X-Wing 
+let velocidadeTieFighter = 1;     // 1 - define a velocidade dos Tie Fighters 
+let quantidadeTieFighters = 3000; // 3000 - define o tempo de intervalo em que serão criadas as naves inimigas (em milisegundos)
 
 let velocidadeCenario = 200;       // define a velocidade do cenario
 let pontosVida = 100;              // define a vida inicial do X-Wing
 let pontosScore = 0;               // define a pontuação inicial
 let estaAtirando = false;          // Flada para saber se o X-Wing está atirando ou não
 let countNavesDestruidas = 0;      // Contador de naves destruídas
+let rotacaoXWing = 0;              // Variavel para controlar a rotação do X-Wing
+let velRotacaoXWing = 2;           // Variavel para controlar a velocidade de rotação do X-Wing
+let giroHorario = false;
+let giroAntiHorario = false;
 
 let posicaoHorizontal = larguraCenario / 2 - (larguraXWing / 2); // Posição horizontal inicial do X-Wing
 let positionVertical = alturaCenario - alturaXWing - 20;         // Posição vertical inicial do X-Wing
@@ -44,6 +50,7 @@ let iniciaMovimentacaoProjeteisXWing;
 let iniciaNavesInimigas;
 let iniciaMovimentacaoNavesInimigas;
 let iniciaColisao;
+let iniciaRotacaoXWing;
 
 /*------------------------------- AUDIOS -------------------------------*/
 function trilhaSonora() {
@@ -100,7 +107,6 @@ function somVoandoTieFighter() {
     audio.play(); // Executa
 }
 
-
 /*------------------------------- MONITORANDO TECLAS E CONTROLE DO X-WING -------------------------------*/
 // Função para verifica se as teclas de controle do X-Wing estão sendo pressionadas
 const teclasControlePressionadas = (tecla) => {
@@ -114,6 +120,10 @@ const teclasControlePressionadas = (tecla) => {
         direcaoVertical = -1;               // move para cima
     } else if (tecla.key === " ") {         // se a tecla pressionada for a barra de espaço
         estaAtirando = true;                // ativa a flag de atirar
+    } else if (tecla.key === "A" || tecla.key === "a") {
+        giroHorario = true;
+    } else if (tecla.key === "D" || tecla.key === "d") {
+        giroAntiHorario = true;
     }
 }
 
@@ -125,6 +135,21 @@ const teclasControleSoltas = (tecla) => {
         direcaoVertical = 0;                                            // para o movimento vertical
     } else if (tecla.key === " ") {                                     // se a tecla solta for a barra de espaço
         estaAtirando = false;                                           // desativa a flag de atirar
+    } else if (tecla.key === "a" || tecla.key === "A") {
+        giroHorario = false;
+    } else if (tecla.key === "d" || tecla.key === "D") {
+        giroAntiHorario = false;
+    }
+}
+
+const teclasControleClicadas = (tecla) => {
+    console.log(tecla.key);
+    if (tecla.key === "p" || tecla.key === "P") {      // se a tecla solta for a seta para direita ou esquerda
+        if (painelDados.style.display === "none") {
+            painelDados.style.display = "flex";
+        } else {
+            painelDados.style.display = "none";
+        }
     }
 }
 
@@ -154,39 +179,93 @@ function moverXWing() {
 /*------------------------------- PROJETEIS X-WING -------------------------------*/
 // Função para atirar
 function atirar() {
-    if (estaAtirando) { // Se a flag estaAtirando for true, cria os projetis
-        criarProjeteisXWing(posicaoHorizontal, positionVertical); // Chama a função criarProjeteisXWing passando a posição atual do X-Wing
-        somCanhoesXWing();
+    if (estaAtirando) {                                                         // Se a flag estaAtirando for true, cria os projéteis
+        criarProjeteisXWing(posicaoHorizontal, positionVertical, rotacaoXWing); // Chama a função para criar os projéteis do X-Wing, passando a posição atual do X-Wing
+        somCanhoesXWing();                                                      // Toca o som dos canhões do X-Wing
     }
 }
 
-// Função para criar os projeteis do X-Wing
-const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro) => { // Recebe a posição atual do X-Wing para criar os tiros
-    // Cria dois elementos de disparo, um de cada lado do X-Wing
-    // projetil do lado esquerdo
-    const tiroEsquerdo = document.createElement("div");   // Cria um elemento div, que vai ser o projetil
-    tiroEsquerdo.className = "projetil_x-wing";           // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = posicaoLeftTiro + 2 + "px"; // Define a posição horizontal do projetil referente a posição do X-Wing
-    tiroEsquerdo.style.top = posicaoTopTiro + 50 + "px";  // Define a posição vertical do projetil referente a posição do X-Wing
-    cenario.appendChild(tiroEsquerdo);                    // Adiciona o projetil ao cenario
-    // projetil do lado direito
-    const tiroDireito = document.createElement("div");
-    tiroDireito.className = "projetil_x-wing";
-    tiroDireito.style.left = posicaoLeftTiro + (larguraXWing - 8) + "px"; // 10 é a largura do tiro
-    tiroDireito.style.top = posicaoTopTiro + 50 + "px";
-    cenario.appendChild(tiroDireito);
+// Função para criar os projéteis do X-Wing
+const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => { // Recebe a posição atual do X-Wing e o ângulo de rotação para criar os tiros
+    // Centro da nave
+    const center_x = posicaoLeftTiro + larguraXWing / 2; // Centro X do X-Wing
+    const center_y = posicaoTopTiro + alturaXWing / 2;   // Centro Y do X-Wing
+
+    // Ângulo em radianos
+    const theta = angle_deg * Math.PI / 180; // Converte graus da nave para radianos
+
+    // Posições locais dos canos de tiro (esquerdo e direito, ligeiramente à frente)
+    const muzzles = [          // Posições relativas ao centro da nave, em pixels
+        { lx: -45, ly: -10 },  // Posição do cano esquerdo
+        { lx: 45, ly: -10 }    // Posição do cano direito
+    ];
+
+    // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
+    const speed = velocidadeProjetil;    // Velocidade do projétil
+    const vx = speed * Math.sin(theta);  // Componente X da velocidade do projétil
+    const vy = speed * -Math.cos(theta); // Componente Y da velocidade do projétil
+
+    // Metade das dimensões do projétil para centralizar
+    const half_w = 2.5; // Metade da largura do projétil
+    const half_h = 15;  // Metade da altura do projétil
+
+    muzzles.forEach(muzzle => { // Para cada cano de tiro
+        // Posição de spawn rotacionada (matriz de rotação)
+        const spawn_center_x = center_x + (muzzle.lx * Math.cos(theta) - muzzle.ly * Math.sin(theta)); // Posição X do spawn do projétil
+        const spawn_center_y = center_y + (muzzle.lx * Math.sin(theta) + muzzle.ly * Math.cos(theta)); // Posição Y do spawn do projétil
+
+        // Cria o projétil
+        const tiro = document.createElement("div"); // Cria um elemento div, que vai ser o projetil
+        tiro.className = "projetil_x-wing";         // Adiciona a classe do projetil para aplicar o estilo
+
+        // Posiciona o canto superior esquerdo para que o centro fique na spawn
+        tiro.style.left = (spawn_center_x - half_w) + "px"; // Centraliza horizontalmente
+        tiro.style.top = (spawn_center_y - half_h) + "px";  // Centraliza verticalmente
+
+
+        // Rotaciona o projétil na direção da nave
+        tiro.style.transform = `rotate(${angle_deg}deg)`; // Rotaciona o projétil
+
+        // Armazena velocidades vetoriais como atributos de dados
+        tiro.setAttribute("data-vx", vx.toFixed(2)); // Velocidade X
+        tiro.setAttribute("data-vy", vy.toFixed(2)); // Velocidade Y
+
+        cenario.appendChild(tiro); // Adiciona o projetil ao cenario
+    });
 }
 
-// Função para mover os projeteis do X-Wing
+// Função para mover os projéteis do X-Wing
 function moverProjeteis() {
-    const tiros = document.querySelectorAll(".projetil_x-wing"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
-    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
-        if (tiros[i]) {                                          // Verifica se o projetil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
-            posicaoTopProjetil -= velocidadeProjetil;            // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
-            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
-            if (posicaoTopProjetil < -10) {                      // Se o projetil sair do cenario (posição menor que -10)
-                tiros[i].remove();                               // Remove o projetil do cenario          
+    const projeteis = document.querySelectorAll(".projetil_x-wing"); // Seleciona todos os projéteis
+    for (let i = 0; i < projeteis.length; i++) {                     // Percorre todos os projéteis
+        const disparo = projeteis[i];                                // Pega o projetil atual
+        if (disparo) {                                               // Verifica se o projetil existe
+            // Pega posição atual do canto superior esquerdo
+            let left = parseFloat(disparo.style.left);  // Converte de string para float
+            let top = parseFloat(disparo.style.top);    // Converte de string para float
+
+            // Calcula centro atual
+            const half_w = 2.5;            // Metade da largura do projétil
+            const half_h = 15;             // Metade da altura do projétil
+            let center_x = left + half_w;  // Centro X do projétil
+            let center_y = top + half_h;   // Centro Y do projétil
+
+            // Pega velocidades vetoriais
+            let vx = parseFloat(disparo.getAttribute('data-vx'));  // Velocidade X do projétil
+            let vy = parseFloat(disparo.getAttribute('data-vy'));  // Velocidade Y do projétil
+
+            // Atualiza centro
+            center_x += vx; // Atualiza posição do centro do projétil na horizontal
+            center_y += vy; // Atualiza posição do centro do projétil na vertical
+
+            // Atualiza posição do canto superior esquerdo
+            disparo.style.left = (center_x - half_w) + "px";  // Centraliza horizontalmente o projétil em relação ao centro da nave
+            disparo.style.top = (center_y - half_h) + "px"; // Centraliza verticalmente o projétil em relação ao centro da nave
+
+            // Remove se sair da tela (aproximação com centro)
+            if (center_x < -10 || center_x > larguraCenario + 10 ||  // Limite horizontal
+                center_y < -10 || center_y > alturaCenario + 10) {   // Limite vertical
+                disparo.remove();                                    // Remove o projetil do cenario
             }
         }
     }
@@ -212,7 +291,7 @@ function explosaoXWing() {
 function navesInimigas() {
     const tieFighter = document.createElement("div");        // Cria um elemento div, que vai ser o Tie Fighter
     tieFighter.className = "tie_fighter";                    // Adiciona a classe do Tie Fighter para aplicar o estilo
-    tieFighter.setAttribute("data-vida", 4);                 // Cria o atributo data-vida para armazenar a vida do Tie Fighter
+    tieFighter.setAttribute("data-vida", 5);                 // Cria o atributo data-vida para armazenar a vida do Tie Fighter
     tieFighter.style.left = Math.floor(Math.random() * (larguraCenario - larguraTieFighter)) + "px"; // Define a posição horizontal do Tie Fighter em um lugar aleatorio dentro do cenario
     tieFighter.style.top = "0";                              // Define a posição vertical do Tie Fighter no topo do cenario
     cenario.appendChild(tieFighter);                         // Adiciona o Tie Fighter ao cenario
@@ -255,11 +334,14 @@ function colisaoTieFighter() {
                 colisaoNaveInimiga.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
             ) {
                 vidaAtuaTieFighter--;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
+                pontosScore += 10;                                                            // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
+                pontos.innerText = `Pontos: ${pontosScore}`;                                  // Atualiza a pontuação no menu
                 disparo.remove();                                                             // Remove o projetil do cenario
                 if (vidaAtuaTieFighter <= 0) {                                                // Se a vida do Tie Fighter chegar a 0
                     countNavesDestruidas++;                                                   // Incrementa o contador de naves destruídas
                     velocidadeTieFighter += 0.5;                                              // Aumenta a velocidade dos Tie Fighters
                     velocidadeXWing += 0.1;                                                   // Aumenta a velocidade do X-Wing
+                    velRotacaoXWing += 0.1;                                                   // Aumenta a velocidade de rotação do X-Wing
                     if (velocidadeTieFighter >= 20) {                                         // Limita a velocidade máxima dos Tie Fighters
                         velocidadeTieFighter = 20;                                            // Aumenta a velocidade do X-Wing
                     }
@@ -268,7 +350,7 @@ function colisaoTieFighter() {
                         clearInterval(iniciaNavesInimigas);                                       // Limpa o intervalo atual
                         iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);  // Reinicia o intervalo com o novo tempo  
                     }
-                    pontosScore += 100;                                   // Adiciona 100 pontos na pontuação
+                    pontosScore += 100;                                   // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
                     pontos.innerText = `Pontos: ${pontosScore}`;          // Atualiza a pontuação no menu
                     // Construindo o efeito de explosão
                     const explosao = document.createElement("div");       // Cria um elemento div, que vai ser a explosão
@@ -288,10 +370,11 @@ function colisaoTieFighter() {
         })
     });
     // Atualizando as estatisticas do jogo
-    velXWing.innerText = `Vel. X-Wing: ${velocidadeXWing}`;
-    velTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;
-    velConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
-    inimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
+    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;
+    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;
+    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;
+    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
+    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
 }
 
 
@@ -337,14 +420,28 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
     //somAcelerandoXWing();                                                             // Toca o som do X-Wing acelerando
     document.addEventListener("keydown", teclasControlePressionadas);                   // Chama a função teclasControlePressionadas quando pressiona alguma tecla no teclado
     document.addEventListener("keyup", teclasControleSoltas);                           // Chama a função teclasControleSoltas quando soltar alguma tecla no teclado
-    iniciaMovimentacaoXWing = setInterval(moverXWing, 50);                              // Chama a função moverXWing a cada 50 milisegundos
+    document.addEventListener("keypress", teclasControleClicadas);                      // Chama a função teclasControleClicadas quando clicar alguma tecla no teclado
+    iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                              // Chama a função moverXWing a cada 50 milisegundos
     iniciaProjeteisXWing = setInterval(atirar, 150);                                    // Chama a função atirar a cada 10 milisegundos
     iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteis, 50);                 // Chama a função moverProjeteis a cada 50 milisegundos
     iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);            // Chama a construção de naves inimigas a cada X milisegundos a primeiro momento
     iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
     iniciaColisao = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
+    iniciaRotacaoXWing = setInterval(() => {
+        if (giroHorario) {
+            rotacaoXWing -= velRotacaoXWing;
+            xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
+        } else if (giroAntiHorario) {
+            rotacaoXWing += velRotacaoXWing;
+            xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
+        }
+    }, 20);
+
 });
 
-setInterval(() => {
-  //console.log("Rodando a cada 3 segundos!");
-}, 3000);
+
+
+
+
+
+
