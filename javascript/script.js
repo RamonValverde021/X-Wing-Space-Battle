@@ -23,19 +23,21 @@ const alturaXWing = xwing.offsetHeight;     // Pega a altura do X-Wing
 const larguraTieFighter = 100;              // Pega a largura do X-Wing
 const alturaTieFighter = 95.56;             // Pega a altura do X-Wing
 const velocidadeMaximaXWing = 20;           // Define a velocidade máxima do X-Wing
-const velMaximaRotacaoXWing = 8;           // Define a velocidade de rotação máxima do X-Wing
-const velocidadeProjetil = 50;              // 40 - define a velocidade dos projeteis das naves
+const velMaximaRotacaoXWing = 8;            // Define a velocidade de rotação máxima do X-Wing
+const velocidadeProjetilXWing = 50;         // 40 - define a velocidade dos projeteis das naves
 const velocidadeMaximaTieFighter = 12;      // Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 1000;   // Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
+const velocidadeProjetilTieFighter = 50;    // 10 - define a velocidade dos projeteis das naves
 const anguloMaximo = 61;                    // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 
 let velocidadeXWing = 10;          // 10 - Define a velocidade inicial do X-Wing 
-let velocidadeTieFighter = 15;      // 1 - Define a velocidade inicial dos Tie Fighters 
-let quantidadeTieFighters = 1000;  // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
+let velocidadeTieFighter = 1;      // 1 - Define a velocidade inicial dos Tie Fighters 
+let quantidadeTieFighters = 3000;  // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
 let anguloAtaqueTieFighter = 0;    // Recebe o angulo de ataque dos Tie Fighters (em graus)
 let anguloTieFighter = 0;          // Variavel para controlar a rotação dos Tie Fighters
+let velocidadeDisparosTieFighter = 500; // Cadencia de disparo dos Tie Fighters (em milisegundos)
 let velocidadeCenario = 200;       // define a velocidade do cenario
-let pontosVida = 100;              // 100 - define a vida inicial do X-Wing
+let pontosVida = 1;              // 100 - define a vida inicial do X-Wing
 let pontosScore = 0;               // Define a pontuação inicial
 let estaAtirando = false;          // Flada para saber se o X-Wing está atirando ou não
 let countNavesDestruidas = 0;      // Contador de naves destruídas
@@ -53,67 +55,62 @@ let direcaoVertical = 0;   // Variavel para manipular a direção vertical do X-
 let iniciaMovimentacaoXWing;
 let iniciaProjeteisXWing;
 let iniciaMovimentacaoProjeteisXWing;
+let iniciaColisaoProjeteisTieFighter;
 let iniciaNavesInimigas;
 let iniciaMovimentacaoNavesInimigas;
+let iniciaProjeteisTieFighter;
+let iniciaMovimentacaoProjeteisTieFighter;
 let iniciaColisao;
 let iniciaRotacaoXWing;
 
-/*------------------------------- AUDIOS -------------------------------*/
-const audioTrilhaSonora = new Audio('../audios/soundtrack.m4a'); // Audio X-Wing voando
-function trilhaSonora() {
-    audioTrilhaSonora.volume = 0.5;
-    audioTrilhaSonora.loop = true; // Configura para tocar ininterruptamente
-    audioTrilhaSonora.play();
+
+/*------------------------------- INCIANDO JOGO -------------------------------*/
+document.getElementById("btn_Inicar").addEventListener("click", function () {
+    botaoIniciar.style.display = "none";                                                    // Esconde o botão iniciar após clicar nele
+    menu.style.display = "flex";                                                            // Mostra o menu do jogo 
+    xwing.style.bottom = "40vh";                                                            // Inicia a animação CSS
+    cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Adiciona a animação de fundo do cenario
+    trilhaSonora();                                                                         // Toca a trilha sonora do game
+    somAcelerandoXWing();                                                                   // Toca o som do X-Wing acelerando
+    // Atrasar o início do jogo por 3 segundos
+    audioAcelerandoXWing.pause();                                                           // Encerra o audio da aceleração
+    setTimeout(() => {
+        somVoandoXWing();                                                                   // Inicia o audio de voo do X-Wing
+        // Converte bottom: 40vh para positionVertical (em pixels)
+        const vhToPx = window.innerHeight * 0.4;                                            // Converte 40vh para pixels
+        positionVertical = alturaCenario - vhToPx - alturaXWing;                            // Calcula a posição vertical em pixels do X-Wing no final da animação
+        xwing.style.top = positionVertical + "px";                                          // Atualiza a posição vertical do X-Wing
+        xwing.style.bottom = "";                                                            // Remove a propriedade bottom para evitar conflitos
+        // Inicia os intervalos do jogo
+        document.addEventListener("keydown", teclasControlePressionadas);                   // Chama a função teclasControlePressionadas quando pressiona alguma tecla no teclado
+        document.addEventListener("keyup", teclasControleSoltas);                           // Chama a função teclasControleSoltas quando soltar alguma tecla no teclado
+        document.addEventListener("keypress", teclasControleClicadas);                      // Chama a função teclasControleClicadas quando clicar alguma tecla no teclado
+        iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                              // Chama a função moverXWing a cada 50 milisegundos
+        iniciaProjeteisXWing = setInterval(atirar, 150);                                    // Chama a função atirar a cada 10 milisegundos
+        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                 // Chama a função moverProjeteis a cada 50 milisegundos
+        iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);            // Chama a construção de naves inimigas a cada X milisegundos a primeiro momento
+        iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
+        iniciaProjeteisTieFighter = setInterval(atirarTieFighters, velocidadeDisparosTieFighter);
+        iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);
+        iniciaColisao = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
+        iniciaColisaoProjeteisTieFighter = setInterval(colisaoProjeteisTieFighter, 10);
+        iniciaRotacaoXWing = setInterval(() => {                                            // Chama a função para rotacionar o X-Wing a cada 20 milisegundos
+            if (giroHorario) {                                                              // Se a flag giroHorario for true
+                rotacaoXWing -= velRotacaoXWing;                                            // Decrementa a rotação do X-Wing
+                xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
+            } else if (giroAntiHorario) {                                                   // Se a flag giroAntiHorario for true
+                rotacaoXWing += velRotacaoXWing;                                            // Incrementa a rotação do X-Wing
+                xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
+            }
+        }, 20);
+    }, 3000); // Atraso de 3 segundos
+});
+
+function resetGame() {
+    location.reload();
 }
 
-function somCanhoesXWing() {
-    const audio = new Audio('../audios/x-wing_cannons-2.m4a'); // Audio tiro de canhoes X-Wing
-    audio.volume = 0.3;    // volume de 0 a 1
-    audio.currentTime = 0; // volta pro início
-    audio.play();          // toca o audio
-}
-
-function somAcelerandoXWing() {
-    const audio = new Audio('../audios/x-wing_accelerate.m4a'); // Audio X-Wing acelerando
-    audio.volume = 0.3;
-    audio.play();
-    audio.addEventListener("ended", () => { // Quando o audio terminar, chama a função somVoandoXWing
-        somVoandoXWing();                   // Toca o som do X-Wing voando 
-    });
-}
-
-const audioVoandoXWing = new Audio('../audios/x-wing_flying.m4a'); // Audio X-Wing voando
-function somVoandoXWing() {
-    audioVoandoXWing.volume = 0.3;
-    audioVoandoXWing.loop = true; // Configura para tocar ininterruptamente
-    audioVoandoXWing.play();
-}
-
-function somExplosaoTieFighter() {
-    const audio = new Audio('../audios/tie-fighter_explosion.m4a'); // Audio de explosão
-    audio.currentTime = 0; // volta pro início
-    audio.volume = 0.3;
-    audio.play();
-}
-
-function somVoandoTieFighter() {
-    // Lista dos áudios possíveis
-    const audios = [
-        '../audios/tie-fighter_flying_1.m4a',
-        '../audios/tie-fighter_flying_2.m4a',
-        '../audios/tie-fighter_flying_3.m4a',
-        '../audios/tie-fighter_flying_4.m4a',
-        '../audios/tie-fighter_flying_5.m4a'
-    ];
-    const randomIndex = Math.floor(Math.random() * audios.length); // Sorteia índice aleatório entre 0 e 4
-    const audio = new Audio(audios[randomIndex]); // Cria instância do áudio escolhido
-    // Configurações
-    audio.volume = 0.3; // Volume do audio
-    audio.currentTime = 0; // volta pro início
-    audio.play(); // Executa
-}
-
-/*------------------------------- MONITORANDO TECLAS E CONTROLE DO X-WING -------------------------------*/
+/*------------------------------- MONITORANDO TECLAS E CONTROLE -------------------------------*/
 // Função para verifica se as teclas de controle do X-Wing estão sendo pressionadas
 const teclasControlePressionadas = (tecla) => {
     if (tecla.key === "ArrowRight") {       // se a tecla pressionada for a seta para direita
@@ -159,6 +156,7 @@ const teclasControleClicadas = (tecla) => {
     }
 }
 
+/*------------------------------- X-WING -------------------------------*/
 // Função para mover o X-Wing
 function moverXWing() {
     // as variaveis direcaoHorizontal e direcaoVertical soman ou subtraem na coordenada atual do X-Wing, a velocidadeXWing define o quão rapido ele se move
@@ -187,16 +185,6 @@ function moverXWing() {
     xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
 }
 
-
-/*------------------------------- PROJETEIS X-WING -------------------------------*/
-// Função para atirar
-function atirar() {
-    if (estaAtirando) {                                                         // Se a flag estaAtirando for true, cria os projéteis
-        criarProjeteisXWing(posicaoHorizontal, positionVertical, rotacaoXWing); // Chama a função para criar os projéteis do X-Wing, passando a posição atual do X-Wing
-        somCanhoesXWing();                                                      // Toca o som dos canhões do X-Wing
-    }
-}
-
 // Função para criar os projéteis do X-Wing
 const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => { // Recebe a posição atual do X-Wing e o ângulo de rotação para criar os tiros
     // Centro da nave
@@ -213,7 +201,7 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => { //
     ];
 
     // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
-    const speed = velocidadeProjetil;    // Velocidade do projétil
+    const speed = velocidadeProjetilXWing;    // Velocidade do projétil
     const vx = speed * Math.sin(theta);  // Componente X da velocidade do projétil
     const vy = speed * -Math.cos(theta); // Componente Y da velocidade do projétil
 
@@ -246,8 +234,16 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => { //
     });
 }
 
+// Função para atirar
+function atirar() {
+    if (estaAtirando) {                                                         // Se a flag estaAtirando for true, cria os projéteis
+        criarProjeteisXWing(posicaoHorizontal, positionVertical, rotacaoXWing); // Chama a função para criar os projéteis do X-Wing, passando a posição atual do X-Wing
+        somCanhoesXWing();                                                      // Toca o som dos canhões do X-Wing
+    }
+}
+
 // Função para mover os projéteis do X-Wing
-function moverProjeteis() {
+function moverProjeteisXWing() {
     const projeteis = document.querySelectorAll(".projetil_x-wing"); // Seleciona todos os projéteis
     for (let i = 0; i < projeteis.length; i++) {                     // Percorre todos os projéteis
         const disparo = projeteis[i];                                // Pega o projetil atual
@@ -283,22 +279,28 @@ function moverProjeteis() {
     }
 }
 
-// Explosão do X-Wing
-function explosaoXWing() {
-    const posicaoXWing = xwing.getBoundingClientRect();   // Pega as coordenadas do X-Wing
-    const explosao = document.createElement("div");       // Cria um elemento div, que vai ser a explosão
-    explosao.className = "explosao";                      // Adiciona a classe da explosão para aplicar o estilo
-    explosao.style.left = posicaoXWing.left + "px";       // Pega a posição horizontal do X-Wing
-    explosao.style.top = posicaoXWing.top + "px";         // Pega a posição vertical do X-Wing
-    cenario.appendChild(explosao);                        // Adiciona a explosão ao cenario
-    somExplosaoTieFighter();                              // Chama o audio de explosão do X-Wing
-    setTimeout(() => {                                    // Depois de 500 milissegundos
-        explosao.remove();                                // Remove a explosão
-    }, 500);
+// Colisão com projeteis do Tie-Fighter
+function colisaoProjeteisTieFighter() {
+    const todosDisparos = document.querySelectorAll(".projetil_tie-fighter");
+    todosDisparos.forEach((disparo) => {                                                  // Percorre todos os projeteis
+        const colisaoXWing = xwing.getBoundingClientRect();                               // Pega as coordenadas do Tie Fighter    
+        const colisaoDisparo = disparo.getBoundingClientRect();                           // Pega as coordenadas do projetil
+        if (                                                                              // Verifica se houve colisão entre o Tie Fighter e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do Tie Fighter é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                             // Verifica se o lado direito do Tie Fighter é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do Tie Fighter é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
+        ) {
+            pontosVida -= 1;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
+            refrsehMenu();
+            disparo.remove();
+            if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
+        }
+    });
+    showEstatisticas(); // Atualiza as estatísticas do jogo
 }
 
-
-/*------------------------------- NAVES INIMIGAS -------------------------------*/
+/*------------------------------- TIE-FIGHTERS -------------------------------*/
 // Construindo naves inimigas em lugares aleatorios
 function navesInimigas() {
     const tieFighter = document.createElement("div");  // Cria um elemento div, que vai ser o Tie Fighter
@@ -324,8 +326,10 @@ function navesInimigas() {
     tieFighter.setAttribute("data-vy", vy.toFixed(2));  // Define um atributo data-vy para armazenar a velocidade vertical
 
     // Adiciona o Tie Fighter ao cenario
-    cenario.appendChild(tieFighter);  // Adiciona o Tie Fighter ao cenario
-    somVoandoTieFighter();            // Toca o som do Tie Fighter voando
+    cenario.appendChild(tieFighter);      // Adiciona o Tie Fighter ao cenario
+    criarProjeteisTieFighter(tieFighter); // Faz o Tie Fighter atirar uma vez assim que for criado
+    somCanhoesTieFighter();               // Toca o som dos canhões do Tie Fighter
+    somVoandoTieFighter();                // Toca o som do Tie Fighter voando
 }
 
 // Movimentando naves inimigas
@@ -359,9 +363,9 @@ function moverNavesInimigas() {
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {  // Se o centro do Tie Fighter sair do cenario
                 pontosVida -= 5;                                                  // Diminui 5 pontos de vida
-                vida.innerText = `Vida: ${pontosVida}%`;                          // Atualiza a vida no menu
+                refrsehMenu();                                                    // Atualiza a vida no menu
                 tieFighters[i].parentNode.removeChild(tieFighters[i]);            // Remove o Tie Fighter do cenario
-                if (pontosVida <= 95) mostrarToasty();
+                if (pontosVida <= 20) mostrarToasty();                            // Se a vida estiver abaixo de 20%, mostra o toasty
                 if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
             }
         }
@@ -374,11 +378,11 @@ let countInimigosDestruidos = 0; // Contador de inimigos destruídos
 function colisaoTieFighter() {
     const todasNavesInimigas = document.querySelectorAll(".tie_fighter");                     // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
     const todosDisparos = document.querySelectorAll(".projetil_x-wing");                      // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
-    todasNavesInimigas.forEach((navesInimiga) => {                                            // Percorre todos os Tie Fighters
+    todasNavesInimigas.forEach((naveInimiga) => {                                            // Percorre todos os Tie Fighters
         todosDisparos.forEach((disparo) => {                                                  // Percorre todos os projeteis
-            const colisaoNaveInimiga = navesInimiga.getBoundingClientRect();                  // Pega as coordenadas do Tie Fighter    
+            const colisaoNaveInimiga = naveInimiga.getBoundingClientRect();                  // Pega as coordenadas do Tie Fighter    
             const colisaoDisparo = disparo.getBoundingClientRect();                           // Pega as coordenadas do projetil
-            let vidaAtuaTieFighter = parseInt(navesInimiga.getAttribute("data-vida"), 10);    // Pega a vida atual do Tie Fighter   
+            let vidaAtuaTieFighter = parseInt(naveInimiga.getAttribute("data-vida"), 10);    // Pega a vida atual do Tie Fighter   
             if (                                                                              // Verifica se houve colisão entre o Tie Fighter e o projetil
                 colisaoNaveInimiga.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do Tie Fighter é menor que o lado direito do projetil
                 colisaoNaveInimiga.right > colisaoDisparo.left &&                             // Verifica se o lado direito do Tie Fighter é maior que o lado esquerdo do projetil
@@ -387,7 +391,7 @@ function colisaoTieFighter() {
             ) {
                 vidaAtuaTieFighter--;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
                 pontosScore += 10;                                                            // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
-                pontos.innerText = `Pontos: ${pontosScore}`;                                  // Atualiza a pontuação no menu
+                refrsehMenu()                                                                 // Atualiza a pontuação no menu
                 disparo.remove();                                                             // Remove o projetil do cenario
                 if (vidaAtuaTieFighter <= 0) {                                                // Se a vida do Tie Fighter chegar a 0
                     countNavesDestruidas++;                                                   // Incrementa o contador de naves destruídas
@@ -416,21 +420,17 @@ function colisaoTieFighter() {
                         pontosVida += 10;                // Ganha mais 10 pontos de vida
                         countInimigosDestruidos = 0;     // Zera a contagem
                     }
-                    pontosScore += 100;                                   // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
-                    pontos.innerText = `Pontos: ${pontosScore}`;          // Atualiza a pontuação no menu
+                    pontosScore += 100;                  // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
+                    refrsehMenu();                       // Atualiza a pontuação no menu
                     // Construindo o efeito de explosão
-                    const explosao = document.createElement("div");       // Cria um elemento div, que vai ser a explosão
-                    explosao.className = "explosao";                      // Adiciona a classe da explosão para aplicar o estilo
-                    explosao.style.left = colisaoNaveInimiga.left + "px"; // Pega a posição horizontal do Tie Fighter
-                    explosao.style.top = colisaoNaveInimiga.top + "px";   // Pega a posição vertical do Tie Fighter
-                    cenario.appendChild(explosao);                        // Adiciona a explosão ao cenario
+                    explosaonNaves(naveInimiga);
                     somExplosaoTieFighter();                              // Chama o audio de explosão do Tie Fighter
-                    navesInimiga.remove();                                // Remove o Tie Fighter do cenario
+                    naveInimiga.remove();                                // Remove o Tie Fighter do cenario
                     setTimeout(() => {                                    // Depois de 500 milissegundos
                         explosao.remove();                                // Remove a explosão
                     }, 500);
                 } else {
-                    navesInimiga.setAttribute("data-vida", vidaAtuaTieFighter); // Atualiza a vida do Tie Fighter
+                    naveInimiga.setAttribute("data-vida", vidaAtuaTieFighter); // Atualiza a vida do Tie Fighter
                 }
                 showEstatisticas(); // Atualiza as estatísticas do jogo
             }
@@ -438,101 +438,80 @@ function colisaoTieFighter() {
     });
 }
 
+// Função para criar os projeteis do Tie Fighter
+const criarProjeteisTieFighter = (tieFighter) => {
+    const posicaoLeftTiro = parseFloat(tieFighter.style.left); // Pega a posição horizontal atual do Tie Fighter
+    const posicaoTopTiro = parseFloat(tieFighter.style.top);   // Pega a posição vertical atual do Tie Fighter
+    const centerX = posicaoLeftTiro + larguraTieFighter / 2;   // Centro X do Tie Fighter
+    const centerY = posicaoTopTiro + alturaTieFighter / 2;     // Centro Y do Tie Fighter
+    // Cria dois elementos de disparo, um de cada lado do Tie Fighter
+    // projetil do lado esquerdo
+    const tiroEsquerdo = document.createElement("div");   // Cria um elemento div, que vai ser o projetil
+    tiroEsquerdo.className = "projetil_tie-fighter";      // Adiciona a classe do projetil para aplicar o estilo
+    tiroEsquerdo.style.left = centerX + 5 + "px";         // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
+    tiroEsquerdo.style.top = centerY + 0 + "px";         // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    cenario.appendChild(tiroEsquerdo);                    // Adiciona o projetil ao cenario
+    // projetil do lado direito
+    const tiroDireito = document.createElement("div");
+    tiroDireito.className = "projetil_tie-fighter";
+    tiroDireito.style.left = centerX - 10 + "px";
+    tiroDireito.style.top = centerY + 0 + "px";
+    cenario.appendChild(tiroDireito);
+}
 
-/*------------------------------- FIM DE JOGO -------------------------------*/
-function gameOver() {
-    audioTrilhaSonora.pause();                                           // Pausa a trilha sonora do jogo
-    audioVoandoXWing.pause();                                            // Pausa o som do X-Wing voando
-    document.removeEventListener("keydown", teclasControlePressionadas); // Remove os eventos de controle do X-Wing de keydown
-    document.removeEventListener("keyup", teclasControleSoltas);         // Remove os eventos de controle do X-Wing de keyup
-    // Para todos os intervalos do jogo
-    clearInterval(iniciaProjeteisXWing);
-    clearInterval(iniciaMovimentacaoXWing);
-    clearInterval(iniciaMovimentacaoProjeteisXWing);
-    clearInterval(iniciaNavesInimigas);
-    clearInterval(iniciaMovimentacaoNavesInimigas);
-    clearInterval(iniciaColisao);
-    explosaoXWing();                                                 // Chama a explosão do X-Wing
-    cenario.removeChild(xwing);                                      // Remove o X-Wing do cenario
-    const navesInimigas = document.querySelectorAll(".tie_fighter"); // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
-    navesInimigas.forEach((inimigos) => {                            // Percorre todos os Tie Fighters
-        inimigos.remove();                                           // Remove cada um dos Tie Fighter do cenario
-    });
-    const disparosXWing = document.querySelectorAll(".projetil_x-wing"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis do X-Wing
-    disparosXWing.forEach((disparos) => {                                // Percorre todos os projeteis do X-Wing
-        disparos.remove();                                               // Remove cada um dos projeteis do X-Wing do cenario
-    });
-    // Mostra a mensagem de fim de jogo
-    const gameover = document.createElement("h1");
-    gameover.innerHTML = "Game Over<br>O Imperio Venceu";
-    gameover.className = "gameover";
-    cenario.appendChild(gameover);
-    // Depois de 3 segundos, tocar a risada do imperador
-    setTimeout(() => {
-        menu.style.display = "none";                                         // Esconde o menu do jogo
-        const audio = new Audio('../audios/risada_palpatine.MP3'); // Audio X-Wing acelerando
-        audio.play();
-    }, 3000);
+// Função para atirar
+function atirarTieFighters() {
+    const tieFighters = document.querySelectorAll(".tie_fighter"); // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+    const quantidadeInimigos = tieFighters.length;                 // Pega a quantidade de Tie Fighters
+    if (quantidadeInimigos === 0) return;                          // Se não houver Tie Fighters, sai da função
+
+    // Decide quantos TIEs vão atirar
+    let disparos = 1;                                                           // Por padrão, 1 TIE atira
+    if (quantidadeInimigos > 3 && quantidadeInimigos <= 6) disparos = 2;        // Se houver entre 4 e 6 TIEs, 2 atiram
+    else if (quantidadeInimigos > 6 && quantidadeInimigos <= 9) disparos = 3;   // Se houver entre 7 e 9 TIEs, 3 atiram
+    else if (quantidadeInimigos > 9 && quantidadeInimigos <= 12) disparos = 4;  // Se houver entre 10 e 12 TIEs, 4 atiram
+    else if (quantidadeInimigos > 12 && quantidadeInimigos <= 15) disparos = 5; // Se houver entre 13 e 15 TIEs, 5 atiram
+
+    // Sorteia e faz disparos
+    for (let i = 0; i < disparos; i++) {                                  // Para cada disparo
+        const aleatorio = Math.floor(Math.random() * quantidadeInimigos);   // Sorteia um índice aleatório entre 0 e quantidadeInimigos-1
+        const tieEscolhido = tieFighters[aleatorio];                        // Seleciona o Tie Fighter sorteado
+        if (!tieEscolhido) continue;                                        // Se o Tie Fighter não existir (pode ter sido destruído), pula para o próximo
+        criarProjeteisTieFighter(tieEscolhido);                             // Chama a função para criar os projeteis do Tie Fighter sorteado
+        somCanhoesTieFighter();                                             // Toca o som dos canhões do Tie Fighter
+    }
 }
 
 
-/*------------------------------- INCIANDO JOGO -------------------------------*/
-/*
-document.addEventListener("DOMContentLoaded", () => {
-    // Inicializa a nave fora da tela
-    xwing.style.left = posicaoHorizontal + "px";
-    xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
-});
-*/
-
-document.getElementById("btn_Inicar").addEventListener("click", function () {
-    botaoIniciar.style.display = "none";                                                    // Esconde o botão iniciar após clicar nele
-    menu.style.display = "flex";                                                            // Mostra o menu do jogo 
-    xwing.style.bottom = "40vh";                                                            // Inicia a animação CSS
-    cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Adiciona a animação de fundo do cenario
-    trilhaSonora();                                                                       // Toca a trilha sonora do game
-    somAcelerandoXWing();                                                                 // Toca o som do X-Wing acelerando
-    // Atrasar o início do jogo por 3 segundos
-    setTimeout(() => {
-        // Converte bottom: 40vh para positionVertical (em pixels)
-        const vhToPx = window.innerHeight * 0.4;                                            // Converte 40vh para pixels
-        positionVertical = alturaCenario - vhToPx - alturaXWing;                            // Calcula a posição vertical em pixels do X-Wing no final da animação
-        xwing.style.top = positionVertical + "px";                                          // Atualiza a posição vertical do X-Wing
-        xwing.style.bottom = "";                                                            // Remove a propriedade bottom para evitar conflitos
-        // Inicia os intervalos do jogo
-        document.addEventListener("keydown", teclasControlePressionadas);                   // Chama a função teclasControlePressionadas quando pressiona alguma tecla no teclado
-        document.addEventListener("keyup", teclasControleSoltas);                           // Chama a função teclasControleSoltas quando soltar alguma tecla no teclado
-        document.addEventListener("keypress", teclasControleClicadas);                      // Chama a função teclasControleClicadas quando clicar alguma tecla no teclado
-        iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                              // Chama a função moverXWing a cada 50 milisegundos
-        iniciaProjeteisXWing = setInterval(atirar, 150);                                    // Chama a função atirar a cada 10 milisegundos
-        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteis, 50);                 // Chama a função moverProjeteis a cada 50 milisegundos
-        iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);            // Chama a construção de naves inimigas a cada X milisegundos a primeiro momento
-        iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
-        iniciaColisao = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
-        iniciaRotacaoXWing = setInterval(() => {                                            // Chama a função para rotacionar o X-Wing a cada 20 milisegundos
-            if (giroHorario) {                                                              // Se a flag giroHorario for true
-                rotacaoXWing -= velRotacaoXWing;                                            // Decrementa a rotação do X-Wing
-                xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
-            } else if (giroAntiHorario) {                                                   // Se a flag giroAntiHorario for true
-                rotacaoXWing += velRotacaoXWing;                                            // Incrementa a rotação do X-Wing
-                xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
+// Função para mover os projeteis do Fighter
+function moverProjeteisTieFighter() {
+    const tiros = document.querySelectorAll(".projetil_tie-fighter"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
+    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
+        if (tiros[i]) {                                          // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
+            posicaoTopProjetil += velocidadeProjetilTieFighter;            // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
+            if (posicaoTopProjetil > alturaCenario) {            // Se o projetil sair do cenario (posição menor que -10)
+                tiros[i].remove();                               // Remove o projetil do cenario          
             }
-        }, 20);
-    }, 3000); // Atraso de 3 segundos
-});
-
-function resetGame() {
-    location.reload();
+        }
+    }
 }
 
-// Atualizando as estatisticas do jogo
-function showEstatisticas() {
-    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;
-    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;
-    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;
-    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;
-    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
-    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
+
+/*------------------------------- EFEITOS VISUAIS -------------------------------*/
+// Efeito de nave explodindo
+function explosaonNaves(nave) {
+    const posicaoNave = nave.getBoundingClientRect();   // Pega as coordenadas da nave
+    const explosao = document.createElement("div");     // Cria um elemento div, que vai ser a explosão
+    explosao.className = "explosao";                    // Adiciona a classe da explosão para aplicar o estilo
+    explosao.style.left = posicaoNave.left + "px";      // Pega a posição horizontal da nave
+    explosao.style.top = posicaoNave.top + "px";        // Pega a posição vertical da nave
+    cenario.appendChild(explosao);                      // Adiciona a explosão ao cenario
+    somExplosaoTieFighter();                            // Chama o audio de explosão da nave
+    setTimeout(() => {                                  // Depois de 500 milissegundos
+        explosao.remove();                              // Remove a explosão
+    }, 500);
 }
 
 // Efeito Toasty
@@ -553,4 +532,127 @@ function mostrarToasty() {
     setTimeout(() => {                                      // Depois de 1 segundo
         toast.classList.remove("show");                     // Remove a classe show para esconder o toast
     }, 1000);                                               // visível por 1s
+}
+
+// Atualizar o menu do jogo
+function refrsehMenu() {
+    vida.innerText = `Vida: ${pontosVida}%`;     // Atualiza a vida no menu
+    pontos.innerText = `Pontos: ${pontosScore}`; // Atualiza a pontuação no menu
+}
+
+// Atualizando as estatisticas do jogo
+function showEstatisticas() {
+    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;
+    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;
+    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;
+    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;
+    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
+    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
+}
+
+/*------------------------------- EFEITOS SONOROS -------------------------------*/
+const audioTrilhaSonora = new Audio('../audios/soundtrack.m4a'); // Audio X-Wing voando
+function trilhaSonora() {
+    audioTrilhaSonora.volume = 0.5;
+    audioTrilhaSonora.loop = true; // Configura para tocar ininterruptamente
+    audioTrilhaSonora.play();
+}
+
+function somCanhoesXWing() {
+    const audio = new Audio('../audios/x-wing_cannons-2.m4a'); // Audio tiro de canhoes X-Wing
+    audio.volume = 0.3;    // volume de 0 a 1
+    audio.currentTime = 0; // volta pro início
+    audio.play();          // toca o audio
+}
+
+const audioAcelerandoXWing = new Audio('../audios/x-wing_accelerate.m4a'); // Audio X-Wing acelerando
+function somAcelerandoXWing() {
+    const audioAcelerandoXWing = new Audio('../audios/x-wing_accelerate.m4a'); // Audio X-Wing acelerando
+    audioAcelerandoXWing.volume = 0.3;
+    audioAcelerandoXWing.play();
+}
+
+const audioVoandoXWing = new Audio('../audios/x-wing_flying.m4a'); // Audio X-Wing voando
+function somVoandoXWing() {
+    audioVoandoXWing.volume = 0.3;
+    audioVoandoXWing.loop = true; // Configura para tocar ininterruptamente
+    audioVoandoXWing.play();
+}
+
+function somExplosaoTieFighter() {
+    const audio = new Audio('../audios/tie-fighter_explosion.m4a'); // Audio de explosão
+    audio.currentTime = 0; // volta pro início
+    audio.volume = 0.3;
+    audio.play();
+}
+
+function somVoandoTieFighter() {
+    // Lista dos áudios possíveis
+    const audios = [
+        '../audios/tie-fighter_flying_1.m4a',
+        '../audios/tie-fighter_flying_2.m4a',
+        '../audios/tie-fighter_flying_3.m4a',
+        '../audios/tie-fighter_flying_4.m4a',
+        '../audios/tie-fighter_flying_5.m4a'
+    ];
+    const randomIndex = Math.floor(Math.random() * audios.length); // Sorteia índice aleatório entre 0 e 4
+    const audio = new Audio(audios[randomIndex]); // Cria instância do áudio escolhido
+    // Configurações
+    audio.volume = 0.3; // Volume do audio
+    audio.currentTime = 0; // volta pro início
+    audio.play(); // Executa
+}
+
+function somCanhoesTieFighter() {
+    const audio = new Audio('../audios/tie-fighter_cannon.mp3'); // Audio tiro de canhoes Tie-Fighter
+    audio.volume = 1;     // volume de 0 a 1
+    audio.currentTime = 0;  // volta pro início
+    audio.play();           // toca o audio
+}
+
+
+/*------------------------------- FIM DE JOGO -------------------------------*/
+function gameOver() {
+    audioVoandoXWing.loop = false;
+    audioTrilhaSonora.loop = false;
+    audioTrilhaSonora.pause();                                           // Pausa a trilha sonora do jogo
+    audioVoandoXWing.pause();                                            // Pausa o som do X-Wing voando
+    document.removeEventListener("keydown", teclasControlePressionadas); // Remove os eventos de controle do X-Wing de keydown
+    document.removeEventListener("keyup", teclasControleSoltas);         // Remove os eventos de controle do X-Wing de keyup
+    // Para todos os intervalos do jogo
+    clearInterval(iniciaProjeteisXWing);
+    clearInterval(iniciaMovimentacaoXWing);
+    clearInterval(iniciaMovimentacaoProjeteisXWing);
+    clearInterval(iniciaNavesInimigas);
+    clearInterval(iniciaMovimentacaoNavesInimigas);
+    clearInterval(iniciaColisao);
+    clearInterval(iniciaProjeteisTieFighter);
+    clearInterval(iniciaMovimentacaoProjeteisTieFighter);
+    clearInterval(iniciaColisaoProjeteisTieFighter);
+    clearInterval(iniciaRotacaoXWing);
+    explosaonNaves(xwing);                                               // Chama a explosão do X-Wing
+    cenario.removeChild(xwing);                                          // Remove o X-Wing do cenario
+    const navesInimigas = document.querySelectorAll(".tie_fighter");     // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+    navesInimigas.forEach((inimigos) => {                                // Percorre todos os Tie Fighters
+        inimigos.remove();                                               // Remove cada um dos Tie Fighter do cenario
+    });
+    const disparosXWing = document.querySelectorAll(".projetil_x-wing"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis do X-Wing
+    disparosXWing.forEach((disparos) => {                                // Percorre todos os projeteis do X-Wing
+        disparos.remove();                                               // Remove cada um dos projeteis do X-Wing do cenario
+    });
+    const disparosTieFighter = document.querySelectorAll(".projetil_tie-fighter"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis do X-Wing
+    disparosTieFighter.forEach((disparos) => {                                // Percorre todos os projeteis do X-Wing
+        disparos.remove();                                               // Remove cada um dos projeteis do X-Wing do cenario
+    });
+    // Depois de 3 segundos, tocar a risada do imperador
+    setTimeout(() => {
+        // Mostra a mensagem de fim de jogo
+        const gameover = document.createElement("h1");
+        gameover.innerHTML = "Game Over<br>O Imperio Venceu";
+        gameover.className = "gameover";
+        cenario.appendChild(gameover);
+        menu.style.display = "none";                               // Esconde o menu do jogo
+        const audio = new Audio('../audios/risada_palpatine.MP3'); // Audio X-Wing acelerando
+        audio.play();
+    }, 3000);
 }
