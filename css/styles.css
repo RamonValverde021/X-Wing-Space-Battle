@@ -43,7 +43,7 @@
 
 /* Formatação do menu de  status do jogo */
 div.menu {
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px 2%;
@@ -53,6 +53,18 @@ div.menu {
     font-weight: 550;
     font-size: 30px;
     color: yellow;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 5s ease forwards;
+    /* duração de 5 segundos */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 5;
+    }
 }
 
 /* Formatação do cenario do jogo */
@@ -66,11 +78,14 @@ div#cenario {
     /* Atributo necessario para que as naves inimigas consigam desaparecer até o final quando chegarem a fundo da tela sem extender a mesma */
     overflow: hidden;
 }
+
 /* Animação para movimentar o fundo do cenario */
 @keyframes animacaoCenario {
     from {
         background-position-y: 0%;
-    } to {
+    }
+
+    to {
         background-position-y: 1000%;
     }
 }
@@ -104,7 +119,9 @@ div#x-wing {
     background-position: center;
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
-    bottom: 20px;
+    bottom: -50vh;
+    /* controla a animação */
+    transition: bottom 2s ease-in-out;
 }
 
 /* Formatação TIE Fighters */
@@ -125,7 +142,8 @@ div#x-wing {
     width: 5px;
     height: 30px;
     background-color: blue;
-    transform-origin: center; /* Garante rotação no centro */
+    transform-origin: center;
+    /* Garante rotação no centro */
 }
 
 /* Titulo de fim de jogo */
@@ -161,7 +179,7 @@ div#x-wing {
 }
 
 .data_game {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
@@ -177,4 +195,29 @@ div#x-wing {
     color: white;
     font-weight: 500;
     font-size: 20px;
+}
+
+
+
+.toasty {
+    position: absolute;
+    height: 263px;
+    width: 250px;
+    bottom: 0;
+    right: 0px;
+    background-image: url('../images/stormtropper.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    transform: translateX(250px);
+    /* deslocado para baixo */
+    transition: all 0.4s ease-out;
+    pointer-events: none;
+    /* não atrapalha cliques no jogo */
+}
+
+.toasty.show {
+    transform: translateX(-5px);
+    /* sobe para posição final */
 }
