@@ -38,7 +38,7 @@ let velocidadeTieFighter = 1;            // 1 - Define a velocidade inicial dos 
 let quantidadeTieFighters = 3000;        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
 let anguloAtaqueTieFighter = 0;          // Recebe o angulo de ataque dos Tie Fighters (em graus)
 let anguloTieFighter = 0;                // Variavel para controlar a rotação dos Tie Fighters
-let velocidadeDisparosTieFighter = 1200;  // Cadencia de disparo dos Tie Fighters (em milisegundos)
+let velocidadeDisparosTieFighter = 500;  // Cadencia de disparo dos Tie Fighters (em milisegundos)
 let velocidadeCenario = 200;             // define a velocidade do cenario
 let pontosVida = 100;                    // 100 - define a vida inicial do X-Wing
 let pontosScore = 0;                     // Define a pontuação inicial
@@ -321,7 +321,7 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 1;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
+            pontosVida -= 5;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
             atualizarMenu();
             disparo.remove();
             if (pontosVida <= 20) mostrarToasty();
@@ -704,8 +704,8 @@ function somVitoria() {
 /*------------------------------- ESTRELA-DA-MORTE -------------------------------*/
 function bossDeathStar() {
     // Para a criação de Tie Fighters e seus disparos
-    clearInterval(iniciaNavesInimigas);       // Finaliza criação de naves inimigas
-    clearInterval(iniciaProjeteisTieFighter); // Finaliza disparos dos Tie Fighters
+    clearInterval(iniciaNavesInimigas);       
+    clearInterval(iniciaProjeteisTieFighter); 
     audioTrilhaSonora.pause();                // Interrompe a trilha sonora principal
     pontosVida = 100;                         // Recarrega avida para enfrentar a estrela da morte
     atualizarMenu();
@@ -720,7 +720,7 @@ function bossDeathStar() {
         deathstar.style.bottom = posY + "%";                      // Define a posição vertical inicial da Estrela-da-Morte
         const intervalo = setInterval(() => {                     // Cria um intervalo para mover a Estrela-da-Morte
             if (estrelaDestruida == false) {                      // Se a Estrela-da-Morte não foi destruída
-                posY -= 0.1;                                      // velocidade (quanto maior, mais rápido desce)
+                if (estrelaDestruida == false) posY -= 0.1;                                      // velocidade (quanto maior, mais rápido desce)
                 deathstar.style.bottom = posY + "%";              // Atualiza a posição vertical da Estrela-da-Morte
                 if (posY <= -10) {                                 // Se a Estrela-da-Morte chegar ao meio da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
@@ -773,6 +773,8 @@ function colisaoEstrelaDaMorte() {
 function explosaoEstrelaDaMorte() {
     clearInterval(iniciaProjeteisDeathStar);
     clearInterval(iniciaMovimentacaoProjeteisDeathStar);
+    clearInterval(iniciaColisaoEstrelaDaMorte);
+
     const disparosDeathStar = document.querySelectorAll(".projetil_death-star");
     disparosDeathStar.forEach((disparos) => {
         disparos.remove();
@@ -950,7 +952,6 @@ function xwingSaindo() {
 
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
-    if (estrelaDestruida == false) {
         audioVoandoXWing.loop = false;
         audioTrilhaSonora.loop = false;
         audioTrilhaSonora.pause();                                           // Pausa a trilha sonora do jogo
@@ -1016,5 +1017,4 @@ function gameOver() {
                 cenario.appendChild(btnReiniciar);
             }, 2000);
         }, 3000);
-    }
 }
