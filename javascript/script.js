@@ -321,7 +321,7 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 5;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
+            pontosVida -= 3;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
             atualizarMenu();
             disparo.remove();
             if (pontosVida <= 20) mostrarToasty();
@@ -412,7 +412,7 @@ function moverNavesInimigas() {
             // Remove se sair do cenário
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {  // Se o centro do Tie Fighter sair do cenario
-                pontosVida -= 5;                                                  // Diminui 5 pontos de vida
+                pontosVida -= 3;                                                  // Diminui 5 pontos de vida
                 atualizarMenu();                                                    // Atualiza a vida no menu
                 tieFighters[i].parentNode.removeChild(tieFighters[i]);            // Remove o Tie Fighter do cenario
                 if (pontosVida <= 20) mostrarToasty();                            // Se a vida estiver abaixo de 20%, mostra o toasty
