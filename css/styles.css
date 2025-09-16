@@ -212,7 +212,7 @@ div#x-wing {
 
 .projetil_death-star {
     position: absolute;
-    width: 15px;
+    width: 8px;
     height: 150px;
     background-color: rgb(255, 0, 0);
     transform-origin: center;

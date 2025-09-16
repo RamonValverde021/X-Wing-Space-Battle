@@ -339,7 +339,7 @@ function colisaoXWing() {
             colisaoXWing2.top < colisaoDisparo2.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing2.bottom > colisaoDisparo2.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 20;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
+            pontosVida -= 15;                                                         // Diminui 10 ponto para cada projetil que acertar o X-Wing
             atualizarMenu();
             disparo2.remove();
             if (pontosVida <= 20) mostrarToasty();
