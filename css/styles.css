@@ -12,6 +12,51 @@
     font-family: fontPixelArt;
 }
 
+body#index {
+    background-image: url('../images/Intro_X-Wing_Space_Battle.png');
+    background-color: black;
+    background-size: contain;
+    /* Para que a imagem cubra toda a tela */
+    background-repeat: no-repeat;
+    /* Para evitar repetição da imagem */
+    background-position: center center;
+    /* Para centralizar a imagem */
+    background-attachment: fixed;
+}
+
+.botaoIndex {
+    position: absolute;
+    width: 20%;
+    left: 40%;
+    bottom: 20vh;
+    font-weight: 500;
+    font-size: 30px;
+    color: yellow;
+    background-color: black;
+    border: 4px solid yellow;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+
+.botaoIndex:hover {
+    color: black;
+    background-color: yellow;
+    border: 4px solid black;
+    cursor: pointer;
+}
+
+#introVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    /* começa escondido */
+    z-index: 9999;
+}
+
 /* Formatação do body com imagem de fundo que se repete */
 .estrelasRepetidas {
     background-image: url('../images/space/space_1.gif');
@@ -145,12 +190,13 @@ div#x-wing {
     transform-origin: center;
 }
 
-.torpedo_x-wing {  /* torpedo_x-wing */
+.torpedo_x-wing {
+    /* torpedo_x-wing */
     position: absolute;
     width: 5px;
     height: 80px;
     background-color: white;
-    border: thick double rgb(255, 0, 255);;
+    border: thick double rgb(255, 0, 255);
     border-radius: 15px;
     transform-origin: center;
 }
@@ -162,6 +208,15 @@ div#x-wing {
     height: 30px;
     background-color: rgb(0, 255, 0);
     transform-origin: center;
+}
+
+.projetil_death-star {
+    position: absolute;
+    width: 15px;
+    height: 150px;
+    background-color: rgb(255, 0, 0);
+    transform-origin: center;
+    border-radius: 20px;
 }
 
 /* Titulo de fim de jogo */
@@ -183,8 +238,10 @@ div#x-wing {
     background-color: rgba(0, 0, 0, 0.4);
     top: 15%;
     text-align: center;
-    opacity: 0;                  /* começa invisível */
-    transition: opacity 2s ease; /* efeito suave */
+    opacity: 0;
+    /* começa invisível */
+    transition: opacity 2s ease;
+    /* efeito suave */
 }
 
 /* Formatação explosão dos TIE Fighters */
@@ -271,7 +328,8 @@ div#x-wing {
     }
 
     50% {
-        color: rgb(0, 100, 200);;
+        color: rgb(0, 100, 200);
+        ;
         /* azul */
         text-shadow: 0 0 8px rgba(0, 0, 255, 0.8);
     }
