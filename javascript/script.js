@@ -6,6 +6,7 @@ const botaoIniciar = document.getElementById("btn_Inicar");
 const menu = document.getElementById("menu");
 const vida = document.getElementById("vida");
 const pontos = document.getElementById("pontos");
+const btnEspecialAtaque = document.getElementById("ataque_especial");
 // Estastiticas do jogo
 const painelDados = document.getElementById("dados-jogo");
 const dadosVelXWing = document.getElementById("vel_x-wing");
@@ -14,6 +15,7 @@ const dadosVelTieFighter = document.getElementById("vel_tie-fighter");
 const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");
 const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");
 const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");
+const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth; // Pega a largura de todod o cenario
@@ -30,21 +32,26 @@ const quantidadeMaximaTieFighters = 1000;   // Define o tempo máximo de criaç�
 const velocidadeProjetilTieFighter = 50;    // 10 - define a velocidade dos projeteis das naves
 const anguloMaximo = 61;                    // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 
-let velocidadeXWing = 10;          // 10 - Define a velocidade inicial do X-Wing 
-let velocidadeTieFighter = 1;      // 1 - Define a velocidade inicial dos Tie Fighters 
-let quantidadeTieFighters = 3000;  // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
-let anguloAtaqueTieFighter = 0;    // Recebe o angulo de ataque dos Tie Fighters (em graus)
-let anguloTieFighter = 0;          // Variavel para controlar a rotação dos Tie Fighters
-let velocidadeDisparosTieFighter = 500; // Cadencia de disparo dos Tie Fighters (em milisegundos)
-let velocidadeCenario = 200;       // define a velocidade do cenario
-let pontosVida = 1;              // 100 - define a vida inicial do X-Wing
-let pontosScore = 0;               // Define a pontuação inicial
-let estaAtirando = false;          // Flada para saber se o X-Wing está atirando ou não
-let countNavesDestruidas = 0;      // Contador de naves destruídas
-let rotacaoXWing = 0;              // 0 - Variavel para controlar a rotação do X-Wing
-let velRotacaoXWing = 2;           // 2 - Define a velocidade inicial de rotação do X-Wing
-let giroHorario = false;
-let giroAntiHorario = false;
+let velocidadeXWing = 10;                // 10 - Define a velocidade inicial do X-Wing 
+let velocidadeTieFighter = 1;            // 1 - Define a velocidade inicial dos Tie Fighters 
+let quantidadeTieFighters = 3000;        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
+let anguloAtaqueTieFighter = 0;          // Recebe o angulo de ataque dos Tie Fighters (em graus)
+let anguloTieFighter = 0;                // Variavel para controlar a rotação dos Tie Fighters
+let velocidadeDisparosTieFighter = 500;  // Cadencia de disparo dos Tie Fighters (em milisegundos)
+let velocidadeCenario = 200;             // define a velocidade do cenario
+let pontosVida = 1;                    // 100 - define a vida inicial do X-Wing
+let pontosScore = 0;                     // Define a pontuação inicial
+let estaAtirando = false;                // Flada para saber se o X-Wing está atirando ou não
+let countNavesDestruidas = 0;            // Contador de naves destruídas
+let rotacaoXWing = 0;                    // 0 - Variavel para controlar a rotação do X-Wing
+let velRotacaoXWing = 2;                 // 2 - Define a velocidade inicial de rotação do X-Wing
+let giroHorario = false;                 // Flag para controlar a rotação do X-Wing no sentido horário
+let giroAntiHorario = false;             // Flag para controlar a rotação do X-Wing no sentido anti-horário
+let iniciarBossDeathStar = true;         // Flag para iniciar a fase da estrela da morte
+let vidaEstrelaDaMorte = 600;            // 600 Pontos de vida da Estrela da Morte
+let estrelaDestruida = false;            // Flag para verificar se a Estrela da Morte foi destruída
+let habilitarAtaqueEspecial = false;
+let sinalObiWan = true;
 
 let posicaoHorizontal = larguraCenario / 2 - (larguraXWing / 2); // Posição horizontal inicial do X-Wing
 let positionVertical = alturaCenario - alturaXWing - 20;         // Posição vertical inicial do X-Wing
@@ -55,13 +62,15 @@ let direcaoVertical = 0;   // Variavel para manipular a direção vertical do X-
 let iniciaMovimentacaoXWing;
 let iniciaProjeteisXWing;
 let iniciaMovimentacaoProjeteisXWing;
-let iniciaColisaoProjeteisTieFighter;
+let iniciaColisaoXWing;
 let iniciaNavesInimigas;
 let iniciaMovimentacaoNavesInimigas;
 let iniciaProjeteisTieFighter;
 let iniciaMovimentacaoProjeteisTieFighter;
-let iniciaColisao;
+let iniciaColisaoTieFighter;
 let iniciaRotacaoXWing;
+let iniciaColisaoEstrelaDaMorte;
+let iniciaMovimentoTorpedoEspecial;
 
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
@@ -92,8 +101,10 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
         iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
         iniciaProjeteisTieFighter = setInterval(atirarTieFighters, velocidadeDisparosTieFighter);
         iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);
-        iniciaColisao = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
-        iniciaColisaoProjeteisTieFighter = setInterval(colisaoProjeteisTieFighter, 10);
+        iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
+        iniciaColisaoXWing = setInterval(colisaoXWing, 10);
+        iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);
+        iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);
         iniciaRotacaoXWing = setInterval(() => {                                            // Chama a função para rotacionar o X-Wing a cada 20 milisegundos
             if (giroHorario) {                                                              // Se a flag giroHorario for true
                 rotacaoXWing -= velRotacaoXWing;                                            // Decrementa a rotação do X-Wing
@@ -102,6 +113,13 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
                 rotacaoXWing += velRotacaoXWing;                                            // Incrementa a rotação do X-Wing
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
             }
+            // Quando atingir a marca de 5000 pontos começa a fase da estrela da morte
+            if (iniciarBossDeathStar) {
+                if (pontosScore >= 5000) {         // Verifica se a pontuação é maior ou igual a 5000
+                    iniciarBossDeathStar = false; // Desativa a flag para não entrar mais nessa condição
+                    bossDeathStar();              // Chama a função para iniciar a fase da estrela da morte
+                }
+            }
         }, 20);
     }, 3000); // Atraso de 3 segundos
 });
@@ -109,6 +127,7 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
 function resetGame() {
     location.reload();
 }
+
 
 /*------------------------------- MONITORANDO TECLAS E CONTROLE -------------------------------*/
 // Função para verifica se as teclas de controle do X-Wing estão sendo pressionadas
@@ -153,8 +172,15 @@ const teclasControleClicadas = (tecla) => {
         } else {
             painelDados.style.display = "none";
         }
+    } if (tecla.key === "f" || tecla.key === "F") {
+        if (habilitarAtaqueEspecial) {
+            habilitarAtaqueEspecial = false;
+            btnEspecialAtaque.style.display = "none";
+            xwingEspecialAtaque();
+        }
     }
 }
+
 
 /*------------------------------- X-WING -------------------------------*/
 // Função para mover o X-Wing
@@ -280,18 +306,18 @@ function moverProjeteisXWing() {
 }
 
 // Colisão com projeteis do Tie-Fighter
-function colisaoProjeteisTieFighter() {
+function colisaoXWing() {
     const todosDisparos = document.querySelectorAll(".projetil_tie-fighter");
     todosDisparos.forEach((disparo) => {                                                  // Percorre todos os projeteis
-        const colisaoXWing = xwing.getBoundingClientRect();                               // Pega as coordenadas do Tie Fighter    
+        const colisaoXWing = xwing.getBoundingClientRect();                               // Pega as coordenadas do X-Wing    
         const colisaoDisparo = disparo.getBoundingClientRect();                           // Pega as coordenadas do projetil
-        if (                                                                              // Verifica se houve colisão entre o Tie Fighter e o projetil
-            colisaoXWing.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do Tie Fighter é menor que o lado direito do projetil
-            colisaoXWing.right > colisaoDisparo.left &&                             // Verifica se o lado direito do Tie Fighter é maior que o lado esquerdo do projetil
-            colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do Tie Fighter é menor que a parte de baixo do projetil
-            colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
+        if (                                                                              // Verifica se houve colisão entre o X-Wing e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                             // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 1;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
+            pontosVida -= 1;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
             refrsehMenu();
             disparo.remove();
             if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
@@ -305,7 +331,7 @@ function colisaoProjeteisTieFighter() {
 function navesInimigas() {
     const tieFighter = document.createElement("div");  // Cria um elemento div, que vai ser o Tie Fighter
     tieFighter.className = "tie_fighter";              // Adiciona a classe do Tie Fighter para aplicar o estilo
-    tieFighter.setAttribute("data-vida", 5);           // Cria o atributo data-vida para armazenar a vida do Tie Fighter
+    tieFighter.setAttribute("data-vida", 3);           // Cria o atributo data-vida para armazenar a vida do Tie Fighter
 
     // Posição inicial (aleatória na horizontal, topo da tela)
     const posicaoLeft = Math.floor(Math.random() * (larguraCenario - larguraTieFighter));  // Cria uma posição aleatória na horizontal dentro do cenario para o Tie Fighter
@@ -391,7 +417,7 @@ function colisaoTieFighter() {
             ) {
                 vidaAtuaTieFighter--;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
                 pontosScore += 10;                                                            // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
-                refrsehMenu()                                                                 // Atualiza a pontuação no menu
+                refrsehMenu();                                                                // Atualiza a pontuação no menu
                 disparo.remove();                                                             // Remove o projetil do cenario
                 if (vidaAtuaTieFighter <= 0) {                                                // Se a vida do Tie Fighter chegar a 0
                     countNavesDestruidas++;                                                   // Incrementa o contador de naves destruídas
@@ -424,11 +450,8 @@ function colisaoTieFighter() {
                     refrsehMenu();                       // Atualiza a pontuação no menu
                     // Construindo o efeito de explosão
                     explosaonNaves(naveInimiga);
-                    somExplosaoTieFighter();                              // Chama o audio de explosão do Tie Fighter
+                    somExplosaoNaves();                              // Chama o audio de explosão do Tie Fighter
                     naveInimiga.remove();                                // Remove o Tie Fighter do cenario
-                    setTimeout(() => {                                    // Depois de 500 milissegundos
-                        explosao.remove();                                // Remove a explosão
-                    }, 500);
                 } else {
                     naveInimiga.setAttribute("data-vida", vidaAtuaTieFighter); // Atualiza a vida do Tie Fighter
                 }
@@ -508,7 +531,7 @@ function explosaonNaves(nave) {
     explosao.style.left = posicaoNave.left + "px";      // Pega a posição horizontal da nave
     explosao.style.top = posicaoNave.top + "px";        // Pega a posição vertical da nave
     cenario.appendChild(explosao);                      // Adiciona a explosão ao cenario
-    somExplosaoTieFighter();                            // Chama o audio de explosão da nave
+    somExplosaoNaves();                            // Chama o audio de explosão da nave
     setTimeout(() => {                                  // Depois de 500 milissegundos
         explosao.remove();                              // Remove a explosão
     }, 500);
@@ -548,19 +571,40 @@ function showEstatisticas() {
     dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;
     dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
     dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
+    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;
 }
 
 /*------------------------------- EFEITOS SONOROS -------------------------------*/
-const audioTrilhaSonora = new Audio('../audios/soundtrack.m4a'); // Audio X-Wing voando
+const audioTrilhaSonora = new Audio('../audios/soundtrack.MP3'); // Audio X-Wing voando
 function trilhaSonora() {
     audioTrilhaSonora.volume = 0.5;
     audioTrilhaSonora.loop = true; // Configura para tocar ininterruptamente
     audioTrilhaSonora.play();
 }
 
+// Aqui é o truque: quando a trilha principal for pausada ira tocar a trilha sonora da Estrela da Morte
+audioTrilhaSonora.addEventListener("pause", () => {
+    setTimeout(() => {
+        trilhaSonoraEstrelaDaMorte();
+    }, 6000); // espera 5 segundos
+});
+
+const audioTrilhaSonoraEstrelaDaMorte = new Audio('../audios/deathstar_suite.MP3'); // Audio tiro de canhoes X-Wing
+function trilhaSonoraEstrelaDaMorte() {
+    audioTrilhaSonoraEstrelaDaMorte.volume = 1;
+    audioTrilhaSonoraEstrelaDaMorte.play();
+}
+
 function somCanhoesXWing() {
     const audio = new Audio('../audios/x-wing_cannons-2.m4a'); // Audio tiro de canhoes X-Wing
     audio.volume = 0.3;    // volume de 0 a 1
+    audio.currentTime = 0; // volta pro início
+    audio.play();          // toca o audio
+}
+
+function somCanhoesXWingProtons() {
+    const audio = new Audio('../audios/x-wing_cannons_protons.mp3'); // Audio tiro de canhoes X-Wing
+    audio.volume = 1;    // volume de 0 a 1
     audio.currentTime = 0; // volta pro início
     audio.play();          // toca o audio
 }
@@ -579,10 +623,16 @@ function somVoandoXWing() {
     audioVoandoXWing.play();
 }
 
-function somExplosaoTieFighter() {
+function somExplosaoNaves() {
     const audio = new Audio('../audios/tie-fighter_explosion.m4a'); // Audio de explosão
     audio.currentTime = 0; // volta pro início
     audio.volume = 0.3;
+    audio.play();
+}
+
+function somExplosaoEstrelaDaMorte() {
+    const audio = new Audio('../audios/explosion_deathstar.mp3'); // Audio de explosão
+    //audio.volume = 1;
     audio.play();
 }
 
@@ -610,6 +660,228 @@ function somCanhoesTieFighter() {
     audio.play();           // toca o audio
 }
 
+function somSinalObiWan() {
+    const audio = new Audio('../audios/use_a_forca_luke.mp3'); // Audio tiro de canhoes Tie-Fighter
+    audio.volume = 1;     // volume de 0 a 1
+    audio.play();         // toca o audio
+}
+
+function somVitoria() {
+    const audio = new Audio('../audios/victory_theme.mp3'); // Audio tiro de canhoes Tie-Fighter
+    audio.volume = 1;     // volume de 0 a 1
+    audio.play();         // toca o audio
+}
+
+/*------------------------------- ESTRELA-DA-MORTE -------------------------------*/
+function bossDeathStar() {
+    // Para a criação de Tie Fighters e seus disparos
+    clearInterval(iniciaNavesInimigas);       // Finaliza criação de naves inimigas
+    clearInterval(iniciaProjeteisTieFighter); // Finaliza disparos dos Tie Fighters
+    audioTrilhaSonora.pause();                // Interrompe a trilha sonora principal
+    const intervaloSuspense = setInterval(() => {                                           // Cria um atraso antes da Estrela da Morte Aparecer
+        clearInterval(intervaloSuspense);
+        const deathstar = document.createElement("div");          // Cria um elemento div, que vai ser a Estrela-da-Morte
+        deathstar.id = "estrela-da-morte";                        // Adiciona um id a Estrela-da-Morte
+        deathstar.className = "deathstar";                        // Adiciona a classe da Estrela-da-Morte para aplicar o estilo
+        deathstar.setAttribute("data-vida", vidaEstrelaDaMorte);  // Cria o atributo data-vida para armazenar a vida da Estrela-da-Morte
+        cenario.insertAdjacentElement("afterbegin", deathstar);   // Adiciona a Estrela-da-Morte no início do cenario
+        let posY = 100;                                           // posição inicial (fora da tela, em px)
+        deathstar.style.bottom = posY + "%";                      // Define a posição vertical inicial da Estrela-da-Morte
+        const intervalo = setInterval(() => {                     // Cria um intervalo para mover a Estrela-da-Morte
+            if (estrelaDestruida == false) {                      // Se a Estrela-da-Morte não foi destruída
+                posY -= 0.1;                                      // velocidade (quanto maior, mais rápido desce)
+                deathstar.style.bottom = posY + "%";              // Atualiza a posição vertical da Estrela-da-Morte
+                if (posY <= -5) {                                 // Se a Estrela-da-Morte chegar ao meio da tela
+                    audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
+                    deathstar.style.bottom = "-5%";               // Fixa no topo do cenário
+                    clearInterval(intervalo);                     // para quando sair da tela
+                    gameOver();                                   // Chama a função gameOver
+                }
+            }
+        }, 20); // tempo em ms → quanto menor, mais suave
+    }, 8000);   // 8000 Tempo para aguardar a estrela da Morte Aparecer
+}
+
+function colisaoEstrelaDaMorte() {
+    const deathstarElement = document.getElementById("estrela-da-morte");
+    const todosDisparos = document.querySelectorAll(".projetil_x-wing");
+    if (deathstarElement) {
+        const deathstarRect = deathstarElement.getBoundingClientRect();
+        todosDisparos.forEach((disparo) => {
+            const colisaoDisparo = disparo.getBoundingClientRect();
+            if (
+                deathstarRect.left < colisaoDisparo.right &&
+                deathstarRect.right > colisaoDisparo.left &&
+                deathstarRect.top < colisaoDisparo.bottom &&
+                deathstarRect.bottom > colisaoDisparo.top
+            ) {
+                vidaEstrelaDaMorte -= 4;
+                pontosScore += 10;
+                pontos.innerText = `Pontos: ${pontosScore}`;
+                disparo.remove();
+                if (vidaEstrelaDaMorte <= 0) {
+                    habilitarAtaqueEspecial = true;
+                    btnEspecialAtaque.style.display = "block";
+                    if (sinalObiWan) {
+                        sinalObiWan = false;
+                        somSinalObiWan();
+                    }
+                } else {
+                    deathstarElement.setAttribute("data-vida", vidaEstrelaDaMorte);
+                }
+                showEstatisticas();
+            }
+        });
+    }
+}
+
+function explosaoEstrelaDaMorte() {
+    const deathstarElement = document.getElementById("estrela-da-morte");
+    const deathstarRect = deathstarElement.getBoundingClientRect();
+    audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
+    estrelaDestruida = true; // Marca que a Estrela-da-Morte foi destruída
+    const explosao = document.createElement("div");
+    explosao.className = "explosao";
+    explosao.style.left = deathstarRect.left + "px";
+    explosao.style.top = deathstarRect.top + "px";
+    explosao.style.width = "100vw";
+    explosao.style.height = "100vw";
+    deathstarElement.remove();
+    cenario.appendChild(explosao);
+    somExplosaoEstrelaDaMorte();
+    const intervaloExplosao = setTimeout(() => {
+        explosao.remove();
+        audioVoandoXWing.pause();
+        clearInterval(intervaloExplosao);
+        // Criar efeito de saida
+    }, 5000);
+    // Opcional: Finalizar jogo ou reiniciar
+}
+
+
+/*------------------------------- VITORIA -------------------------------*/
+
+function xwingEspecialAtaque() {
+    // Desativa controles e intervalos
+    document.removeEventListener("keydown", teclasControlePressionadas);
+    document.removeEventListener("keyup", teclasControleSoltas);
+    document.removeEventListener("keypress", teclasControleClicadas);
+    clearInterval(iniciaProjeteisXWing);
+    clearInterval(iniciaMovimentacaoXWing);
+    clearInterval(iniciaNavesInimigas);
+    clearInterval(iniciaProjeteisTieFighter);
+
+    // Define rotação para apontar para cima
+    rotacaoXWing = 0; // Ajuste para -90deg se necessário
+    xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
+
+    // Posições inicial e alvo
+    let posX = parseFloat(xwing.style.left);
+    let posY = parseFloat(xwing.style.top);
+    const targetX = larguraCenario / 2 - larguraXWing / 2;
+    const targetY = alturaCenario - alturaXWing;
+    const speed = 5;
+
+    // Animação para mover o X-Wing
+    const intervaloMovimento = setInterval(() => {
+        const dx = targetX - posX;
+        const dy = targetY - posY;
+        posX += dx * 0.1;
+        posY += dy * 0.1;
+        xwing.style.left = posX + "px";
+        xwing.style.top = posY + "px";
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+            clearInterval(intervaloMovimento);
+            xwing.style.left = targetX + "px";
+            xwing.style.top = targetY + "px";
+            // Disparar projetil especial
+            projetilEspecial();
+        }
+    }, 30);
+}
+
+function projetilEspecial() {
+    const posicaoLeftTiro = parseFloat(xwing.style.left); // Pega a posição horizontal atual do Tie Fighter
+    const posicaoTopTiro = parseFloat(xwing.style.top);   // Pega a posição vertical atual do Tie Fighter
+    const centerX = posicaoLeftTiro + larguraXWing / 2;   // Centro X do Tie Fighter
+    const centerY = posicaoTopTiro + alturaXWing / 2;     // Centro Y do Tie Fighter
+    // Cria dois elementos de disparo, um de cada lado do Tie Fighter
+    // projetil do lado esquerdo
+    const tiroEsquerdo = document.createElement("div");   // Cria um elemento div, que vai ser o projetil
+    tiroEsquerdo.className = "torpedo_x-wing";      // Adiciona a classe do projetil para aplicar o estilo
+    tiroEsquerdo.style.left = centerX + 35 + "px";         // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
+    tiroEsquerdo.style.top = centerY - 150 + "px";         // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    cenario.appendChild(tiroEsquerdo);                    // Adiciona o projetil ao cenario
+    // projetil do lado direito
+    const tiroDireito = document.createElement("div");
+    tiroDireito.className = "torpedo_x-wing";
+    tiroDireito.style.left = centerX - 55 + "px";
+    tiroDireito.style.top = centerY - 150 + "px";
+    cenario.appendChild(tiroDireito);
+    somCanhoesXWingProtons();
+}
+
+function movimentarProjetilEspecial() {
+    const tiros = document.querySelectorAll(".torpedo_x-wing");
+    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
+        if (tiros[i]) {                                          // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
+            posicaoTopProjetil -= velocidadeProjetilXWing;  // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
+            if (posicaoTopProjetil < 0) {            // Se o projetil sair do cenario (posição menor que -10)
+                tiros[i].remove();                               // Remove o projetil do cenario
+                const intervaloMovimento = setInterval(() => { // Cria um atraso para esperar o torpedo atingir o alvo 
+                    clearInterval(intervaloMovimento);
+                    xwingSaindo();
+                }, 1000);
+            }
+        }
+    }
+}
+
+function xwingSaindo() {
+    document.removeEventListener("keydown", teclasControlePressionadas);
+    document.removeEventListener("keyup", teclasControleSoltas);
+    document.removeEventListener("keypress", teclasControleClicadas);
+    clearInterval(iniciaProjeteisXWing);
+    clearInterval(iniciaMovimentacaoXWing);
+    clearInterval(iniciaNavesInimigas);
+    clearInterval(iniciaProjeteisTieFighter);
+
+    // Define rotação para apontar para cima
+    rotacaoXWing = 0; // Ajuste para -90deg se necessário
+    xwing.style.transform = `rotate(${rotacaoXWing}deg)`;
+
+    // Pega posição inicial
+    let posY = parseFloat(xwing.style.top);
+    const speed = 50; // 10 pixels por frame
+    const intervalo = setInterval(() => {
+        posY -= speed;
+        xwing.style.top = posY + "px";
+        // Verifica se o X-Wing saiu do cenário
+        if (posY <= -alturaXWing) {
+            clearInterval(intervalo);
+            const tempoExplosao = setInterval(() => {
+                clearInterval(tempoExplosao);
+                explosaoEstrelaDaMorte();
+                const tempoPosExplosao = setInterval(() => {
+                    clearInterval(tempoPosExplosao);
+                    console.log("Vitoria");
+                    const vitoria = document.createElement("h1");
+                    vitoria.className = "gamewin";
+                    vitoria.innerHTML = "Contra todas as probabilidades, voce triunfou!<br>Gracas a voce o terror tecnologico do Imperio caiu em ruinas,<br>trazendo uma nova era de esperanca para a Galaxia";
+                    // força o fade-in
+                    setTimeout(() => {
+                        vitoria.style.opacity = 1;
+                    }, 100); // 50ms já é suficiente
+                    cenario.appendChild(vitoria);
+                    somVitoria(); // Adicione se tiver um áudio
+                }, 5000);
+            }, 3000);
+        }
+    }, 20);
+}
+
 
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
@@ -625,11 +897,12 @@ function gameOver() {
     clearInterval(iniciaMovimentacaoProjeteisXWing);
     clearInterval(iniciaNavesInimigas);
     clearInterval(iniciaMovimentacaoNavesInimigas);
-    clearInterval(iniciaColisao);
+    clearInterval(iniciaColisaoTieFighter);
     clearInterval(iniciaProjeteisTieFighter);
     clearInterval(iniciaMovimentacaoProjeteisTieFighter);
-    clearInterval(iniciaColisaoProjeteisTieFighter);
+    clearInterval(iniciaColisaoXWing);
     clearInterval(iniciaRotacaoXWing);
+    clearInterval(iniciaMovimentoTorpedoEspecial);
     explosaonNaves(xwing);                                               // Chama a explosão do X-Wing
     cenario.removeChild(xwing);                                          // Remove o X-Wing do cenario
     const navesInimigas = document.querySelectorAll(".tie_fighter");     // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
@@ -640,12 +913,13 @@ function gameOver() {
     disparosXWing.forEach((disparos) => {                                // Percorre todos os projeteis do X-Wing
         disparos.remove();                                               // Remove cada um dos projeteis do X-Wing do cenario
     });
-    const disparosTieFighter = document.querySelectorAll(".projetil_tie-fighter"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis do X-Wing
-    disparosTieFighter.forEach((disparos) => {                                // Percorre todos os projeteis do X-Wing
-        disparos.remove();                                               // Remove cada um dos projeteis do X-Wing do cenario
+    const disparosTieFighter = document.querySelectorAll(".projetil_tie-fighter"); // Seleciona todos os elementos com a classe projetil_tie-fighter, ou seja, todos os projeteis do Tie-Fighter
+    disparosTieFighter.forEach((disparos) => {                                     // Percorre todos os projeteis do Tie-Fighter
+        disparos.remove();                                                         // Remove cada um dos projeteis do Tie-Fighter do cenario
     });
     // Depois de 3 segundos, tocar a risada do imperador
-    setTimeout(() => {
+    const atrasoSuspense = setTimeout(() => {
+        clearInterval(atrasoSuspense);
         // Mostra a mensagem de fim de jogo
         const gameover = document.createElement("h1");
         gameover.innerHTML = "Game Over<br>O Imperio Venceu";
@@ -654,5 +928,18 @@ function gameOver() {
         menu.style.display = "none";                               // Esconde o menu do jogo
         const audio = new Audio('../audios/risada_palpatine.MP3'); // Audio X-Wing acelerando
         audio.play();
+        const delaySurgirBotao = setTimeout(() => {
+            clearInterval(delaySurgirBotao);
+            const btnReiniciar = document.createElement("button");
+            btnReiniciar.id = "btnReiniciar";
+            btnReiniciar.className = "botao";
+            btnReiniciar.style.position = "absolute";
+            btnReiniciar.style.bottom = "100px";
+            btnReiniciar.innerText = "REINICIAR";
+            btnReiniciar.addEventListener("click", () => {
+                resetGame();
+            });
+            cenario.appendChild(btnReiniciar);
+        }, 2000);
     }, 3000);
 }

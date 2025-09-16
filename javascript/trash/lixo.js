@@ -170,7 +170,7 @@ function colisaoTieFighter() {
                     explosao.style.left = colisaoNaveInimiga.left + "px"; // Pega a posição horizontal do Tie Fighter
                     explosao.style.top = colisaoNaveInimiga.top + "px";   // Pega a posição vertical do Tie Fighter
                     cenario.appendChild(explosao);                        // Adiciona a explosão ao cenario
-                    somExplosaoTieFighter();                              // Chama o audio de explosão do Tie Fighter
+                    somExplosaoNaves();                              // Chama o audio de explosão do Tie Fighter
                     navesInimiga.remove();                                // Remove o Tie Fighter do cenario
                     setTimeout(() => {                                    // Depois de 500 milissegundos
                         explosao.remove();                                // Remove a explosão
@@ -194,4 +194,112 @@ function somAcelerandoXWing() {
         somVoandoXWing();                   // Toca o som do X-Wing voando 
     });
     */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function bossDeathStar() {
+    // Para a criação de Tie Fighters e seus disparos
+    clearInterval(iniciaNavesInimigas);       // Finaliza criação de naves inimigas
+    clearInterval(iniciaProjeteisTieFighter); // Finaliza disparos dos Tie Fighters
+
+    // Cria a div da Estrela da Morte
+    const deathstar = document.createElement("div");
+    deathstar.id = "estrela-da-morte";
+    deathstar.className = "deathstar";
+    deathstar.setAttribute("data-vida", vidaEstrelaDaMorte); // Vida inicial
+    cenario.appendChild(deathstar);
+
+    // Posição inicial (acima do cenário)
+    let currentBottom = 100; // Começa fora da tela
+    deathstar.style.bottom = currentBottom + "%";
+
+    // Velocidade de descida (ex.: 100 pixels por segundo)
+    const speed = 20;
+    let lastTime = null;
+
+    // Função de animação
+    function animate(timestamp) {
+        if (!lastTime) lastTime = timestamp;
+        const deltaTime = (timestamp - lastTime) / 1000; // Tempo em segundos
+        lastTime = timestamp;
+
+        // Move a Estrela da Morte para baixo
+        currentBottom -= speed * deltaTime;
+        deathstar.style.bottom = currentBottom + "%";
+
+        // Para a animação ao atingir o fundo do cenário
+        if (currentBottom <= -5) {
+            deathstar.style.bottom = "-5%"; // Fixa no topo do cenário
+            return; // Para a animação
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    // Inicia a animação
+    requestAnimationFrame(animate);
+
+    // Opcional: Toca um som para a entrada da Estrela da Morte
+    // somEstrelaDaMorte(); // Adicione se tiver um áudio
+}
+
+
+
+function bossDeathStar() {
+    // Para a criação de Tie Fighters e seus disparos
+    clearInterval(iniciaNavesInimigas);       // Finaliza criação de naves inimigas
+    clearInterval(iniciaProjeteisTieFighter); // Finaliza disparos dos Tie Fighters
+    audioTrilhaSonora.pause();                // Interrompe a trilha sonora principal
+    setInterval(() => {                                           // Cria um atraso antes da Estrela da Morte Aparecer
+        const deathstar = document.createElement("div");          // Cria um elemento div, que vai ser a Estrela-da-Morte
+        deathstar.id = "estrela-da-morte";                        // Adiciona um id a Estrela-da-Morte
+        deathstar.className = "deathstar";                        // Adiciona a classe da Estrela-da-Morte para aplicar o estilo
+        deathstar.setAttribute("data-vida", vidaEstrelaDaMorte);  // Cria o atributo data-vida para armazenar a vida da Estrela-da-Morte
+        cenario.insertAdjacentElement("afterbegin", deathstar);   // Adiciona a Estrela-da-Morte no início do cenario
+        let posY = 100;                                           // posição inicial (fora da tela, em px)
+        deathstar.style.bottom = posY + "%";                      // Define a posição vertical inicial da Estrela-da-Morte
+        const intervalo = setInterval(() => {                     // Cria um intervalo para mover a Estrela-da-Morte
+            if (estrelaDestruida == false) {                      // Se a Estrela-da-Morte não foi destruída
+                posY -= 0.1;                                      // velocidade (quanto maior, mais rápido desce)
+                deathstar.style.bottom = posY + "%";              // Atualiza a posição vertical da Estrela-da-Morte
+                if (posY <= -5) {                                 // Se a Estrela-da-Morte chegar ao meio da tela
+                    audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
+                    deathstar.style.bottom = "-5%";               // Fixa no topo do cenário
+                    clearInterval(intervalo);                     // para quando sair da tela
+                    gameOver();                                   // Chama a função gameOver
+                }
+            }
+        }, 20); // tempo em ms → quanto menor, mais suave
+    }, 1000);   // 8000 Tempo para aguardar a estrela da Morte Aparecer
+}
+
+
+
+function movimentarProjetilEspecial() {
+    const tiros = document.querySelectorAll(".torpedo_x-wing");
+    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
+        if (tiros[i]) {                                          // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
+            posicaoTopProjetil -= velocidadeProjetilXWing;  // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
+            if (tiros[i].style.top > 2000) {            // Se o projetil sair do cenario (posição menor que -10)
+                tiros[i].remove();                               // Remove o projetil do cenario
+                xwingSaindo();  
+            }
+        }
+    }
 }
