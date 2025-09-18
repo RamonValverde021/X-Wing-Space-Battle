@@ -184,37 +184,42 @@ div#x-wing {
 /* Formatação projeteis X-Wing */
 .projetil_x-wing {
     position: absolute;
-    width: 5px;
-    height: 30px;
-    background-color: blue;
+    width: 1px;
+    height: 50px;
+    border: 3px solid blue;
+    background-color: white;
     transform-origin: center;
+    border-radius: 5px;
 }
 
 .torpedo_x-wing {
     /* torpedo_x-wing */
     position: absolute;
-    width: 5px;
+    width: 3px;
     height: 80px;
     background-color: white;
     border: thick double rgb(255, 0, 255);
-    border-radius: 15px;
+    border-radius: 10px;
     transform-origin: center;
 }
 
 /* Formatação projeteis Tie Fighter */
 .projetil_tie-fighter {
     position: absolute;
-    width: 3px;
-    height: 30px;
-    background-color: rgb(0, 255, 0);
+    width: 1px;
+    height: 50px;
+    border: 3px solid green;
+    background-color: rgb(100, 255, 100);
     transform-origin: center;
+    border-radius: 5px;
 }
 
 .projetil_death-star {
     position: absolute;
-    width: 8px;
+    width: 3px;
     height: 150px;
-    background-color: rgb(255, 0, 0);
+    border: 5px solid red;
+    background-color: white;
     transform-origin: center;
     border-radius: 20px;
 }
@@ -338,4 +343,14 @@ div#x-wing {
         color: white;
         text-shadow: none;
     }
+}
+
+
+div.detalhes {
+    background-color: black;
+    width: 100vw;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
