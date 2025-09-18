@@ -187,7 +187,7 @@ div#x-wing {
     width: 1px;
     height: 50px;
     border: 3px solid blue;
-    background-color: white;
+    background-color: rgb(175, 175, 255);
     transform-origin: center;
     border-radius: 5px;
 }
@@ -343,14 +343,4 @@ div#x-wing {
         color: white;
         text-shadow: none;
     }
-}
-
-
-div.detalhes {
-    background-color: black;
-    width: 100vw;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

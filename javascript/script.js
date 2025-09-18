@@ -49,7 +49,7 @@ let velRotacaoXWing = 2;                 // 2 - Define a velocidade inicial de r
 let giroHorario = false;                 // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;             // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;         // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 10;            // 600 Pontos de vida da Estrela da Morte
+let vidaEstrelaDaMorte = 600;            // 600 Pontos de vida da Estrela da Morte
 let estrelaDestruida = false;            // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;
 let sinalObiWan = true;
@@ -122,7 +122,7 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
 
         const iniciaBoss = setInterval(() => { // Quando atingir a marca de 5000 pontos começa a fase da estrela da morte
             if (iniciarBossDeathStar) {
-                if (pontosScore >= 100) {         // Verifica se a pontuação é maior ou igual a 5000
+                if (pontosScore >= 5000) {         // Verifica se a pontuação é maior ou igual a 5000
                     iniciarBossDeathStar = false; // Desativa a flag para não entrar mais nessa condição
                     clearInterval(iniciaBoss);
                     bossDeathStar();              // Chama a função para iniciar a fase da estrela da morte
