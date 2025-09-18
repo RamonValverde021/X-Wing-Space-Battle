@@ -41,7 +41,7 @@ const teclasControleClicadas = (tecla) => {
         } else {
             painelDados.style.display = "none";
         }
-    } if (tecla.key === "f" || tecla.key === "F") {
+    } else if (tecla.key === "f" || tecla.key === "F") {
         okGameOver = false;
         if (habilitarAtaqueEspecial) {
             habilitarAtaqueEspecial = false;

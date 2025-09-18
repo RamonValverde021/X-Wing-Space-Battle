@@ -1,8 +1,9 @@
 /*------------------------------- ESTRELA-DA-MORTE -------------------------------*/
 function bossDeathStar() {
-    // Para a criação de Tie Fighters e seus disparos
+    // Parar a criação de Tie Fighters e seus disparos
     clearInterval(iniciaNavesInimigas);
     clearInterval(iniciaProjeteisTieFighter);
+
     audioTrilhaSonora.pause();                // Interrompe a trilha sonora principal
     pontosVida = 100;                         // Recarrega avida para enfrentar a estrela da morte
     velocidadeCenario = 100;
@@ -17,20 +18,24 @@ function bossDeathStar() {
         let posY = 100;                                           // posição inicial (fora da tela, em px)
         deathstar.style.bottom = posY + "%";                      // Define a posição vertical inicial da Estrela-da-Morte
         const intervalo = setInterval(() => {                     // Cria um intervalo para mover a Estrela-da-Morte
+            // Parar a criação de Tie Fighters e seus disparos em loop para garantir
+            clearInterval(iniciaNavesInimigas);
+            clearInterval(iniciaProjeteisTieFighter);
+
             if (estrelaDestruida == false) {                      // Se a Estrela-da-Morte não foi destruída
                 posY -= 0.1;                                      // 0.1 velocidade (quanto maior, mais rápido desce)
                 deathstar.style.bottom = posY + "%";              // Atualiza a posição vertical da Estrela-da-Morte
-                if (posY <= -20) {                                 // Se a Estrela-da-Morte chegar ao meio da tela
+                if (posY <= -20) {                                // Se a Estrela-da-Morte chegar ao meio da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
-                    deathstar.style.bottom = "-20vw";               // Fixa no topo do cenário
+                    deathstar.style.bottom = "-20vw";             // Fixa no topo do cenário
                     clearInterval(intervalo);                     // para quando sair da tela
-                    gameOver();            // Chama a função gameOver
+                    gameOver();                                   // Chama a função gameOver
                 }
             }
         }, 20); // tempo em ms → quanto menor, mais suave
         iniciaProjeteisDeathStar = setInterval(criarProjeteisDeathStar, velocidadeDisparosDeathStar);
         iniciaMovimentacaoProjeteisDeathStar = setInterval(moverProjeteisDeathStar, 50);
-    }, 8000);   // 8000 Tempo para aguardar a estrela da Morte Aparecer
+    }, 15000);   // 15000 Tempo para aguardar a estrela da Morte Aparecer
 }
 
 function colisaoEstrelaDaMorte() {
@@ -70,23 +75,23 @@ function colisaoEstrelaDaMorte() {
 }
 
 function criarProjeteisDeathStar() {
-    const disparo = document.createElement("div");   // Cria um elemento div, que vai ser o projetil
+    const disparo = document.createElement("div");                         // Cria um elemento div, que vai ser o projetil
     const posicaoHorizontal = Math.floor(Math.random() * larguraCenario);  // Cria uma posição aleatória na horizontal 
-    disparo.className = "projetil_death-star";      // Adiciona a classe do projetil para aplicar o estilo
-    disparo.style.left = posicaoHorizontal + "px";         // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
-    disparo.style.top = "0px";         // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
-    cenario.appendChild(disparo);                    // Adiciona o projetil ao cenario
+    disparo.className = "projetil_death-star";                             // Adiciona a classe do projetil para aplicar o estilo
+    disparo.style.left = posicaoHorizontal + "px";                         // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
+    disparo.style.top = "0px";                                             // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    cenario.appendChild(disparo);                                          // Adiciona o projetil ao cenario
 }
 
 function moverProjeteisDeathStar() {
-    const tiros = document.querySelectorAll(".projetil_death-star"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
-    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
-        if (tiros[i]) {                                          // Verifica se o projetil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
-            posicaoTopProjetil += velocidadeProjetilDeathStar;            // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
-            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
-            if (posicaoTopProjetil > alturaCenario) {            // Se o projetil sair do cenario (posição menor que -10)
-                tiros[i].remove();                               // Remove o projetil do cenario          
+    const tiros = document.querySelectorAll(".projetil_death-star");  // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
+    for (let i = 0; i < tiros.length; i++) {                          // Percorre todos os projeteis
+        if (tiros[i]) {                                               // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;              // Pega a posição vertical atual do projetil
+            posicaoTopProjetil += velocidadeProjetilDeathStar;        // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            tiros[i].style.top = posicaoTopProjetil + "px";           // Atualiza a posição do projetil no cenario
+            if (posicaoTopProjetil > alturaCenario) {                 // Se o projetil sair do cenario (posição menor que -10)
+                tiros[i].remove();                                    // Remove o projetil do cenario          
             }
         }
     }

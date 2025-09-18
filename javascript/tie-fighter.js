@@ -24,10 +24,10 @@ function navesInimigas() {
     tieFighter.setAttribute("data-vy", vy.toFixed(2));  // Define um atributo data-vy para armazenar a velocidade vertical
 
     // Adiciona o Tie Fighter ao cenario
-    cenario.appendChild(tieFighter);      // Adiciona o Tie Fighter ao cenario
+    cenario.appendChild(tieFighter);        // Adiciona o Tie Fighter ao cenario
     //criarProjeteisTieFighter(tieFighter); // Faz o Tie Fighter atirar uma vez assim que for criado
-    somCanhoesTieFighter();               // Toca o som dos canhões do Tie Fighter
-    somVoandoTieFighter();                // Toca o som do Tie Fighter voando
+    somCanhoesTieFighter();                 // Toca o som dos canhões do Tie Fighter
+    somVoandoTieFighter();                  // Toca o som do Tie Fighter voando
 }
 
 // Movimentando naves inimigas
@@ -61,7 +61,7 @@ function moverNavesInimigas() {
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {  // Se o centro do Tie Fighter sair do cenario
                 pontosVida -= 3;                                                  // Diminui 5 pontos de vida
-                atualizarMenu();                                                    // Atualiza a vida no menu
+                atualizarMenu();                                                  // Atualiza a vida no menu
                 tieFighters[i].parentNode.removeChild(tieFighters[i]);            // Remove o Tie Fighter do cenario
                 if (pontosVida <= 20) mostrarToasty();                            // Se a vida estiver abaixo de 20%, mostra o toasty
                 if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
@@ -187,17 +187,16 @@ function atirarTieFighters() {
     }
 }
 
-
 // Função para mover os projeteis do Fighter
 function moverProjeteisTieFighter() {
     const tiros = document.querySelectorAll(".projetil_tie-fighter"); // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
-    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
-        if (tiros[i]) {                                          // Verifica se o projetil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
-            posicaoTopProjetil += velocidadeProjetilTieFighter;            // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
-            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
-            if (posicaoTopProjetil > alturaCenario) {            // Se o projetil sair do cenario (posição menor que -10)
-                tiros[i].remove();                               // Remove o projetil do cenario          
+    for (let i = 0; i < tiros.length; i++) {                          // Percorre todos os projeteis
+        if (tiros[i]) {                                               // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;              // Pega a posição vertical atual do projetil
+            posicaoTopProjetil += velocidadeProjetilTieFighter;       // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            tiros[i].style.top = posicaoTopProjetil + "px";           // Atualiza a posição do projetil no cenario
+            if (posicaoTopProjetil > alturaCenario) {                 // Se o projetil sair do cenario (posição menor que -10)
+                tiros[i].remove();                                    // Remove o projetil do cenario          
             }
         }
     }

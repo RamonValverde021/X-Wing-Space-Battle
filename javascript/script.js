@@ -79,7 +79,18 @@ let iniciaProjeteisDeathStar;
 let iniciaMovimentacaoProjeteisDeathStar;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
-document.getElementById("btn_Inicar").addEventListener("click", function () {
+document.getElementById("btn_Inicar").addEventListener("click", iniciarJogo);  // Inicia o jogo clicando no botão
+let jogoIniciado = false;                                                      // Flag para identificar que jogo começou
+document.addEventListener("keydown", function (event) {                        // Função para iniciar o jogo com apertar do Enter
+    if (jogoIniciado == false) {                                               // Se o jogo não começou ainda     
+        if (event.key === "Enter") {                                           // Se a tecla apertada for o Enter
+            jogoIniciado = true;                                               // 
+            iniciarJogo();
+        }
+    }
+});
+
+function iniciarJogo() {
     cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Adiciona a animação de fundo do cenario
     botaoIniciar.style.display = "none";                                                    // Esconde o botão iniciar após clicar nele
     menu.style.display = "flex";                                                            // Mostra o menu do jogo 
@@ -106,7 +117,7 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
         iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
         iniciaProjeteisTieFighter = setInterval(atirarTieFighters, velocidadeDisparosTieFighter);
         iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);
-        iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                                 // Chama a função moverNavesInimigas a cada 10 milisegundos
+        iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                       // Chama a função moverNavesInimigas a cada 10 milisegundos
         iniciaColisaoXWing = setInterval(colisaoXWing, 10);
         iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);
@@ -119,9 +130,9 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
             }
         }, 20);
-        const iniciaBoss = setInterval(() => { // Quando atingir a marca de 5000 pontos começa a fase da estrela da morte
+        const iniciaBoss = setInterval(() => { // Quando atingir a marca de 10000 pontos começa a fase da estrela da morte
             if (iniciarBossDeathStar) {
-                if (pontosScore >= 8000) {         // Verifica se a pontuação é maior ou igual a 5000
+                if (pontosScore >= 10000) {         // Verifica se a pontuação é maior ou igual a 10000
                     iniciarBossDeathStar = false; // Desativa a flag para não entrar mais nessa condição
                     clearInterval(iniciaBoss);
                     bossDeathStar();              // Chama a função para iniciar a fase da estrela da morte
@@ -129,7 +140,7 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
             }
         }, 20);
     }, 3000); // Atraso de 3 segundos
-});
+}
 
 function resetGame() {
     location.reload();
@@ -187,8 +198,8 @@ function gameOver() {
             gameover.innerHTML = "Game Over<br>O Imperio Venceu";
             gameover.className = "gameover";
             cenario.appendChild(gameover);
-            menu.style.display = "none";                               // Esconde o menu do jogo
-            const audio = new Audio('../audios/risada_palpatine.MP3'); // Audio X-Wing acelerando
+            menu.style.display = "none";                                // Esconde o menu do jogo
+            const audio = new Audio('../audios/risada_palpatine.MP3');  // Audio X-Wing acelerando
             audio.play();
             const delaySurgirBotao = setTimeout(() => {
                 clearInterval(delaySurgirBotao);

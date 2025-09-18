@@ -4,10 +4,11 @@ function xwingEspecialAtaque() {
     document.removeEventListener("keydown", teclasControlePressionadas);
     document.removeEventListener("keyup", teclasControleSoltas);
     document.removeEventListener("keypress", teclasControleClicadas);
-    clearInterval(iniciaProjeteisXWing);
-    clearInterval(iniciaMovimentacaoXWing);
-    clearInterval(iniciaNavesInimigas);
-    clearInterval(iniciaProjeteisTieFighter);
+    clearInterval(iniciaProjeteisXWing);      // Interrompe a criação de projeteis do X-Wing
+    clearInterval(iniciaMovimentacaoXWing);   // Interrompe a movimentação do X-Wing
+    clearInterval(iniciaNavesInimigas);       // Interrompe a criação dos Tie-Fighters
+    clearInterval(iniciaProjeteisTieFighter); // Interrompe a criação de projeteis dos Tie-Fighters
+    clearInterval(iniciaColisaoXWing);        // Interrompe as colisões com o X-Wing
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0; // Ajuste para -90deg se necessário
@@ -46,9 +47,9 @@ function projetilEspecial() {
     // Cria dois elementos de disparo, um de cada lado do Tie Fighter
     // projetil do lado esquerdo
     const tiroEsquerdo = document.createElement("div");   // Cria um elemento div, que vai ser o projetil
-    tiroEsquerdo.className = "torpedo_x-wing";      // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = centerX + 35 + "px";         // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
-    tiroEsquerdo.style.top = centerY - 150 + "px";         // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    tiroEsquerdo.className = "torpedo_x-wing";            // Adiciona a classe do projetil para aplicar o estilo
+    tiroEsquerdo.style.left = centerX + 35 + "px";        // Define a posição horizontal do projetil referente a posição central horizontal do Tie Fighter
+    tiroEsquerdo.style.top = centerY - 150 + "px";        // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
     cenario.appendChild(tiroEsquerdo);                    // Adiciona o projetil ao cenario
     // projetil do lado direito
     const tiroDireito = document.createElement("div");
@@ -59,63 +60,32 @@ function projetilEspecial() {
     somCanhoesXWingProtons();
 }
 
-
 function movimentarProjetilEspecial() {
     const tiros = document.querySelectorAll(".torpedo_x-wing");
     const estrelaDaMorte = document.getElementById("estrela-da-morte");
-    
-    for (let i = 0; i < tiros.length; i++) {  // Percorre todos os projéteis
-        if (tiros[i]) {  // Verifica se o projétil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;  // Pega a posição vertical atual do projétil
-            posicaoTopProjetil -= velocidadeProjetilXWing;  // Atualiza a posição vertical do projétil (move para cima)
-            tiros[i].style.top = posicaoTopProjetil + "px";  // Atualiza a posição no cenário
-            
-            // Verificação se chegou na metade da Estrela da Morte
-            if (estrelaDaMorte) {
+    for (let i = 0; i < tiros.length; i++) {                                   // Percorre todos os projéteis
+        if (tiros[i]) {                                                        // Verifica se o projétil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;                       // Pega a posição vertical atual do projétil
+            posicaoTopProjetil -= velocidadeProjetilXWing;                     // Atualiza a posição vertical do projétil (move para cima)
+            tiros[i].style.top = posicaoTopProjetil + "px";                    // Atualiza a posição no cenário
+            if (estrelaDaMorte) {                                              // Verificação se chegou na metade da Estrela da Morte
                 const deathStarRect = estrelaDaMorte.getBoundingClientRect();  // Pega as coordenadas da Estrela da Morte
-                const deathStarTop = deathStarRect.top;  // Topo absoluto da Estrela da Morte
-                const deathStarHeight = deathStarRect.height;  // Altura da Estrela da Morte
+                const deathStarTop = deathStarRect.top;                        // Topo absoluto da Estrela da Morte
+                const deathStarHeight = deathStarRect.height;                  // Altura da Estrela da Morte
                 const deathStarMiddle = deathStarTop + (deathStarHeight / 2);  // Metade da Estrela da Morte (posição central vertical)
-                
-                // Se o topo do projétil chegou ou passou da metade da Estrela da Morte
-                if (posicaoTopProjetil <= deathStarMiddle) {
-                    tiros[i].remove();  // Remove o projétil (para de subir e some)
-                    
-                    // Delay para ativar a sequência de vitória (como no original)
-                    const intervaloMovimento = setInterval(() => {
+                if (posicaoTopProjetil <= deathStarMiddle) {                   // Se o topo do projétil chegou ou passou da metade da Estrela da Morte
+                    tiros[i].remove();                                         // Remove o projétil (para de subir e some)
+                    const intervaloMovimento = setInterval(() => {             // Delay para ativar a sequência de vitória (como no original)
                         clearInterval(intervaloMovimento);
-                        xwingSaindo();  // Chama a função de saída/vitória
-                    }, 1000);  // Ajuste o delay se quiser (ex.: 500ms para mais rápido)
-                    
-                    // Opcional: Aqui você pode adicionar uma explosão imediata no ponto de impacto
-                    // explosaoEstrelaDaMorte();  // Descomente se quiser explodir agora
-                    return;  // Sai do loop para esse projétil (já foi processado)
+                        xwingSaindo();                                         // Chama a função de saída/vitória
+                    }, 1000);                                                  // Ajuste o delay se quiser (ex.: 500ms para mais rápido)
+                    return;                                                    // Sai do loop para esse projétil (já foi processado)
                 }
             }
         }
     }
 }
 
-/*
-function movimentarProjetilEspecial() {
-    const tiros = document.querySelectorAll(".torpedo_x-wing");
-    const estrelaDaMorte = document.getElementById("estrela-da-morte");
-    for (let i = 0; i < tiros.length; i++) {                     // Percorre todos os projeteis
-        if (tiros[i]) {                                          // Verifica se o projetil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;         // Pega a posição vertical atual do projetil
-            posicaoTopProjetil -= 15;  // 50 Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
-            tiros[i].style.top = posicaoTopProjetil + "px";      // Atualiza a posição do projetil no cenario
-            if (posicaoTopProjetil < 0) {            // Se o projetil sair do cenario (posição menor que -10)
-                tiros[i].remove();                               // Remove o projetil do cenario
-                const intervaloMovimento = setInterval(() => { // Cria um atraso para esperar o torpedo atingir o alvo 
-                    clearInterval(intervaloMovimento);
-                    xwingSaindo();
-                }, 1000);
-            }
-        }
-    }
-}
-*/
 function xwingSaindo() {
     document.removeEventListener("keydown", teclasControlePressionadas);
     document.removeEventListener("keyup", teclasControleSoltas);

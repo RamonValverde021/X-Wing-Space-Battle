@@ -142,18 +142,18 @@ function colisaoXWing() {
     });
 
     const todosDisparosDeathStar = document.querySelectorAll(".projetil_death-star");
-    todosDisparosDeathStar.forEach((disparo2) => {                                                  // Percorre todos os projeteis
+    todosDisparosDeathStar.forEach((disparoDeathStar) => {                                                  // Percorre todos os projeteis
         const colisaoXWing2 = xwing.getBoundingClientRect();                               // Pega as coordenadas do X-Wing    
-        const colisaoDisparo2 = disparo2.getBoundingClientRect();                           // Pega as coordenadas do projetil
+        const colisaoDisparo2 = disparoDeathStar.getBoundingClientRect();                           // Pega as coordenadas do projetil
         if (                                                                              // Verifica se houve colisão entre o X-Wing e o projetil
             colisaoXWing2.left < colisaoDisparo2.right &&                             // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
             colisaoXWing2.right > colisaoDisparo2.left &&                             // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
             colisaoXWing2.top < colisaoDisparo2.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing2.bottom > colisaoDisparo2.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 15;                                                         // Diminui 10 ponto para cada projetil que acertar o X-Wing
+            pontosVida -= 15;                                                         // Diminui 15 pontos para cada projetil que acertar o X-Wing
             atualizarMenu();
-            disparo2.remove();
+            disparoDeathStar.remove();
             if (pontosVida <= 20) mostrarToasty();
             if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
         }
