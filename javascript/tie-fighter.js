@@ -97,7 +97,10 @@ function colisaoTieFighter() {
                     velocidadeXWing += 0.1;                                                   // Aumenta a velocidade do X-Wing
                     velRotacaoXWing += 0.1;                                                   // Aumenta a velocidade de rotação do X-Wing
                     velocidadeCenario--;
-                    if (velocidadeCenario <= 25) velocidadeCenario = 25;
+                    if (velocidadeCenario <= 10) {
+                        velocidadeCenario = 10; // 25
+                        cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Atualiza a velocidade do cenario 
+                    }
                     if (velocidadeXWing >= velocidadeMaximaXWing) {                           // Verifica se a velocidade do X-Wing ultrapassou os limites
                         velocidadeXWing = velocidadeMaximaXWing;                              // Limita a velocidade máxima do X-Wing
                     }

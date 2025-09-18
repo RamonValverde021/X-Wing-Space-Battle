@@ -28,7 +28,7 @@ const velocidadeMaximaXWing = 20;           // Define a velocidade máxima do X-
 const velMaximaRotacaoXWing = 8;            // Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;         // 40 - define a velocidade dos projeteis das naves
 const velocidadeMaximaTieFighter = 12;      // Define a velocidade máxima dos Tie Fighters
-const quantidadeMaximaTieFighters = 1000;   // Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
+const quantidadeMaximaTieFighters = 600;   // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 const velocidadeProjetilTieFighter = 50;    // 10 - define a velocidade dos projeteis das naves
 const velocidadeProjetilDeathStar = 50;
 const anguloMaximo = 61;                    // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
@@ -80,10 +80,10 @@ let iniciaMovimentacaoProjeteisDeathStar;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
 document.getElementById("btn_Inicar").addEventListener("click", function () {
+    cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Adiciona a animação de fundo do cenario
     botaoIniciar.style.display = "none";                                                    // Esconde o botão iniciar após clicar nele
     menu.style.display = "flex";                                                            // Mostra o menu do jogo 
     xwing.style.bottom = "40vh";                                                            // Inicia a animação CSS
-    cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Adiciona a animação de fundo do cenario
     trilhaSonora();                                                                         // Toca a trilha sonora do game
     somAcelerandoXWing();                                                                   // Toca o som do X-Wing acelerando
     // Atrasar o início do jogo por 3 segundos
@@ -101,7 +101,7 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
         document.addEventListener("keypress", teclasControleClicadas);                      // Chama a função teclasControleClicadas quando clicar alguma tecla no teclado
         iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                              // Chama a função moverXWing a cada 50 milisegundos
         iniciaProjeteisXWing = setInterval(atirar, 150);                                    // Chama a função atirar a cada 10 milisegundos
-        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                 // Chama a função moverProjeteis a cada 50 milisegundos
+        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);            // Chama a função moverProjeteis a cada 50 milisegundos
         iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);            // Chama a construção de naves inimigas a cada X milisegundos a primeiro momento
         iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);              // Define um tempo relativo a velocidade do Tie Fighter em que as naves levaram para cruzar a tela antes de aparecer novas
         iniciaProjeteisTieFighter = setInterval(atirarTieFighters, velocidadeDisparosTieFighter);
@@ -119,17 +119,15 @@ document.getElementById("btn_Inicar").addEventListener("click", function () {
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                       // Aplica a rotação no X-Wing
             }
         }, 20);
-
         const iniciaBoss = setInterval(() => { // Quando atingir a marca de 5000 pontos começa a fase da estrela da morte
             if (iniciarBossDeathStar) {
-                if (pontosScore >= 5000) {         // Verifica se a pontuação é maior ou igual a 5000
+                if (pontosScore >= 8000) {         // Verifica se a pontuação é maior ou igual a 5000
                     iniciarBossDeathStar = false; // Desativa a flag para não entrar mais nessa condição
                     clearInterval(iniciaBoss);
                     bossDeathStar();              // Chama a função para iniciar a fase da estrela da morte
                 }
             }
         }, 20);
-
     }, 3000); // Atraso de 3 segundos
 });
 

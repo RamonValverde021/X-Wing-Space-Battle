@@ -67,7 +67,7 @@ function movimentarProjetilEspecial() {
     for (let i = 0; i < tiros.length; i++) {  // Percorre todos os projéteis
         if (tiros[i]) {  // Verifica se o projétil existe
             let posicaoTopProjetil = tiros[i].offsetTop;  // Pega a posição vertical atual do projétil
-            posicaoTopProjetil -= 20;  // Atualiza a posição vertical do projétil (move para cima)
+            posicaoTopProjetil -= velocidadeProjetilXWing;  // Atualiza a posição vertical do projétil (move para cima)
             tiros[i].style.top = posicaoTopProjetil + "px";  // Atualiza a posição no cenário
             
             // Verificação se chegou na metade da Estrela da Morte
@@ -167,7 +167,7 @@ function explosaoEstrelaDaMorte() {
     disparosDeathStar.forEach((disparos) => {
         disparos.remove();
     });
-
+    pontosScore += 10000;
     const deathstarElement = document.getElementById("estrela-da-morte");
     const deathstarRect = deathstarElement.getBoundingClientRect();
     audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
