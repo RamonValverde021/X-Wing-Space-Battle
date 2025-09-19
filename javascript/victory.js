@@ -9,6 +9,7 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaNavesInimigas);       // Interrompe a criação dos Tie-Fighters
     clearInterval(iniciaProjeteisTieFighter); // Interrompe a criação de projeteis dos Tie-Fighters
     clearInterval(iniciaColisaoXWing);        // Interrompe as colisões com o X-Wing
+    clearInterval(iniciaVerificarParado);     // Interrompe a verificação se a nave está parada
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0; // Ajuste para -90deg se necessário

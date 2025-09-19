@@ -224,6 +224,15 @@ div#x-wing {
     border-radius: 20px;
 }
 
+.projetil_punicao {
+    position: absolute;
+    width: 15px;
+    height: 150px;
+    background-color: rgb(0, 128, 0);
+    transform-origin: center;
+    border-radius: 20px;
+}
+
 /* Titulo de fim de jogo */
 .gameover {
     position: absolute;
@@ -323,24 +332,22 @@ div#x-wing {
     top: 0;
     font-weight: bold;
     font-size: 150px;
-    animation: blinkFB 1s linear infinite;
+    animation: blinkFB 1.5s linear infinite;
 }
 
 @keyframes blinkFB {
     0% {
         color: white;
-        text-shadow: none;
+        text-shadow: 0px 0px 50px blue;
     }
 
     50% {
         color: rgb(0, 100, 200);
-        ;
-        /* azul */
-        text-shadow: 0 0 8px rgba(0, 0, 255, 0.8);
+        text-shadow: 0px 0px 50px rgb(255, 255, 255);
     }
 
     100% {
         color: white;
-        text-shadow: none;
+        text-shadow: 0px 0px 50px blue;
     }
 }

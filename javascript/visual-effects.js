@@ -7,7 +7,7 @@ function explosaonNaves(nave) {
     explosao.style.left = posicaoNave.left + "px";      // Pega a posição horizontal da nave
     explosao.style.top = posicaoNave.top + "px";        // Pega a posição vertical da nave
     cenario.appendChild(explosao);                      // Adiciona a explosão ao cenario
-    somExplosaoNaves();                            // Chama o audio de explosão da nave
+    somExplosaoNaves();                                 // Chama o audio de explosão da nave
     setTimeout(() => {                                  // Depois de 500 milissegundos
         explosao.remove();                              // Remove a explosão
     }, 500);

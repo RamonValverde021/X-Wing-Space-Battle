@@ -44,8 +44,8 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => { //
 
     // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
     const speed = velocidadeProjetilXWing;    // Velocidade do projétil
-    const vx = speed * Math.sin(theta);  // Componente X da velocidade do projétil
-    const vy = speed * -Math.cos(theta); // Componente Y da velocidade do projétil
+    const vx = speed * Math.sin(theta);       // Componente X da velocidade do projétil
+    const vy = speed * -Math.cos(theta);      // Componente Y da velocidade do projétil
 
     // Metade das dimensões do projétil para centralizar
     const half_w = 2.5; // Metade da largura do projétil
@@ -121,43 +121,106 @@ function moverProjeteisXWing() {
     }
 }
 
-// Colisão com projeteis do Tie-Fighter
+// Função para implementar as colisões no X-Wing
 function colisaoXWing() {
-    const todosDisparosTieFighter = document.querySelectorAll(".projetil_tie-fighter");
-    todosDisparosTieFighter.forEach((disparo) => {                                                  // Percorre todos os projeteis
-        const colisaoXWing = xwing.getBoundingClientRect();                               // Pega as coordenadas do X-Wing    
-        const colisaoDisparo = disparo.getBoundingClientRect();                           // Pega as coordenadas do projetil
-        if (                                                                              // Verifica se houve colisão entre o X-Wing e o projetil
-            colisaoXWing.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
-            colisaoXWing.right > colisaoDisparo.left &&                             // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
-            colisaoXWing.top < colisaoDisparo.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
-            colisaoXWing.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
+    // Colisão com projeteis do Tie-Fighter
+    const todosDisparosTieFighter = document.querySelectorAll(".projetil_tie-fighter");  // Pega todos os disparos do Tie Fighter
+    todosDisparosTieFighter.forEach((disparo) => {                                       // Percorre todos os projeteis
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoDisparo = disparo.getBoundingClientRect();                          // Pega as coordenadas do projetil
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                                  // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                                  // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 3;                                                         // Diminui 1 ponto para cada projetil que acertar o X-Wing
-            atualizarMenu();
-            disparo.remove();
-            if (pontosVida <= 20) mostrarToasty();
-            if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
+            pontosVida -= 3;                                                             // Diminui 3 pontos para cada projetil que acertar o X-Wing
+            disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
+            if (pontosVida <= 20) mostrarToasty();                                       // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
+                atualizarMenu();                                                         // Atualiza a vida no menu
+            } else {                                                                     // Se a vida chegar a 0 ou menos
+                pontosVida = 0;                                                          // Fixa pontos de vida em 0
+                atualizarMenu();                                                         // Atualiza a vida no menu
+                gameOver();                                                              // Chama a função de Game Over
+            }
         }
     });
 
-    const todosDisparosDeathStar = document.querySelectorAll(".projetil_death-star");
-    todosDisparosDeathStar.forEach((disparoDeathStar) => {                                                  // Percorre todos os projeteis
-        const colisaoXWing2 = xwing.getBoundingClientRect();                               // Pega as coordenadas do X-Wing    
-        const colisaoDisparo2 = disparoDeathStar.getBoundingClientRect();                           // Pega as coordenadas do projetil
-        if (                                                                              // Verifica se houve colisão entre o X-Wing e o projetil
-            colisaoXWing2.left < colisaoDisparo2.right &&                             // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
-            colisaoXWing2.right > colisaoDisparo2.left &&                             // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
-            colisaoXWing2.top < colisaoDisparo2.bottom &&                             // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
-            colisaoXWing2.bottom > colisaoDisparo2.top                                // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
+    // Colisão com projeteis da Estrela da Morte
+    const todosDisparosDeathStar = document.querySelectorAll(".projetil_death-star");  // Pega todos os disparos da Estrela da Morte
+    todosDisparosDeathStar.forEach((disparo) => {                                      // Percorre todos os projeteis
+        const colisaoXWing = xwing.getBoundingClientRect();                            // Pega as coordenadas do X-Wing    
+        const colisaoDisparo = disparo.getBoundingClientRect();                        // Pega as coordenadas do projetil
+        if (                                                                           // Verifica se houve colisão entre o X-Wing e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                                // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                                // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                                // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                   // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 15;                                                         // Diminui 15 pontos para cada projetil que acertar o X-Wing
-            atualizarMenu();
-            disparoDeathStar.remove();
-            if (pontosVida <= 20) mostrarToasty();
-            if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
+            pontosVida -= 15;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+            disparo.remove();                                                          // Remove o projetil que acertou o X-Wing
+            if (pontosVida <= 20) mostrarToasty();                                     // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida > 0) {                                                      // Se ainda tiver pontos de vida
+                atualizarMenu();                                                       // Atualiza a vida no menu
+            } else {                                                                   // Se a vida chegar a 0 ou menos
+                pontosVida = 0;                                                        // Fixa pontos de vida em 0
+                atualizarMenu();                                                       // Atualiza a vida no menu
+                gameOver();                                                            // Chama a função de Game Over
+            }
+        }
+    });
+
+    // Colisão com projeteis de Punição
+    const todosDisparosPunicao = document.querySelectorAll(".projetil_punicao");         // Pega todos os disparos de punição
+    todosDisparosPunicao.forEach((disparo) => {                                          // Percorre todos os projeteis
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoDisparo = disparo.getBoundingClientRect();                          // Pega as coordenadas do projetil
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                                  // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                                  // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
+        ) {
+            pontosVida -= 50;                                                            // Diminui 50 pontos para cada projetil que acertar o X-Wing
+            disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
+            if (pontosVida <= 20) mostrarToasty();                                       // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
+                atualizarMenu();                                                         // Atualiza a vida no menu
+            } else {                                                                     // Se a vida chegar a 0 ou menos
+                pontosVida = 0;                                                          // Fixa pontos de vida em 0
+                atualizarMenu();                                                         // Atualiza a vida no menu
+                gameOver();                                                              // Chama a função de Game Over
+            }
         }
     });
 
     showEstatisticas(); // Atualiza as estatísticas do jogo
+}
+
+// Cria um projetil de punição por ficar parado no jogo
+function criarProjetilPunicao() {
+    const disparo = document.createElement("div");                       // Cria um elemento div, que vai ser o projetil   
+    const coordenadaHorizontalXWing = parseFloat(xwing.style.left);      // Pega a posição horizontal atual do X-Wing 
+    let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - 7;  // Constroi a coordenada horizontal do projetil mirando no meio da nave
+    disparo.className = "projetil_punicao";                              // Adiciona a classe do projetil para aplicar o estilo
+    disparo.style.left = coordenaDisparo + "px";                         // Define a posição horizontal de origem do projetil
+    disparo.style.top = "0px";                                           // Define a posição vertical de origem do projetil
+    cenario.appendChild(disparo);                                        // Adiciona o projetil ao cenario
+}
+
+// Movimenta o projetil de punição 
+function moverProjeteisPunicao() {
+    const tiros = document.querySelectorAll(".projetil_punicao");  // Seleciona todos os elementos com a classe projetil_punicao, ou seja, todos os projeteis
+    for (let i = 0; i < tiros.length; i++) {                       // Percorre todos os projeteis
+        if (tiros[i]) {                                            // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;           // Pega a posição vertical atual do projetil
+            posicaoTopProjetil += velocidadeProjetilPunicao;       // Atualiza a posição vertical do projetil, somando de acordo com a velocidade do projetil. Equação para mover para baixo
+            tiros[i].style.top = posicaoTopProjetil + "px";        // Atualiza a posição vertical do projetil no cenario
+            if (posicaoTopProjetil > alturaCenario) {              // Se o projetil sair do cenario 
+                tiros[i].remove();                                 // Remove o projetil do cenario          
+            }
+        }
+    }
+    estaSendoPunido = false; // Libera para próximo ataque
 }

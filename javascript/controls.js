@@ -11,7 +11,7 @@ const teclasControlePressionadas = (tecla) => {
         direcaoVertical = -1;               // move para cima
     } else if (tecla.key === " ") {         // se a tecla pressionada for a barra de espaço
         estaAtirando = true;                // ativa a flag de atirar
-    } else if (tecla.key === "A" || tecla.key === "a") {
+    } else if (tecla.key === "A" || tecla.key === "a") { 
         giroHorario = true;
     } else if (tecla.key === "D" || tecla.key === "d") {
         giroAntiHorario = true;
@@ -41,11 +41,11 @@ const teclasControleClicadas = (tecla) => {
         } else {
             painelDados.style.display = "none";
         }
-    } else if (tecla.key === "f" || tecla.key === "F") {
+    } else if (tecla.key === "f" || tecla.key === "F") { // 
         okGameOver = false;
         if (habilitarAtaqueEspecial) {
             habilitarAtaqueEspecial = false;
-            btnEspecialAtaque.style.display = "none";
+            btnEspecialAtaque.style.display = "none"; 
             xwingEspecialAtaque();
         }
     }
