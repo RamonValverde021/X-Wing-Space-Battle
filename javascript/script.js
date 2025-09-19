@@ -50,7 +50,7 @@ let velRotacaoXWing = 2;                 // 2 - Define a velocidade inicial de r
 let giroHorario = false;                 // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;             // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;         // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 6;              // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 600;            // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;            // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;     // Flag para habilitar o ataque especial
 let sinalObiWan = true;                  // Flag para interromper a execução em loop da mensagem do Obi-Wan
@@ -134,7 +134,7 @@ function iniciarJogo() {
         }, 20);
         const iniciaBoss = setInterval(() => { // Quando atingir a marca de 10000 pontos começa a fase da estrela da morte
             if (iniciarBossDeathStar) {
-                if (pontosScore >= 10) {         // Verifica se a pontuação é maior ou igual a 10000
+                if (pontosScore >= 10000) {         // Verifica se a pontuação é maior ou igual a 10000
                     iniciarBossDeathStar = false; // Desativa a flag para não entrar mais nessa condição
                     clearInterval(iniciaBoss);
                     bossDeathStar();              // Chama a função para iniciar a fase da estrela da morte

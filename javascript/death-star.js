@@ -5,7 +5,7 @@ function bossDeathStar() {
     clearInterval(iniciaProjeteisTieFighter);
 
     audioTrilhaSonora.pause();                                    // Interrompe a trilha sonora principal
-    pontosVida = 1000;                                             // Recarrega avida para enfrentar a estrela da morte 
+    pontosVida = 100;                                             // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                              // Atualiza o Menu de status do jogo
     const intervaloSuspense = setInterval(() => {                 // Cria um atraso antes da Estrela da Morte Aparecer
         clearInterval(intervaloSuspense);                         // DEsativa o loop do atraso
