@@ -35,14 +35,14 @@ const teclasControleSoltas = (tecla) => {
 
 const teclasControleClicadas = (tecla) => {
     console.log(tecla.key);
-    if (tecla.key === "p" || tecla.key === "P") {      // se a tecla solta for a seta para direita ou esquerda
+    if (tecla.key === "p" || tecla.key === "P") {      // Se a tecla apertada for "p" ou "P"
         if (painelDados.style.display === "none") {
             painelDados.style.display = "flex";
         } else {
             painelDados.style.display = "none";
         }
-    } else if (tecla.key === "f" || tecla.key === "F") { // 
-        okGameOver = false;                              // Desativa a execução do Game Over
+    } else if (tecla.key === "f" || tecla.key === "F") {  // Se a tecla apertada for o "Enter"
+        okGameOver = false;                               // Desativa a execução do Game Over
         if (habilitarAtaqueEspecial) {
             habilitarAtaqueEspecial = false;
             btnEspecialAtaque.style.display = "none"; 

@@ -51,12 +51,12 @@ let velRotacaoXWing = 2;                                         // 2 - Define a
 let giroHorario = false;                                         // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                     // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;                                 // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 600;                                    // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 6;                                    // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                    // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                             // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                          // Flag para interromper a execução em loop da mensagem do Obi-Wan
 let velocidadeDisparosDeathStar = 500;                           // Cadencia de disparo da Estrela da Morte (em milisegundos)
-let okGameOver = false;                                          // Flag para iniciar a execução do Game Over após liberar o ataque especial
+let okGameOver = true;                                           // Flag para iniciar a execução do Game Over após liberar o ataque especial
 let posicaoHorizontal = larguraCenario / 2 - (larguraXWing / 2); // Posição horizontal inicial do X-Wing
 let positionVertical = alturaCenario - alturaXWing - 20;         // Posição vertical inicial do X-Wing
 let direcaoHorizontal = 0;                                       // Variavel para manipular a direção horizontal do X-Wing
@@ -80,7 +80,7 @@ let iniciaMovimentoTorpedoEspecial;
 let iniciaMovimentacaoEstrelaDaMorte;
 let iniciaProjeteisDeathStar;
 let iniciaMovimentacaoProjeteisDeathStar;
-let iniciaVerificarParado;
+let iniciaProjeteisPunicao;
 let iniciaMovimentacaoProjeteisPunicao;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
@@ -121,12 +121,14 @@ function iniciarJogo() {
         iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                   // Inica em loop a função de movimentação dos projeteis do X-Wing
         iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);                   // Inica em loop a construção de naves inimigas
         iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);                     // Inica em loop a função para movimentação os Tie-Fighters
-        iniciaProjeteisTieFighter = setInterval(atirarTieFighters, velocidadeDisparosTieFighter);  // Inica em loop a função de disparos dos Tie-Fighters
+        iniciaProjeteisTieFighter = setInterval(criarProjeteisTieFighter, velocidadeDisparosTieFighter);  // Inica em loop a função de criação de disparos dos Tie-Fighters
         iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);         // Inica em loop a função de movimentação dos projeteis dos Tie-Fighters
         iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                              // Inica em loop a função de detecção de colisão dos Tie-Fighters
         iniciaColisaoXWing = setInterval(colisaoXWing, 10);                                        // Inica em loop a função de detecção de colisão do X-Wing 
         iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inica em loop a função de detecção de colisão da Estrela da Morte
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
+        iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
+        iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
                 rotacaoXWing -= velRotacaoXWing;                                                   // Decrementa a rotação do X-Wing
@@ -138,34 +140,23 @@ function iniciarJogo() {
         }, 20);                                                                                    // Repetição do loop a cada 20ms
         const iniciaBoss = setInterval(() => {                                                     // Inica o loop de verificação para dar inicio o boss da Estrela da Morte
             if (iniciarBossDeathStar) {                                                            // Se a flag iniciarBossDeathStar for verdadeira
-                if (pontosScore >= 10000) {                                                        // Verifica se a pontuação é maior ou igual a 10000
+                if (pontosScore >= 100) {                                                        // Verifica se a pontuação é maior ou igual a 10000
                     iniciarBossDeathStar = false;                                                  // Desativa a flag para não entrar mais nessa de iniciar boss
                     clearInterval(iniciaBoss);                                                     // Finaliza o Loop de verificação
                     bossDeathStar();                                                               // Chama a função para iniciar a fase da estrela da morte
                 }
             }
-        }, 20);
-        iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Movimenta os tiros de punição
-        iniciaVerificarParado = setInterval(() => {                                                // Verifica se o X-Wing está parado
-            if (direcaoHorizontal === 0 && direcaoVertical === 0 && !estaSendoPunido) {            // Se o X-Wing não está se movendo e a punição está habilitada
-                tempoParado += 100;                                                                // Incrementa 100ms na contagem de tempo
-                if (tempoParado >= 8000) {                                                         // Se o X-Wing ficou 8 segundos parado no mapa
-                    criarProjetilPunicao();                                                        // Chama a função de criação de projetil de punição
-                    estaSendoPunido = true;                                                        // Atualiza a flag para evitar múltiplos disparos simultaeos 
-                    tempoParado = 0;                                                               // Reseta o temporizador
-                }
-            } else {
-                tempoParado = 0; // Reseta se a nave se mover ou girar
-            }
-        }, 50);
+        }, 20);                                                                                    // Repetição do loop a cada 20ms
     }, 3000); // Atraso de 3 segundos
 }
+
 
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
     if (okGameOver) {                                                         // Se o Game Over estiver habilitado
         audioTrilhaSonora.pause();                                            // Pausa a trilha sonora do jogo
         audioVoandoXWing.pause();                                             // Pausa o som do X-Wing voando
+        audioTrilhaSonoraEstrelaDaMorte.pause();                              // Pausa a trilha sonora da Estrela da Morte   
         document.removeEventListener("keydown", teclasControlePressionadas);  // Remove os eventos de controle do X-Wing de keydown
         document.removeEventListener("keyup", teclasControleSoltas);          // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
@@ -184,15 +175,15 @@ function gameOver() {
         clearInterval(iniciaMovimentacaoEstrelaDaMorte);
         clearInterval(iniciaProjeteisDeathStar);
         clearInterval(iniciaMovimentacaoProjeteisDeathStar);
-        clearInterval(iniciaVerificarParado);
+        clearInterval(iniciaProjeteisPunicao);
         clearInterval(iniciaMovimentacaoProjeteisPunicao);
         habilitarAtaqueEspecial = false;                                                // Desabilita o ataque especial caso apareça o F na tela
         btnEspecialAtaque.style.display = "none";                                       // Esconde o botão de ataque especial
         explosaoNaves(xwing);                                                           // Chama a explosão do X-Wing
         cenario.removeChild(xwing);                                                     // Remove o X-Wing do cenario
-        const navesInimigas = document.querySelectorAll(".tie_fighter");                // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
-        navesInimigas.forEach((inimigos) => {                                           // Percorre todos os Tie Fighters
-            inimigos.remove();                                                          // Remove cada um dos Tie Fighter do cenario
+        const todasNavesInimigas = document.querySelectorAll(".tie_fighter");           // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+        todasNavesInimigas.forEach((nave) => {                                          // Percorre todos os Tie Fighters
+            nave.remove();                                                              // Remove cada um dos Tie Fighter do cenario
         });
         const disparosXWing = document.querySelectorAll(".projetil_x-wing");            // Seleciona todos os disparos do X-Wing
         disparosXWing.forEach((disparos) => disparos.remove());                         // Percorre todos os projeteis do X-Wing e remove cada um deles

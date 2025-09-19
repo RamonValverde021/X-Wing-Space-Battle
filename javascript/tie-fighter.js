@@ -68,7 +68,6 @@ function moverNavesInimigas() {
                 } else {                                                          // Se a vida chegar a 0 ou menos
                     pontosVida = 0;                                               // Fixa pontos de vida em 0
                     atualizarMenu();                                              // Atualiza a vida no menu
-                    okGameOver = true;                                            // Libera a execução do Game Over
                     gameOver();                                                   // Chama a função de Game Over
                 }
             }
@@ -128,11 +127,8 @@ function colisaoTieFighter() {
                     }
                     countInimigosDestruidos++;           // Variavel contadora para monitorar inimigos derrotados para aumentar pontos de vida
                     if (countInimigosDestruidos >= 5) {  // Se derrotar 5 inimigos
-                        if (pontosVida < 100) {
-                            pontosVida += 10;
-                        } else if (pontosVida >= 100) {
-                            pontosVida = 100;
-                        }
+                        if (pontosVida < 100) pontosVida += 10;  // Se os pontos de vida for menor que 100, ganha 10 pontos de vida
+                        if (pontosVida >= 100) pontosVida = 100; // Se os pontos de vida ultrapassar 100 pontos, mantem em 100 pontos de vida
                         // Ganha mais 10 pontos de vida
                         countInimigosDestruidos = 0;     // Zera a contagem
                     }
@@ -152,7 +148,7 @@ function colisaoTieFighter() {
 }
 
 // Função para criar os projeteis do Tie Fighter
-const criarProjeteisTieFighter = (tieFighter) => {
+const construirProjeteisTieFighter = (tieFighter) => {
     const posicaoLeftTiro = parseFloat(tieFighter.style.left); // Pega a posição horizontal atual do Tie Fighter
     const posicaoTopTiro = parseFloat(tieFighter.style.top);   // Pega a posição vertical atual do Tie Fighter
     const centerX = posicaoLeftTiro + larguraTieFighter / 2;   // Centro X do Tie Fighter
@@ -173,7 +169,7 @@ const criarProjeteisTieFighter = (tieFighter) => {
 }
 
 // Função para atirar
-function atirarTieFighters() {
+function criarProjeteisTieFighter() {
     const tieFighters = document.querySelectorAll(".tie_fighter"); // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
     const quantidadeInimigos = tieFighters.length;                 // Pega a quantidade de Tie Fighters
     if (quantidadeInimigos === 0) return;                          // Se não houver Tie Fighters, sai da função
@@ -190,7 +186,7 @@ function atirarTieFighters() {
         const aleatorio = Math.floor(Math.random() * quantidadeInimigos);   // Sorteia um índice aleatório entre 0 e quantidadeInimigos-1
         const tieEscolhido = tieFighters[aleatorio];                        // Seleciona o Tie Fighter sorteado
         if (!tieEscolhido) continue;                                        // Se o Tie Fighter não existir (pode ter sido destruído), pula para o próximo
-        criarProjeteisTieFighter(tieEscolhido);                             // Chama a função para criar os projeteis do Tie Fighter sorteado
+        construirProjeteisTieFighter(tieEscolhido);                             // Chama a função para criar os projeteis do Tie Fighter sorteado
         somCanhoesTieFighter();                                             // Toca o som dos canhões do Tie Fighter
     }
 }

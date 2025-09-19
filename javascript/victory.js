@@ -9,7 +9,7 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaNavesInimigas);       // Interrompe a criação dos Tie-Fighters
     clearInterval(iniciaProjeteisTieFighter); // Interrompe a criação de projeteis dos Tie-Fighters
     clearInterval(iniciaColisaoXWing);        // Interrompe as colisões com o X-Wing
-    clearInterval(iniciaVerificarParado);     // Interrompe a verificação se a nave está parada
+    clearInterval(iniciaProjeteisPunicao);    // Interrompe a criação de disparos de punição
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0; // Ajuste para -90deg se necessário
@@ -88,13 +88,14 @@ function movimentarProjetilEspecial() {
 }
 
 function xwingSaindo() {
+    audioVoandoXWing.pause();
     document.removeEventListener("keydown", teclasControlePressionadas);
     document.removeEventListener("keyup", teclasControleSoltas);
     document.removeEventListener("keypress", teclasControleClicadas);
     clearInterval(iniciaProjeteisXWing);
     clearInterval(iniciaMovimentacaoXWing);
-    clearInterval(iniciaNavesInimigas);
-    clearInterval(iniciaProjeteisTieFighter);
+    //clearInterval(iniciaNavesInimigas);
+    //clearInterval(iniciaProjeteisTieFighter);
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0; // Ajuste para -90deg se necessário
@@ -135,9 +136,7 @@ function explosaoEstrelaDaMorte() {
     clearInterval(iniciaColisaoEstrelaDaMorte);
 
     const disparosDeathStar = document.querySelectorAll(".projetil_death-star");
-    disparosDeathStar.forEach((disparos) => {
-        disparos.remove();
-    });
+    disparosDeathStar.forEach((disparos) => disparos.remove());
     pontosScore += 10000;
     const deathstarElement = document.getElementById("estrela-da-morte");
     const deathstarRect = deathstarElement.getBoundingClientRect();
@@ -154,9 +153,6 @@ function explosaoEstrelaDaMorte() {
     somExplosaoEstrelaDaMorte();
     const intervaloExplosao = setTimeout(() => {
         explosao.remove();
-        audioVoandoXWing.pause();
         clearInterval(intervaloExplosao);
-        // Criar efeito de saida
     }, 5000);
-    // Opcional: Finalizar jogo ou reiniciar
 }

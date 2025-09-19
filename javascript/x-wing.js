@@ -142,7 +142,6 @@ function colisaoXWing() {
             } else {                                                                     // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                          // Fixa pontos de vida em 0
                 atualizarMenu();                                                         // Atualiza a vida no menu
-                okGameOver = true;                                                       // Libera a execução do Game Over
                 gameOver();                                                              // Chama a função de Game Over
             }
         }
@@ -167,7 +166,6 @@ function colisaoXWing() {
             } else {                                                                   // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                        // Fixa pontos de vida em 0
                 atualizarMenu();                                                       // Atualiza a vida no menu
-                okGameOver = true;                                                     // Libera a execução do Game Over
                 gameOver();                                                            // Chama a função de Game Over
             }
         }
@@ -192,7 +190,6 @@ function colisaoXWing() {
             } else {                                                                     // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                          // Fixa pontos de vida em 0
                 atualizarMenu();                                                         // Atualiza a vida no menu
-                okGameOver = true;                                                       // Libera a execução do Game Over
                 gameOver();                                                              // Chama a função de Game Over
             }
         }
@@ -202,14 +199,23 @@ function colisaoXWing() {
 }
 
 // Cria um projetil de punição por ficar parado no jogo
-function criarProjetilPunicao() {
-    const disparo = document.createElement("div");                       // Cria um elemento div, que vai ser o projetil   
-    const coordenadaHorizontalXWing = parseFloat(xwing.style.left);      // Pega a posição horizontal atual do X-Wing 
-    let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - 7;  // Constroi a coordenada horizontal do projetil mirando no meio da nave
-    disparo.className = "projetil_punicao";                              // Adiciona a classe do projetil para aplicar o estilo
-    disparo.style.left = coordenaDisparo + "px";                         // Define a posição horizontal de origem do projetil
-    disparo.style.top = "0px";                                           // Define a posição vertical de origem do projetil
-    cenario.appendChild(disparo);                                        // Adiciona o projetil ao cenario
+function criarProjeteisPunicao() {
+    if (direcaoHorizontal === 0 && direcaoVertical === 0 && !estaSendoPunido) {        // Se o X-Wing não está se movendo e a punição está habilitada
+        tempoParado += 100;                                                            // Incrementa 100ms na contagem de tempo
+        if (tempoParado >= 8000) {                                                     // Se o X-Wing ficou 8 segundos parado no mapa
+            const disparo = document.createElement("div");                             // Cria um elemento div, que vai ser o projetil   
+            const coordenadaHorizontalXWing = parseFloat(xwing.style.left);            // Pega a posição horizontal atual do X-Wing 
+            let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - 7;  // Constroi a coordenada horizontal do projetil mirando no meio da nave
+            disparo.className = "projetil_punicao";                                    // Adiciona a classe do projetil para aplicar o estilo
+            disparo.style.left = coordenaDisparo + "px";                               // Define a posição horizontal de origem do projetil
+            disparo.style.top = "0px";                                                 // Define a posição vertical de origem do projetil
+            cenario.appendChild(disparo);                                              // Adiciona o projetil ao cenario
+            estaSendoPunido = true;                                                    // Atualiza a flag para evitar múltiplos disparos simultaeos 
+            tempoParado = 0;                                                           // Reseta o temporizador
+        }
+    } else {
+        tempoParado = 0; // Reseta se a nave se mover ou girar
+    }
 }
 
 // Movimenta o projetil de punição 
