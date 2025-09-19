@@ -15,8 +15,8 @@ function bossDeathStar() {
         deathstar.setAttribute("data-vida", vidaEstrelaDaMorte);  // Cria o atributo data-vida para armazenar a vida da Estrela da Morte
         cenario.insertAdjacentElement("afterbegin", deathstar);   // Adiciona a Estrela da Morte no início do cenario
         let posY = 100;                                           // Posição inicial 
-        deathstar.style.bottom = posY + "%";                     // Define a posição vertical inicial da Estrela da Morte
-        const intervalo = setInterval(() => {                     // Cria um intervalo para mover a Estrela da Morte
+        deathstar.style.bottom = posY + "%";                      // Define a posição vertical inicial da Estrela da Morte
+        iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {                     // Cria um intervalo para mover a Estrela da Morte
             // Parar a criação de Tie Fighters e seus disparos em loop para garantir
             clearInterval(iniciaNavesInimigas);
             clearInterval(iniciaProjeteisTieFighter);
@@ -27,7 +27,8 @@ function bossDeathStar() {
                 if (posY <= -20) {                                // Se a metade da Estrela da Morte avançar o fundo da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();      // Interrompe a trilha sonora da Estrela da Morte
                     deathstar.style.bottom = "-20%";              // Fixa a Estrela Da Morte onde ela parou
-                    clearInterval(intervalo);                     // para quando sair da tela
+                    clearInterval(iniciaMovimentacaoEstrelaDaMorte);                     // para quando sair da tela
+                    okGameOver = true;                            // Libera a execução do Game Over
                     gameOver();                                   // Chama a função de Game Over
                 }
             }

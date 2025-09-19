@@ -9,8 +9,10 @@ function trilhaSonora() {
 // Aqui é o truque: quando a trilha principal for pausada ira tocar a trilha sonora da Estrela da Morte
 audioTrilhaSonora.addEventListener("pause", () => {
     setTimeout(() => {
-        trilhaSonoraEstrelaDaMorte();
-    }, 6000); // espera 5 segundos
+        if (okGameOver == false) {                 // Se o Game Over estiver desabilitado
+            trilhaSonoraEstrelaDaMorte();          // Toca a trilha sonora da Estrela da Morte
+        }
+    }, 6000); // espera 6 segundos
 });
 
 const audioTrilhaSonoraEstrelaDaMorte = new Audio('../audios/deathstar_suite.MP3'); // Audio tiro de canhoes X-Wing

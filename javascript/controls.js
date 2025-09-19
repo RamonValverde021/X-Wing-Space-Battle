@@ -42,7 +42,7 @@ const teclasControleClicadas = (tecla) => {
             painelDados.style.display = "none";
         }
     } else if (tecla.key === "f" || tecla.key === "F") { // 
-        okGameOver = false;
+        okGameOver = false;                              // Desativa a execução do Game Over
         if (habilitarAtaqueEspecial) {
             habilitarAtaqueEspecial = false;
             btnEspecialAtaque.style.display = "none"; 

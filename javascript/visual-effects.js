@@ -1,6 +1,6 @@
 /*------------------------------- EFEITOS VISUAIS -------------------------------*/
 // Efeito de nave explodindo
-function explosaonNaves(nave) {
+function explosaoNaves(nave) {
     const posicaoNave = nave.getBoundingClientRect();   // Pega as coordenadas da nave
     const explosao = document.createElement("div");     // Cria um elemento div, que vai ser a explosão
     explosao.className = "explosao";                    // Adiciona a classe da explosão para aplicar o estilo

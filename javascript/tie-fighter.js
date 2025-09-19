@@ -60,11 +60,17 @@ function moverNavesInimigas() {
             // Remove se sair do cenário
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {  // Se o centro do Tie Fighter sair do cenario
-                pontosVida -= 3;                                                  // Diminui 5 pontos de vida
-                atualizarMenu();                                                  // Atualiza a vida no menu
-                tieFighters[i].parentNode.removeChild(tieFighters[i]);            // Remove o Tie Fighter do cenario
-                if (pontosVida <= 20) mostrarToasty();                            // Se a vida estiver abaixo de 20%, mostra o toasty
-                if (pontosVida <= 0) gameOver();                                  // Se a vida chegar a 0, chama a função gameOver
+                pontosVida -= 3;                                                  // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                disparo.remove();                                                 // Remove o projetil que acertou o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();          // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                             // Se ainda tiver pontos de vida
+                    atualizarMenu();                                              // Atualiza a vida no menu
+                } else {                                                          // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                               // Fixa pontos de vida em 0
+                    atualizarMenu();                                              // Atualiza a vida no menu
+                    okGameOver = true;                                            // Libera a execução do Game Over
+                    gameOver();                                                   // Chama a função de Game Over
+                }
             }
         }
     }
@@ -89,17 +95,19 @@ function colisaoTieFighter() {
             ) {
                 vidaAtuaTieFighter--;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
                 pontosScore += 10;                                                            // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
-                atualizarMenu();                                                                // Atualiza a pontuação no menu
+                atualizarMenu();                                                              // Atualiza a pontuação no menu
                 disparo.remove();                                                             // Remove o projetil do cenario
                 if (vidaAtuaTieFighter <= 0) {                                                // Se a vida do Tie Fighter chegar a 0
                     countNavesDestruidas++;                                                   // Incrementa o contador de naves destruídas
                     velocidadeTieFighter += 0.5;                                              // Aumenta a velocidade dos Tie Fighters
                     velocidadeXWing += 0.1;                                                   // Aumenta a velocidade do X-Wing
                     velRotacaoXWing += 0.1;                                                   // Aumenta a velocidade de rotação do X-Wing
-                    velocidadeCenario -= 10;
-                    if (velocidadeCenario <= 10) {
-                        velocidadeCenario = 10; 
-                        cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;      // Atualiza a velocidade do cenario 
+                    velocidadeCenario -= 10;                                                  // Aumenta a velocidade do cenario
+                    if (velocidadeCenario <= velocidadeMaximaCenario) {                                     // Se a velocidade do cenario for maior igual a maxima 
+                        velocidadeCenario = velocidadeMaximaCenario;                                        // Limita a velocidade do cenario para a maxima permitida
+                        //cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
+                    } else {
+                        //cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
                     }
                     if (velocidadeXWing >= velocidadeMaximaXWing) {                           // Verifica se a velocidade do X-Wing ultrapassou os limites
                         velocidadeXWing = velocidadeMaximaXWing;                              // Limita a velocidade máxima do X-Wing
@@ -131,7 +139,7 @@ function colisaoTieFighter() {
                     pontosScore += 100;                  // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
                     atualizarMenu();                       // Atualiza a pontuação no menu
                     // Construindo o efeito de explosão
-                    explosaonNaves(naveInimiga);
+                    explosaoNaves(naveInimiga);
                     somExplosaoNaves();                              // Chama o audio de explosão do Tie Fighter
                     naveInimiga.remove();                                // Remove o Tie Fighter do cenario
                 } else {

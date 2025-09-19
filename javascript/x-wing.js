@@ -136,12 +136,13 @@ function colisaoXWing() {
         ) {
             pontosVida -= 3;                                                             // Diminui 3 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20) mostrarToasty();                                       // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
             if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
                 atualizarMenu();                                                         // Atualiza a vida no menu
             } else {                                                                     // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                          // Fixa pontos de vida em 0
                 atualizarMenu();                                                         // Atualiza a vida no menu
+                okGameOver = true;                                                       // Libera a execução do Game Over
                 gameOver();                                                              // Chama a função de Game Over
             }
         }
@@ -160,12 +161,13 @@ function colisaoXWing() {
         ) {
             pontosVida -= 15;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                          // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20) mostrarToasty();                                     // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                   // Se o pontos de vida cair para 20 pontos ou menos
             if (pontosVida > 0) {                                                      // Se ainda tiver pontos de vida
                 atualizarMenu();                                                       // Atualiza a vida no menu
             } else {                                                                   // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                        // Fixa pontos de vida em 0
                 atualizarMenu();                                                       // Atualiza a vida no menu
+                okGameOver = true;                                                     // Libera a execução do Game Over
                 gameOver();                                                            // Chama a função de Game Over
             }
         }
@@ -184,12 +186,13 @@ function colisaoXWing() {
         ) {
             pontosVida -= 50;                                                            // Diminui 50 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20) mostrarToasty();                                       // Se o pontos de vida cair para 20 pontos ou menos
+            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
             if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
                 atualizarMenu();                                                         // Atualiza a vida no menu
             } else {                                                                     // Se a vida chegar a 0 ou menos
                 pontosVida = 0;                                                          // Fixa pontos de vida em 0
                 atualizarMenu();                                                         // Atualiza a vida no menu
+                okGameOver = true;                                                       // Libera a execução do Game Over
                 gameOver();                                                              // Chama a função de Game Over
             }
         }
