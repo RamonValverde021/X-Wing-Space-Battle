@@ -27,7 +27,7 @@ const alturaTieFighter = 95.56;                                  // Pega a altur
 const velocidadeMaximaXWing = 20;                                // Define a velocidade máxima do X-Wing
 const velMaximaRotacaoXWing = 8;                                 // Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;                              // 40 - Define a velocidade dos projeteis do X-Wing
-const velocidadeMaximaTieFighter = 12;                           // Define a velocidade máxima dos Tie Fighters
+const velocidadeMaximaTieFighter = 12;                           // 12 - Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 700;                         // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 const velocidadeProjetilTieFighter = 50;                         // 10 - Define a velocidade dos projeteis dos Tie Fighters
 const velocidadeProjetilDeathStar = 50;                          // 10 - Define a velocidade dos projeteis da Estrela da Morte
@@ -51,7 +51,7 @@ let velRotacaoXWing = 2;                                         // 2 - Define a
 let giroHorario = false;                                         // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                     // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;                                 // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 6;                                    // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 600;                                    // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                    // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                             // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                          // Flag para interromper a execução em loop da mensagem do Obi-Wan
@@ -63,6 +63,7 @@ let direcaoHorizontal = 0;                                       // Variavel par
 let direcaoVertical = 0;                                         // Variavel para manipular a direção vertical do X-Wing
 let tempoParado = 0;                                             // Tempo que a nave está parada (ms)
 let estaSendoPunido = false;                                     // Flag para evitar múltiplos projéteis
+let countInimigosDestruidos = 0;                                 // Contador de inimigos destruídos
 
 // Variaveis para os intervalos do jogo
 let iniciaMovimentacaoXWing;
@@ -97,16 +98,14 @@ document.addEventListener("keydown", function (event) {                         
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
+    somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando
     cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;             // Adiciona a animação de fundo do cenario
     botaoIniciar.style.display = "none";                                                           // Esconde o botão iniciar após clicar nele
     menu.style.display = "flex";                                                                   // Mostra o menu do jogo 
     xwing.style.bottom = "40vh";                                                                   // Inicia a posição do X-Wing abaixo da tela para a animação CSS de entrada do X-Wing
     trilhaSonora();                                                                                // Toca a trilha sonora do game
-    somAcelerandoXWing();                                                                          // Toca o som do X-Wing acelerando
-    audioAcelerandoXWing.pause();                                                                  // Encerra o audio de aceleração do X-Wing
-    const loopGame = setTimeout(() => {                                                            // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
-        clearInterval(loopGame);                                                                   // Finaliza o intervalo para não ficar repetindo em loop
-        somVoandoXWing();                                                                          // Inicia o audio de voo do X-Wing
+    const iniciaGame = setTimeout(() => {                                                            // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
+        clearInterval(iniciaGame);                                                                   // Finaliza o intervalo para não ficar repetindo em loop
         // Converte bottom: 40vh para positionVertical (em pixels)
         const vhToPx = window.innerHeight * 0.4;                                                   // Converte 40vh para pixels
         positionVertical = alturaCenario - vhToPx - alturaXWing;                                   // Calcula a posição vertical em pixels do X-Wing no final da animação
@@ -140,7 +139,7 @@ function iniciarJogo() {
         }, 20);                                                                                    // Repetição do loop a cada 20ms
         const iniciaBoss = setInterval(() => {                                                     // Inica o loop de verificação para dar inicio o boss da Estrela da Morte
             if (iniciarBossDeathStar) {                                                            // Se a flag iniciarBossDeathStar for verdadeira
-                if (pontosScore >= 100) {                                                        // Verifica se a pontuação é maior ou igual a 10000
+                if (pontosScore >= 10000) {                                                        // Verifica se a pontuação é maior ou igual a 10000
                     iniciarBossDeathStar = false;                                                  // Desativa a flag para não entrar mais nessa de iniciar boss
                     clearInterval(iniciaBoss);                                                     // Finaliza o Loop de verificação
                     bossDeathStar();                                                               // Chama a função para iniciar a fase da estrela da morte

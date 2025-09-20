@@ -1,9 +1,9 @@
 /*------------------------------- TIE-FIGHTERS -------------------------------*/
 // Construindo naves inimigas em lugares aleatorios
 function navesInimigas() {
-    const tieFighter = document.createElement("div");  // Cria um elemento div, que vai ser o Tie Fighter
-    tieFighter.className = "tie_fighter";              // Adiciona a classe do Tie Fighter para aplicar o estilo
-    tieFighter.setAttribute("data-vida", 3);           // Cria o atributo data-vida para armazenar a vida do Tie Fighter
+    const tieFighter = document.createElement("div");                                      // Cria um elemento div, que vai ser o Tie Fighter
+    tieFighter.className = "tie_fighter";                                                  // Adiciona a classe do Tie Fighter para aplicar o estilo
+    tieFighter.setAttribute("data-vida", 3);                                               // Cria o atributo data-vida para armazenar a vida do Tie Fighter
 
     // Posição inicial (aleatória na horizontal, topo da tela)
     const posicaoLeft = Math.floor(Math.random() * (larguraCenario - larguraTieFighter));  // Cria uma posição aleatória na horizontal dentro do cenario para o Tie Fighter
@@ -11,137 +11,134 @@ function navesInimigas() {
     tieFighter.style.top = "0";                                                            // Define a posição vertical do Tie Fighter no topo do cenario
 
     // Definir trajetória diagonal
-    const angleDeg = Math.floor(Math.random() * anguloTieFighter);  // Gera um ângulo aleatório entre 0 e 60 graus
-    const angleRad = angleDeg * Math.PI / 180;                      // Converte o ângulo gerado aleatoriamente para radianos
-    const speed = velocidadeTieFighter;                             // Velocidade do Tie Fighter
-    const direction = Math.random() < 0.5 ? 1 : -1;                 // 50% para direita, 50% para esquerda
-    const vx = direction * speed * Math.sin(angleRad);              // Velocidade horizontal (direita ou esquerda)
-    const vy = speed * Math.cos(angleRad);                          // Velocidade vertical (sempre para baixo)
-    anguloAtaqueTieFighter = angleDeg;                              // Atualiza o ângulo de ataque global para exibição
+    const angleDeg = Math.floor(Math.random() * anguloTieFighter);                         // Gera um ângulo aleatório entre 0 e 60 graus
+    const angleRad = angleDeg * Math.PI / 180;                                             // Converte o ângulo gerado aleatoriamente para radianos
+    const speed = velocidadeTieFighter;                                                    // Velocidade do Tie Fighter
+    const direction = Math.random() < 0.5 ? 1 : -1;                                        // Sorteia aleatoriamente se a nave vai para direita ou para esquerda
+    const vx = direction * speed * Math.sin(angleRad);                                     // Velocidade horizontal (direita ou esquerda)
+    const vy = speed * Math.cos(angleRad);                                                 // Velocidade vertical (sempre para baixo)
+    anguloAtaqueTieFighter = angleDeg;                                                     // Atualiza o ângulo de ataque global para exibição
 
     // Armazenar velocidades
-    tieFighter.setAttribute("data-vx", vx.toFixed(2));  // Define um atributo data-vx para armazenar a velocidade horizontal
-    tieFighter.setAttribute("data-vy", vy.toFixed(2));  // Define um atributo data-vy para armazenar a velocidade vertical
+    tieFighter.setAttribute("data-vx", vx.toFixed(2));                                     // Define um atributo data-vx para armazenar a velocidade horizontal
+    tieFighter.setAttribute("data-vy", vy.toFixed(2));                                     // Define um atributo data-vy para armazenar a velocidade vertical
 
     // Adiciona o Tie Fighter ao cenario
-    cenario.appendChild(tieFighter);        // Adiciona o Tie Fighter ao cenario
-    //criarProjeteisTieFighter(tieFighter); // Faz o Tie Fighter atirar uma vez assim que for criado
-    somCanhoesTieFighter();                 // Toca o som dos canhões do Tie Fighter
-    somVoandoTieFighter();                  // Toca o som do Tie Fighter voando
+    cenario.appendChild(tieFighter);                                                       // Adiciona o Tie Fighter ao cenario
+    //criarProjeteisTieFighter(tieFighter);                                                // Faz o Tie Fighter atirar uma vez assim que for criado
+    //somCanhoesTieFighter();                                                              // Toca o som dos canhões do Tie Fighter
+    somVoandoTieFighter();                                                                 // Toca o som do Tie Fighter voando
 }
 
 // Movimentando naves inimigas
 function moverNavesInimigas() {
-    const tieFighters = document.querySelectorAll(".tie_fighter");  // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
-    for (let i = 0; i < tieFighters.length; i++) {                  // Percorre todos os Tie Fighters
-        if (tieFighters[i]) {                                       // Verifica se o Tie Fighter existe
+    const tieFighters = document.querySelectorAll(".tie_fighter");                         // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+    for (let i = 0; i < tieFighters.length; i++) {                                         // Percorre todos os Tie Fighters
+        if (tieFighters[i]) {                                                              // Verifica se o Tie Fighter existe
             // Pega posição atual
-            let left = parseFloat(tieFighters[i].style.left);  // Converte de string para float a posição horizontal atual do Tie Fighter
-            let top = parseFloat(tieFighters[i].style.top);    // Converte de string para float a posição vertical atual do Tie Fighter
+            let left = parseFloat(tieFighters[i].style.left);                              // Converte de string para float a posição horizontal atual do Tie Fighter
+            let top = parseFloat(tieFighters[i].style.top);                                // Converte de string para float a posição vertical atual do Tie Fighter
 
             // Calcula centro da nave
-            const halfWidth = larguraTieFighter / 2;  // Metade da largura do Tie Fighter
-            const halfHeight = alturaTieFighter / 2;  // Metade da altura do Tie Fighter
-            let centerX = left + halfWidth;           // Centro X da nave
-            let centerY = top + halfHeight;           // Centro Y da nave
+            const halfWidth = larguraTieFighter / 2;                                       // Metade da largura do Tie Fighter
+            const halfHeight = alturaTieFighter / 2;                                       // Metade da altura do Tie Fighter
+            let centerX = left + halfWidth;                                                // Centro X da nave
+            let centerY = top + halfHeight;                                                // Centro Y da nave
 
             // Pega velocidades vetoriais
-            let vx = parseFloat(tieFighters[i].getAttribute("data-vx"));  // Converte de string para float a velocidade horizontal do Tie Fighter
-            let vy = parseFloat(tieFighters[i].getAttribute("data-vy"));  // Converte de string para float a velocidade vertical do Tie Fighter
+            let vx = parseFloat(tieFighters[i].getAttribute("data-vx"));                   // Converte de string para float a velocidade horizontal do Tie Fighter
+            let vy = parseFloat(tieFighters[i].getAttribute("data-vy"));                   // Converte de string para float a velocidade vertical do Tie Fighter
 
             // Atualiza posição do centro
-            centerX += vx;  // Atualiza a posição X do centro do Tie Fighter
-            centerY += vy;  // Atualiza a posição Y do centro do Tie Fighter
+            centerX += vx;                                                                 // Atualiza a posição X do centro do Tie Fighter
+            centerY += vy;                                                                 // Atualiza a posição Y do centro do Tie Fighter
 
             // Atualiza posição do canto superior esquerdo
-            tieFighters[i].style.left = (centerX - halfWidth) + "px";  // Atualiza a posição horizontal do Tie Fighter
-            tieFighters[i].style.top = (centerY - halfHeight) + "px";  // Atualiza a posição vertical do Tie Fighter
+            tieFighters[i].style.left = (centerX - halfWidth) + "px";                      // Atualiza a posição horizontal do Tie Fighter
+            tieFighters[i].style.top = (centerY - halfHeight) + "px";                      // Atualiza a posição vertical do Tie Fighter
 
             // Remove se sair do cenário
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
-                centerY < -halfHeight || centerY > alturaCenario + halfHeight) {  // Se o centro do Tie Fighter sair do cenario
-                pontosVida -= 3;                                                  // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
-                disparo.remove();                                                 // Remove o projetil que acertou o X-Wing
-                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();          // Se o pontos de vida cair para 20 pontos ou menos
-                if (pontosVida > 0) {                                             // Se ainda tiver pontos de vida
-                    atualizarMenu();                                              // Atualiza a vida no menu
-                } else {                                                          // Se a vida chegar a 0 ou menos
-                    pontosVida = 0;                                               // Fixa pontos de vida em 0
-                    atualizarMenu();                                              // Atualiza a vida no menu
-                    gameOver();                                                   // Chama a função de Game Over
+                centerY < -halfHeight || centerY > alturaCenario + halfHeight) {           // Se o centro do Tie Fighter sair do cenario
+                pontosVida -= 3;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                   // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                                      // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                       // Atualiza a vida no menu
+                } else {                                                                   // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                        // Fixa pontos de vida em 0
+                    atualizarMenu();                                                       // Atualiza a vida no menu
+                    gameOver();                                                            // Chama a função de Game Over
                 }
             }
         }
     }
 }
 
-let countInimigosDestruidos = 0; // Contador de inimigos destruídos
-
 // Colisão com as naves inimigas
 function colisaoTieFighter() {
-    const todasNavesInimigas = document.querySelectorAll(".tie_fighter");                     // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
-    const todosDisparos = document.querySelectorAll(".projetil_x-wing");                      // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
-    todasNavesInimigas.forEach((naveInimiga) => {                                            // Percorre todos os Tie Fighters
-        todosDisparos.forEach((disparo) => {                                                  // Percorre todos os projeteis
-            const colisaoNaveInimiga = naveInimiga.getBoundingClientRect();                  // Pega as coordenadas do Tie Fighter    
-            const colisaoDisparo = disparo.getBoundingClientRect();                           // Pega as coordenadas do projetil
-            let vidaAtuaTieFighter = parseInt(naveInimiga.getAttribute("data-vida"), 10);    // Pega a vida atual do Tie Fighter   
-            if (                                                                              // Verifica se houve colisão entre o Tie Fighter e o projetil
-                colisaoNaveInimiga.left < colisaoDisparo.right &&                             // Verifica se o lado esquerdo do Tie Fighter é menor que o lado direito do projetil
-                colisaoNaveInimiga.right > colisaoDisparo.left &&                             // Verifica se o lado direito do Tie Fighter é maior que o lado esquerdo do projetil
-                colisaoNaveInimiga.top < colisaoDisparo.bottom &&                             // Verifica se o topo do Tie Fighter é menor que a parte de baixo do projetil
-                colisaoNaveInimiga.bottom > colisaoDisparo.top                                // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
+    const todasNavesInimigas = document.querySelectorAll(".tie_fighter");                  // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+    const todosDisparos = document.querySelectorAll(".projetil_x-wing");                   // Seleciona todos os elementos com a classe projetil_x-wing, ou seja, todos os projeteis
+    todasNavesInimigas.forEach((naveInimiga) => {                                          // Percorre todos os Tie Fighters
+        todosDisparos.forEach((disparo) => {                                               // Percorre todos os projeteis
+            const colisaoNaveInimiga = naveInimiga.getBoundingClientRect();                // Pega as coordenadas do Tie Fighter    
+            const colisaoDisparo = disparo.getBoundingClientRect();                        // Pega as coordenadas do projetil
+            let vidaAtuaTieFighter = parseInt(naveInimiga.getAttribute("data-vida"), 10);  // Pega a vida atual do Tie Fighter   
+            if (                                                                           // Verifica se houve colisão entre o Tie Fighter e o projetil
+                colisaoNaveInimiga.left < colisaoDisparo.right &&                          // Verifica se o lado esquerdo do Tie Fighter é menor que o lado direito do projetil
+                colisaoNaveInimiga.right > colisaoDisparo.left &&                          // Verifica se o lado direito do Tie Fighter é maior que o lado esquerdo do projetil
+                colisaoNaveInimiga.top < colisaoDisparo.bottom &&                          // Verifica se o topo do Tie Fighter é menor que a parte de baixo do projetil
+                colisaoNaveInimiga.bottom > colisaoDisparo.top                             // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
             ) {
-                vidaAtuaTieFighter--;                                                         // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
-                pontosScore += 10;                                                            // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
-                atualizarMenu();                                                              // Atualiza a pontuação no menu
-                disparo.remove();                                                             // Remove o projetil do cenario
-                if (vidaAtuaTieFighter <= 0) {                                                // Se a vida do Tie Fighter chegar a 0
-                    countNavesDestruidas++;                                                   // Incrementa o contador de naves destruídas
-                    velocidadeTieFighter += 0.5;                                              // Aumenta a velocidade dos Tie Fighters
-                    velocidadeXWing += 0.1;                                                   // Aumenta a velocidade do X-Wing
-                    velRotacaoXWing += 0.1;                                                   // Aumenta a velocidade de rotação do X-Wing
-                    velocidadeCenario -= 10;                                                  // Aumenta a velocidade do cenario
-                    if (velocidadeCenario <= velocidadeMaximaCenario) {                                     // Se a velocidade do cenario for maior igual a maxima 
-                        velocidadeCenario = velocidadeMaximaCenario;                                        // Limita a velocidade do cenario para a maxima permitida
-                        //cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
+                vidaAtuaTieFighter--;                                                      // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
+                pontosScore += 10;                                                         // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
+                atualizarMenu();                                                           // Atualiza a pontuação no menu
+                disparo.remove();                                                          // Remove o projetil do cenario
+                if (vidaAtuaTieFighter <= 0) {                                             // Se a vida do Tie Fighter chegar a 0
+                    countNavesDestruidas++;                                                // Incrementa o contador de naves destruídas
+                    velocidadeTieFighter += 0.5;                                           // Aumenta a velocidade dos Tie Fighters
+                    velocidadeXWing += 0.1;                                                // Aumenta a velocidade do X-Wing
+                    velRotacaoXWing += 0.1;                                                // Aumenta a velocidade de rotação do X-Wing
+                    /*
+                    velocidadeCenario -= 10;                                               // Aumenta a velocidade do cenario
+                    if (velocidadeCenario <= velocidadeMaximaCenario) {                    // Se a velocidade do cenario for maior igual a maxima 
+                        velocidadeCenario = velocidadeMaximaCenario;                       // Limita a velocidade do cenario para a maxima permitida
+                        cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
                     } else {
-                        //cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
+                        cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;  // Atualiza a velocidade do cenario 
                     }
-                    if (velocidadeXWing >= velocidadeMaximaXWing) {                           // Verifica se a velocidade do X-Wing ultrapassou os limites
-                        velocidadeXWing = velocidadeMaximaXWing;                              // Limita a velocidade máxima do X-Wing
+                    */
+                    if (velocidadeXWing >= velocidadeMaximaXWing) {                        // Verifica se a velocidade do X-Wing ultrapassou os limites
+                        velocidadeXWing = velocidadeMaximaXWing;                           // Limita a velocidade máxima do X-Wing
                     }
-                    if (velRotacaoXWing >= velMaximaRotacaoXWing) {                           // Verifica se a velocidade de rotação do X-Wing ultrapassou os limites
-                        velRotacaoXWing = velMaximaRotacaoXWing;                              // Limita a velocidade máxima de rotação do X-Wing
+                    if (velRotacaoXWing >= velMaximaRotacaoXWing) {                        // Verifica se a velocidade de rotação do X-Wing ultrapassou os limites
+                        velRotacaoXWing = velMaximaRotacaoXWing;                           // Limita a velocidade máxima de rotação do X-Wing
                     }
-                    if (velocidadeTieFighter >= velocidadeMaximaTieFighter) {                 // Verifica se a velocidade do Tie Fighter ultrapassou os limites
-                        velocidadeTieFighter = velocidadeMaximaTieFighter;                    // Limita a velocidade máxima dos Tie Fighters
+                    if (velocidadeTieFighter >= velocidadeMaximaTieFighter) {              // Verifica se a velocidade do Tie Fighter ultrapassou os limites
+                        velocidadeTieFighter = velocidadeMaximaTieFighter;                 // Limita a velocidade máxima dos Tie Fighters
                     }
-                    if (quantidadeTieFighters > quantidadeMaximaTieFighters) {                    // Limita o tempo mínimo de criação dos Tie Fighters
+                    if (quantidadeTieFighters >= quantidadeMaximaTieFighters) {                    // Limita o tempo mínimo de criação dos Tie Fighters
                         quantidadeTieFighters -= 100;                                             // Diminui o tempo de criação dos Tie Fighters
                         clearInterval(iniciaNavesInimigas);                                       // Limpa o intervalo atual
                         iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);  // Reinicia o intervalo com o novo tempo  
                     }
                     if (anguloTieFighter < anguloMaximo) {                                        // Limita o ângulo máximo de ataque dos Tie Fighters
-                        anguloTieFighter += 5;                                                    // Aumenta o ângulo máximo em 5 graus
+                        anguloTieFighter += 2;                                                    // Aumenta o ângulo máximo em 2 graus
                     }
-                    countInimigosDestruidos++;           // Variavel contadora para monitorar inimigos derrotados para aumentar pontos de vida
-                    if (countInimigosDestruidos >= 5) {  // Se derrotar 5 inimigos
-                        if (pontosVida < 100) pontosVida += 10;  // Se os pontos de vida for menor que 100, ganha 10 pontos de vida
-                        if (pontosVida >= 100) pontosVida = 100; // Se os pontos de vida ultrapassar 100 pontos, mantem em 100 pontos de vida
-                        // Ganha mais 10 pontos de vida
-                        countInimigosDestruidos = 0;     // Zera a contagem
+                    countInimigosDestruidos++;                                             // Variavel contadora para monitorar inimigos derrotados para aumentar pontos de vida
+                    if (countInimigosDestruidos >= 5) {                                    // Se derrotar 5 inimigos
+                        if (pontosVida < 100) pontosVida += 10;                            // Se os pontos de vida for menor que 100, ganha 10 pontos de vida
+                        if (pontosVida >= 100) pontosVida = 100;                           // Se os pontos de vida ultrapassar 100 pontos, mantem em 100 pontos de vida
+                        countInimigosDestruidos = 0;                                       // Zera a contagem
                     }
-                    pontosScore += 100;                  // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
-                    atualizarMenu();                       // Atualiza a pontuação no menu
-                    // Construindo o efeito de explosão
-                    explosaoNaves(naveInimiga);
-                    somExplosaoNaves();                              // Chama o audio de explosão do Tie Fighter
-                    naveInimiga.remove();                                // Remove o Tie Fighter do cenario
+                    pontosScore += 100;                                                    // Adiciona 100 pontos na pontuação para cada Tie Fighter destruído
+                    atualizarMenu();                                                       // Atualiza a pontuação no menu
+                    explosaoNaves(naveInimiga);                                            // Chama o efeit vidual de explosão de naves
+                    somExplosaoNaves();                                                    // Chama o audio de explosão de naves
+                    naveInimiga.remove();                                                  // Remove o Tie Fighter do cenario
                 } else {
-                    naveInimiga.setAttribute("data-vida", vidaAtuaTieFighter); // Atualiza a vida do Tie Fighter
+                    naveInimiga.setAttribute("data-vida", vidaAtuaTieFighter);             // Atualiza a vida do Tie Fighter
                 }
-                showEstatisticas(); // Atualiza as estatísticas do jogo
+                showEstatisticas();                                                        // Atualiza as estatísticas do jogo
             }
         })
     });
@@ -149,7 +146,7 @@ function colisaoTieFighter() {
 
 // Função para criar os projeteis do Tie Fighter
 const construirProjeteisTieFighter = (tieFighter) => {
-    const posicaoLeftTiro = parseFloat(tieFighter.style.left); // Pega a posição horizontal atual do Tie Fighter
+    const posicaoLeftTiro = parseFloat(tieFighter.style.left);                              // Pega a posição horizontal atual do Tie Fighter
     const posicaoTopTiro = parseFloat(tieFighter.style.top);   // Pega a posição vertical atual do Tie Fighter
     const centerX = posicaoLeftTiro + larguraTieFighter / 2;   // Centro X do Tie Fighter
     const centerY = posicaoTopTiro + alturaTieFighter / 2;     // Centro Y do Tie Fighter
