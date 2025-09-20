@@ -60,7 +60,8 @@ function moverNavesInimigas() {
             // Remove se sair do cenário
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {           // Se o centro do Tie Fighter sair do cenario
-                pontosVida -= 3;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                tieFighters[i].remove();                                                   // Remove o Tie Fighter do cenario
+                pontosVida -= 3;                                                           // Diminui 2 pontos para cada projetil que acertar o X-Wing;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                   // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                      // Se ainda tiver pontos de vida
                     atualizarMenu();                                                       // Atualiza a vida no menu

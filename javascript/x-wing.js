@@ -134,7 +134,7 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 3;                                                             // Diminui 3 pontos para cada projetil que acertar o X-Wing
+            pontosVida -= 2;                                                             // Diminui 2 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
             if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
             if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
@@ -202,7 +202,7 @@ function colisaoXWing() {
 function criarProjeteisPunicao() {
     if (direcaoHorizontal === 0 && direcaoVertical === 0 && !estaSendoPunido) {        // Se o X-Wing não está se movendo e a punição está habilitada
         tempoParado += 100;                                                            // Incrementa 100ms na contagem de tempo
-        if (tempoParado >= 8000) {                                                     // Se o X-Wing ficou 8 segundos parado no mapa
+        if (tempoParado >= 20000) {                                                    // Se o X-Wing ficou 20 segundos parado no mapa
             const disparo = document.createElement("div");                             // Cria um elemento div, que vai ser o projetil   
             const coordenadaHorizontalXWing = parseFloat(xwing.style.left);            // Pega a posição horizontal atual do X-Wing 
             let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - 7;  // Constroi a coordenada horizontal do projetil mirando no meio da nave
