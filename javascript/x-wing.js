@@ -199,25 +199,38 @@ function colisaoXWing() {
 
 // Cria um projetil de punição por ficar parado no jogo
 function criarProjeteisPunicao() {
-    // O intervalo que chama esta função (definido em script.js) é de 20ms.
-    const intervaloDaVerificacao = 20; // ms
-    if (direcaoHorizontal === 0 && direcaoVertical === 0) {                                  // Se o X-Wing não está se movendo nem para a esquerda ou nem para a direita
-        if (!estaSendoPunido) {                                                              // Se a punição está habilitada
-            tempoParado += intervaloDaVerificacao * 10;                                      // Incrementa o tempo que a nave está parada, de acordo com o intervalo da função
-            if (tempoParado >= intervaloDaVerificacao * 1000) {                              // Se o X-Wing ficou 20 segundos parado no mapa
-                const disparo = document.createElement("div");                               // Cria um elemento div, que vai ser o projetil   
-                const coordenadaHorizontalXWing = parseFloat(xwing.style.left);              // Pega a coordenada horizontal atual do X-Wing e converte para Float
-                let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - 7;    // Constroi a coordenada horizontal do projetil mirando no meio da nave = Posição do X-Wing no cenraio + metade da largura do X-Wing - metade da largura do projetil
-                disparo.className = "projetil_punicao";                                      // Adiciona a classe do projetil para aplicar o estilo
-                disparo.style.left = coordenaDisparo + "px";                                 // Define a posição horizontal de origem do projetil
-                disparo.style.top = "0px";                                                   // Define a posição vertical de origem do projetil
-                cenario.appendChild(disparo);                                                // Adiciona o projetil ao cenario
-                estaSendoPunido = true;                                                      // Atualiza a flag para evitar múltiplos disparos simultaeos 
-                tempoParado = 0;                                                             // Reseta o temporizador
-            }
+    const tempoDePunicao = 15; // 15 segundos
+
+    // Verifica se a nave está parada
+    if (direcaoHorizontal === 0 && direcaoVertical === 0) {
+        // Se a nave acabou de parar, registra o timestamp inicial
+        if (timestampInicioParado === 0) {
+            timestampInicioParado = Date.now();
+        }
+
+        // Calcula o tempo total que a nave está parada, de forma precisa
+        tempoParado = Date.now() - timestampInicioParado;
+
+        // Se o tempo parado exceder o limite e não houver uma punição em andamento
+        if (tempoParado >= (tempoDePunicao * 1000) && !estaSendoPunido) {
+            const disparo = document.createElement("div");
+            const coordenadaHorizontalXWing = parseFloat(xwing.style.left);
+            // Calcula a posição do disparo para mirar no centro da nave
+            const larguraProjetilPunicao = 15; // Largura definida no CSS para .projetil_punicao
+            let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - (larguraProjetilPunicao / 2);
+            disparo.className = "projetil_punicao";
+            disparo.style.left = coordenaDisparo + "px";
+            disparo.style.top = "0px";
+            cenario.appendChild(disparo);
+
+            estaSendoPunido = true; // Ativa a flag para evitar múltiplos disparos
+            timestampInicioParado = 0; // Reseta o timestamp para uma nova contagem
+            tempoParado = 0; // Reseta o contador de tempo parado para a UI
         }
     } else {
-        tempoParado = 0;                                                                     // Reseta se a nave se mover
+        // Se a nave se mover, reseta os contadores
+        timestampInicioParado = 0;
+        tempoParado = 0;
     }
 }
 

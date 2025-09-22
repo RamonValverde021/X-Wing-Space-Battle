@@ -50,11 +50,12 @@ function atualizarMenu() {
 
 // Atualizando as estatisticas do jogo
 function showEstatisticas() {
-    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;                               // Atualiza a velocidade do X-Wing no menu
-    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;                    // Atualiza a velocidade de rotação do X-Wing no menu
-    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;                // Atualiza a velocidade do Tie-Fighter no menu
-    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;                   // Atualiza o ângulo de ataque dos Tie-Fighter no menu
-    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;     // Atualiza a velocidade de construção dos Tie-Fighter no menu
-    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;                   // Atualiza a quantidade de inimigos destruídos no menu
-    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;                        // Atualiza a vida da Estrela da Morte no menu
+    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;                               // Atualiza no painel a velocidade do X-Wing no menu
+    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;                    // Atualiza no painel a velocidade de rotação do X-Wing no menu
+    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;                // Atualiza no painel a velocidade do Tie-Fighter no menu
+    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;                   // Atualiza no painel o ângulo de ataque dos Tie-Fighter no menu
+    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;     // Atualiza no painel a velocidade de construção dos Tie-Fighter no menu
+    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;                   // Atualiza no painel a quantidade de inimigos destruídos no menu
+    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;                        // Atualiza no painel a vida da Estrela da Morte no menu
+    dadosTempoParado.innerText = `Tempo Parado: ${tempoParado / 1000} s`;                                 // Atualiza no painel o tempo em que o X-Wing está parado
 }

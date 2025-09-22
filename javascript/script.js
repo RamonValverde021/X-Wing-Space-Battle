@@ -16,7 +16,7 @@ const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");    
 const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");  // Seleciona o span para a velocidade de criação dos TIEs.
 const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");          // Seleciona o span para o contador de inimigos destruídos.
 const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");                // Seleciona o span para a vida da Estrela da Morte.
-
+const dadosTempoParado = document.getElementById("tempoParado"); 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth;                      // Pega a largura de todod o cenario
 const alturaCenario = cenario.offsetHeight;                      // Pega a altura de todod o cenario 
@@ -62,6 +62,7 @@ let positionVertical = alturaCenario - alturaXWing - 20;         // Posição ve
 let direcaoHorizontal = 0;                                       // Variavel para manipular a direção horizontal do X-Wing
 let direcaoVertical = 0;                                         // Variavel para manipular a direção vertical do X-Wing
 let tempoParado = 0;                                             // Tempo que a nave está parada (ms)
+let timestampInicioParado = 0;                                   // Timestamp de quando a nave parou para uma contagem precisa
 let backgroundPositionY = 0;                                     // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                     // Flag para evitar múltiplos projéteis
 let countInimigosDestruidos = 0;                                 // Contador de inimigos destruídos
