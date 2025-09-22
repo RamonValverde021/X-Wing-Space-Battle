@@ -51,7 +51,7 @@ function somExplosaoNaves() {
 }
 
 function somExplosaoEstrelaDaMorte() {
-    const audio = new Audio('../audios/explosion_deathstar.mp3');  // Audio de explosão da Estrela Da Morte
+    const audio = new Audio('../audios/explosion_deathstar.mp3');   // Audio de explosão da Estrela Da Morte
     //audio.volume = 1;
     audio.play();
 }
@@ -72,20 +72,20 @@ function somVoandoTieFighter() {
 }
 
 function somCanhoesTieFighter() {
-    const audio = new Audio('../audios/tie-fighter_cannon.mp3');  // Audio do tiro de canhões do Tie-Fighter
-    audio.volume = 0.2;                                           // Volume do audio em 20%
-    audio.currentTime = 0;                                        // Volta pro início do audio
-    audio.play();                                                 // Toca o audio
+    const audio = new Audio('../audios/tie-fighter_cannon.mp3');    // Audio do tiro de canhões do Tie-Fighter
+    audio.volume = 0.2;                                             // Volume do audio em 20%
+    audio.currentTime = 0;                                          // Volta pro início do audio
+    audio.play();                                                   // Toca o audio
 }
 
 function somSinalObiWan() {
-    const audio = new Audio('../audios/use_a_forca_luke.mp3');  // Audio da mensagem de voz do Obi-Wan
-    audio.volume = 1;                                           // Volume do audio em 100%
-    audio.play();                                               // Toca o audio
+    const audio = new Audio('../audios/use_a_forca_luke.mp3');      // Audio da mensagem de voz do Obi-Wan
+    audio.volume = 1;                                               // Volume do audio em 100%
+    audio.play();                                                   // Toca o audio
 }
 
 function somVitoria() {
-    const audio = new Audio('../audios/victory_theme.mp3');  // Trilha sonora de vitoria do jogo
-    audio.volume = 1;                                        // Volume do audio em 100%
-    audio.play();                                            // Toca o audio
+    const audio = new Audio('../audios/victory_theme.mp3');         // Trilha sonora de vitoria do jogo
+    audio.volume = 1;                                               // Volume do audio em 100%
+    audio.play();                                                   // Toca o audio
 }

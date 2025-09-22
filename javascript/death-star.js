@@ -1,8 +1,9 @@
 /*------------------------------- ESTRELA DA MORTE -------------------------------*/
 function bossDeathStar() {
     // Parar a criação de Tie Fighters e seus disparos
-    clearInterval(iniciaNavesInimigas);
-    clearInterval(iniciaProjeteisTieFighter);
+    clearInterval(iniciaNavesInimigas);                               // Interrompe a criação dos Tie-Fighters
+    clearInterval(iniciaProjeteisTieFighter);                         // Interrompe a criação de projeteis dos Tie-Fighters
+    //clearInterval(iniciaMovimentacaoNavesInimigas);                   // Interrompe a movimentação dos Tie-Fighters
     audioTrilhaSonora.pause();                                        // Interrompe a trilha sonora principal
     pontosVida = 100;                                                 // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                                  // Atualiza o Menu de status do jogo
@@ -30,7 +31,7 @@ function bossDeathStar() {
         }, 20);                                                                                        // tempo em ms → quanto menor, mais suave
         iniciaProjeteisDeathStar = setInterval(criarProjeteisDeathStar, velocidadeDisparosDeathStar);  // Inicia o looping de criação de projeteis da Estrela da Morte
         iniciaMovimentacaoProjeteisDeathStar = setInterval(moverProjeteisDeathStar, 50);               // Inicia o looping de movimento dos projeteis da Estrela da Morte
-    }, 15000);                                                                                         // 15000 Tempo para aguardar a estrela da Morte Aparecer
+    }, 10000);                                                                                         // Tempo para aguardar a estrela da Morte Aparecer
 }
 
 function colisaoEstrelaDaMorte() {

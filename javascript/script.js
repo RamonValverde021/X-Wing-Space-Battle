@@ -1,21 +1,21 @@
 /*------------------------------- OBJETOS HTML -------------------------------*/
-const body = document.getElementById("body");
-const cenario = document.getElementById("cenario");
-const xwing = document.getElementById("x-wing");
-const botaoIniciar = document.getElementById("btn_Inicar");
-const menu = document.getElementById("menu");
-const vida = document.getElementById("vida");
-const pontos = document.getElementById("pontos");
-const btnEspecialAtaque = document.getElementById("ataque_especial");
+const body = document.getElementById("body");                                            // Seleciona o elemento <body> da página.
+const cenario = document.getElementById("cenario");                                      // Seleciona a div principal do jogo, o cenário.
+const xwing = document.getElementById("x-wing");                                         // Seleciona a div da nave do jogador (X-Wing).
+const botaoIniciar = document.getElementById("btn_Inicar");                              // Seleciona o botão "Iniciar Jogo".
+const menu = document.getElementById("menu");                                            // Seleciona a div que contém o menu de status (vida, pontos).
+const vida = document.getElementById("vida");                                            // Seleciona o span que mostra a vida do jogador.
+const pontos = document.getElementById("pontos");                                        // Seleciona o span que mostra a pontuação.
+const btnEspecialAtaque = document.getElementById("ataque_especial");                    // Seleciona o elemento que indica o ataque especial (letra 'F').
 // Estastiticas do jogo
-const painelDados = document.getElementById("dados-jogo");
-const dadosVelXWing = document.getElementById("vel_x-wing");
-const dadosVelRotXWing = document.getElementById("vel_rotacao_x-wing");
-const dadosVelTieFighter = document.getElementById("vel_tie-fighter");
-const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");
-const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");
-const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");
-const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");
+const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
+const dadosVelXWing = document.getElementById("vel_x-wing");                             // Seleciona o span para a velocidade da X-Wing.
+const dadosVelRotXWing = document.getElementById("vel_rotacao_x-wing");                  // Seleciona o span para a velocidade de rotação.
+const dadosVelTieFighter = document.getElementById("vel_tie-fighter");                   // Seleciona o span para a velocidade dos TIE Fighters.
+const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");             // Seleciona o span para o ângulo de ataque dos TIEs.
+const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");  // Seleciona o span para a velocidade de criação dos TIEs.
+const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");          // Seleciona o span para o contador de inimigos destruídos.
+const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");                // Seleciona o span para a vida da Estrela da Morte.
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth;                      // Pega a largura de todod o cenario
@@ -41,7 +41,7 @@ let quantidadeTieFighters = 3000;                                // 3000 - Defin
 let anguloAtaqueTieFighter = 0;                                  // Recebe o angulo de ataque dos Tie Fighters (em graus)
 let anguloTieFighter = 0;                                        // Variavel para controlar a rotação dos Tie Fighters
 let velocidadeDisparosTieFighter = 500;                          // Cadencia de disparo dos Tie Fighters (em milisegundos)
-let velocidadeCenario = 200;                                     // define a velocidade do cenario
+let velocidadeCenario = 200;                                     // Define a velocidade incial do cenario
 let pontosVida = 100;                                            // Define a vida inicial do X-Wing
 let pontosScore = 0;                                             // Define a pontuação inicial
 let estaAtirando = false;                                        // Flada para saber se o X-Wing está atirando ou não
@@ -62,10 +62,12 @@ let positionVertical = alturaCenario - alturaXWing - 20;         // Posição ve
 let direcaoHorizontal = 0;                                       // Variavel para manipular a direção horizontal do X-Wing
 let direcaoVertical = 0;                                         // Variavel para manipular a direção vertical do X-Wing
 let tempoParado = 0;                                             // Tempo que a nave está parada (ms)
+let backgroundPositionY = 0;                                     // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                     // Flag para evitar múltiplos projéteis
 let countInimigosDestruidos = 0;                                 // Contador de inimigos destruídos
 
 // Variaveis para os intervalos do jogo
+let iniciaMovimentacaoCenario;
 let iniciaMovimentacaoXWing;
 let iniciaProjeteisXWing;
 let iniciaMovimentacaoProjeteisXWing;
@@ -96,16 +98,16 @@ document.addEventListener("keydown", function (event) {                         
 });
 
 function iniciarJogo() {
-    console.log("Iniciando Jogo");
+    console.log("Iniciando Jogo");   
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
-    somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando
-    cenario.style.animation = `animacaoCenario ${velocidadeCenario}s infinite linear`;             // Adiciona a animação de fundo do cenario
+    somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando    
     botaoIniciar.style.display = "none";                                                           // Esconde o botão iniciar após clicar nele
     menu.style.display = "flex";                                                                   // Mostra o menu do jogo 
     xwing.style.bottom = "40vh";                                                                   // Inicia a posição do X-Wing abaixo da tela para a animação CSS de entrada do X-Wing
     trilhaSonora();                                                                                // Toca a trilha sonora do game
-    const iniciaGame = setTimeout(() => {                                                            // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
-        clearInterval(iniciaGame);                                                                   // Finaliza o intervalo para não ficar repetindo em loop
+    iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
+    const iniciaGame = setTimeout(() => {                                                          // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
+        clearInterval(iniciaGame);                                                                 // Finaliza o intervalo para não ficar repetindo em loop
         // Converte bottom: 40vh para positionVertical (em pixels)
         const vhToPx = window.innerHeight * 0.4;                                                   // Converte 40vh para pixels
         positionVertical = alturaCenario - vhToPx - alturaXWing;                                   // Calcula a posição vertical em pixels do X-Wing no final da animação
@@ -160,6 +162,7 @@ function gameOver() {
         document.removeEventListener("keyup", teclasControleSoltas);          // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
         clearInterval(iniciaProjeteisXWing);
+        clearInterval(iniciaMovimentacaoCenario);
         clearInterval(iniciaMovimentacaoXWing);
         clearInterval(iniciaMovimentacaoProjeteisXWing);
         clearInterval(iniciaNavesInimigas);

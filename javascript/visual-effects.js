@@ -1,26 +1,35 @@
 /*------------------------------- EFEITOS VISUAIS -------------------------------*/
+// Inicia a movimentação do cenário via JavaScript
+    function moverCenario() {
+        // A variável 'velocidadeCenario' funciona de forma inversa: quanto menor o seu valor, maior será o 'incremento', resultando em um movimento mais rápido do cenário.
+        // O número 100 é um fator de escala para que a velocidade pareça adequada ao jogo.
+        const incremento = 100 / velocidadeCenario;                      // Calcula o quanto o fundo deve se mover neste quadro da animação. 
+        backgroundPositionY += incremento;                               // Acumula o valor do incremento na posição Y total do fundo.
+        cenario.style.backgroundPositionY = `${backgroundPositionY}px`;  // Aplica a nova posição vertical (backgroundPositionY) ao estilo CSS do elemento 'cenario'.
+    }
+
 // Efeito de nave explodindo
 function explosaoNaves(nave) {
-    const posicaoNave = nave.getBoundingClientRect();   // Pega as coordenadas da nave
-    const explosao = document.createElement("div");     // Cria um elemento div, que vai ser a explosão
-    explosao.className = "explosao";                    // Adiciona a classe da explosão para aplicar o estilo
-    explosao.style.left = posicaoNave.left + "px";      // Pega a posição horizontal da nave
-    explosao.style.top = posicaoNave.top + "px";        // Pega a posição vertical da nave
-    cenario.appendChild(explosao);                      // Adiciona a explosão ao cenario
-    somExplosaoNaves();                                 // Chama o audio de explosão da nave
-    setTimeout(() => {                                  // Depois de 500 milissegundos
-        explosao.remove();                              // Remove a explosão
+    const posicaoNave = nave.getBoundingClientRect();       // Pega as coordenadas da nave
+    const explosao = document.createElement("div");         // Cria um elemento div, que vai ser a explosão
+    explosao.className = "explosao";                        // Adiciona a classe da explosão para aplicar o estilo
+    explosao.style.left = posicaoNave.left + "px";          // Pega a posição horizontal da nave
+    explosao.style.top = posicaoNave.top + "px";            // Pega a posição vertical da nave
+    cenario.appendChild(explosao);                          // Adiciona a explosão ao cenario
+    somExplosaoNaves();                                     // Chama o audio de explosão da nave
+    setTimeout(() => {                                      // Depois de 500 milissegundos
+        explosao.remove();                                  // Remove a explosão
     }, 500);
 }
 
 // Efeito Toasty
-let ultimaVez = 0;       // guarda quando o toast foi exibido
-const intervalo = 10000; // intervalo mínimo (10 segundos)
-function mostrarToasty() {
-    const agora = Date.now(); // tempo atual em ms
-    if (agora - ultimaVez < intervalo) { // se foi exibido recentemente 
+let ultimaVez = 0;                                          // guarda quando o toast foi exibido
+const intervalo = 10000;                                    // intervalo mínimo (10 segundos)
+function mostrarToasty() {                                  // função para mostrar o toast
+    const agora = Date.now();                               // tempo atual em ms
+    if (agora - ultimaVez < intervalo) {                    // se foi exibido recentemente
         // ainda dentro do intervalo, não mostra
-        return;
+        return;                                             // sai da função
     }
     ultimaVez = agora;                                      // atualiza o último tempo
     const toast = document.getElementById("stormtropper");  // Pega o objeto que será o toast
@@ -35,17 +44,17 @@ function mostrarToasty() {
 
 // Atualizar o menu do jogo
 function atualizarMenu() {
-    vida.innerText = `Vida: ${pontosVida}%`;     // Atualiza a vida no menu
-    pontos.innerText = `Pontos: ${pontosScore}`; // Atualiza a pontuação no menu
+    vida.innerText = `Vida: ${pontosVida}%`;                // Atualiza a vida no menu
+    pontos.innerText = `Pontos: ${pontosScore}`;            // Atualiza a pontuação no menu
 }
 
 // Atualizando as estatisticas do jogo
 function showEstatisticas() {
-    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;
-    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;
-    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;
-    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;
-    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;
-    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;
-    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;
+    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;                               // Atualiza a velocidade do X-Wing no menu
+    dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;                    // Atualiza a velocidade de rotação do X-Wing no menu
+    dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;                // Atualiza a velocidade do Tie-Fighter no menu
+    dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;                   // Atualiza o ângulo de ataque dos Tie-Fighter no menu
+    dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;     // Atualiza a velocidade de construção dos Tie-Fighter no menu
+    dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;                   // Atualiza a quantidade de inimigos destruídos no menu
+    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;                        // Atualiza a vida da Estrela da Morte no menu
 }
