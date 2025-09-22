@@ -78,9 +78,9 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
 
 // Função para atirar
 function atirar() {
-    if (estaAtirando) {                                                        // Se a flag estaAtirando for true, cria os projéteis
-        criarProjeteisXWing(posicaoHorizontal, positionVertical, rotacaoXWing);  // Chama a função para criar os projéteis do X-Wing, passando a posição atual do X-Wing
-        somCanhoesXWing();                                                     // Toca o som dos canhões do X-Wing
+    if (estaAtirando) {                                                                  // Se a flag estaAtirando for true, cria os projéteis
+        criarProjeteisXWing(posicaoHorizontal, positionVertical, rotacaoXWing);          // Chama a função para criar os projéteis do X-Wing, passando a posição atual do X-Wing
+        somCanhoesXWing();                                                               // Toca o som dos canhões do X-Wing
     }
 }
 
@@ -123,6 +123,34 @@ function moverProjeteisXWing() {
 
 // Função para implementar as colisões no X-Wing
 function colisaoXWing() {
+    // Colisão com os Tie-Fighter
+    const todosTieFighter = document.querySelectorAll(".tie_fighter");                   // Pega todos os Tie-Fighter
+    todosTieFighter.forEach((nave) => {                                                  // Percorre todos os Tie-Fighter
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoTieFighter = nave.getBoundingClientRect();                          // Pega as coordenadas do Tie-Fighter
+        // Define uma "folga" para a colisão, tornando-a menos sensível.
+        // Um valor maior exige que as naves se sobreponham mais para que a colisão seja registrada.
+        const folgaColisao = 50;                                                         // Folga em pixels
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o Tie-Fighter
+            colisaoXWing.left + folgaColisao < colisaoTieFighter.right &&                // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do Tie-Fighter
+            colisaoXWing.right - folgaColisao > colisaoTieFighter.left &&                // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do Tie-Fighter
+            colisaoXWing.top + folgaColisao < colisaoTieFighter.bottom &&                // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do Tie-Fighter
+            colisaoXWing.bottom - folgaColisao > colisaoTieFighter.top                   // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do Tie-Fighter
+        ) {
+            pontosVida -= 20;                                                            // Diminui 20 pontos para cada Tie-Fighter que colidir com o X-Wing
+            explosaoNaves(nave);                                                         // Chama a função de explosão
+            nave.remove();                                                               // Remove o Tie-Fighter que colidiu com o X-Wing
+            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
+            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
+                atualizarMenu();                                                         // Atualiza a vida no menu
+            } else {                                                                     // Se a vida chegar a 0 ou menos
+                pontosVida = 0;                                                          // Fixa pontos de vida em 0
+                atualizarMenu();                                                         // Atualiza a vida no menu
+                gameOver();                                                              // Chama a função de Game Over
+            }
+        }
+    });
+
     // Colisão com projeteis do Tie-Fighter
     const todosDisparosTieFighter = document.querySelectorAll(".projetil_tie-fighter");  // Pega todos os disparos do Tie Fighter
     todosDisparosTieFighter.forEach((disparo) => {                                       // Percorre todos os projeteis
@@ -199,33 +227,22 @@ function colisaoXWing() {
 
 // Cria um projetil de punição por ficar parado no jogo
 function criarProjeteisPunicao() {
-    const tempoDePunicao = 15; // 15 segundos
-
-    // Verifica se a nave está parada
-    if (direcaoHorizontal === 0 && direcaoVertical === 0) {
-        // Se a nave acabou de parar, registra o timestamp inicial
-        if (timestampInicioParado === 0) {
-            timestampInicioParado = Date.now();
-        }
-
-        // Calcula o tempo total que a nave está parada, de forma precisa
-        tempoParado = Date.now() - timestampInicioParado;
-
-        // Se o tempo parado exceder o limite e não houver uma punição em andamento
-        if (tempoParado >= (tempoDePunicao * 1000) && !estaSendoPunido) {
-            const disparo = document.createElement("div");
-            const coordenadaHorizontalXWing = parseFloat(xwing.style.left);
+    if (direcaoHorizontal === 0 && direcaoVertical === 0 && !estaSendoPunido) {          // Verifica se a nave está parada e não houver uma punição em andamento
+        if (timestampInicioParado === 0) timestampInicioParado = Date.now();             // Se a nave acabou de parar, registra o timestamp inicial
+        tempoParado = Date.now() - timestampInicioParado;                                // Calcula o tempo total que a nave está parada, de forma precisa
+        if (tempoParado >= (tempoDePunicao * 1000)) {                                    // Se o tempo parado exceder o limite 
             // Calcula a posição do disparo para mirar no centro da nave
-            const larguraProjetilPunicao = 15; // Largura definida no CSS para .projetil_punicao
-            let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - (larguraProjetilPunicao / 2);
-            disparo.className = "projetil_punicao";
-            disparo.style.left = coordenaDisparo + "px";
-            disparo.style.top = "0px";
-            cenario.appendChild(disparo);
-
-            estaSendoPunido = true; // Ativa a flag para evitar múltiplos disparos
-            timestampInicioParado = 0; // Reseta o timestamp para uma nova contagem
-            tempoParado = 0; // Reseta o contador de tempo parado para a UI
+            const larguraProjetilPunicao = 15;                                           // Largura definida no CSS para .projetil_punicao
+            const coordenadaHorizontalXWing = parseFloat(xwing.style.left);              // Pega a coordenada horizontal do X-Wing
+            let coordenaDisparo = coordenadaHorizontalXWing + (larguraXWing / 2) - (larguraProjetilPunicao / 2); // Calcula a coordenada horizontal do disparo
+            const disparo = document.createElement("div");                               // Cria um objeto <div> que será o disparo de punição
+            disparo.className = "projetil_punicao";                                      // Adiciona a classe do projetil para aplicar o estilo
+            disparo.style.left = coordenaDisparo + "px";                                 // Define a posição horizontal do disparo
+            disparo.style.top = "0px";                                                   // Define a posição vertical do disparo
+            cenario.appendChild(disparo);                                                // Adiciona o disparo ao cenario
+            estaSendoPunido = true;                                                      // Ativa a flag para evitar múltiplos disparos
+            timestampInicioParado = 0;                                                   // Reseta o timestamp para uma nova contagem
+            tempoParado = 0;                                                             // Reseta o contador de tempo parado para a UI
         }
     } else {
         // Se a nave se mover, reseta os contadores

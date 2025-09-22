@@ -25,7 +25,7 @@ const alturaXWing = xwing.offsetHeight;                          // Pega a altur
 const larguraTieFighter = 100;                                   // Pega a largura do Tie-Fighter
 const alturaTieFighter = 95.56;                                  // Pega a altura do Tie-Fighter
 const velocidadeMaximaXWing = 20;                                // Define a velocidade máxima do X-Wing
-const velMaximaRotacaoXWing = 8;                                 // Define a velocidade de rotação máxima do X-Wing
+const velMaximaRotacaoXWing = 5;                                 // 8 - Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;                              // 40 - Define a velocidade dos projeteis do X-Wing
 const velocidadeMaximaTieFighter = 12;                           // 12 - Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 700;                         // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
@@ -34,6 +34,7 @@ const velocidadeProjetilDeathStar = 50;                          // 10 - Define 
 const velocidadeProjetilPunicao = 50;                            // 10 - Define a velocidade dos projeteis de punição
 const anguloMaximo = 61;                                         // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 15;                              // Define a velocidade máxima do cenario
+const tempoDePunicao = 15;                                       // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição
 
 let velocidadeXWing = 10;                                        // 10 - Define a velocidade inicial do X-Wing 
 let velocidadeTieFighter = 1;                                    // 1 - Define a velocidade inicial dos Tie Fighters 
@@ -142,7 +143,7 @@ function iniciarJogo() {
         }, 20);                                                                                    // Repetição do loop a cada 20ms
         const iniciaBoss = setInterval(() => {                                                     // Inica o loop de verificação para dar inicio o boss da Estrela da Morte
             if (iniciarBossDeathStar) {                                                            // Se a flag iniciarBossDeathStar for verdadeira
-                if (pontosScore >= 10000) {                                                        // Verifica se a pontuação é maior ou igual a 10000
+                if (pontosScore >= 1000) {                                                        // Verifica se a pontuação é maior ou igual a 10000
                     iniciarBossDeathStar = false;                                                  // Desativa a flag para não entrar mais nessa de iniciar boss
                     clearInterval(iniciaBoss);                                                     // Finaliza o Loop de verificação
                     bossDeathStar();                                                               // Chama a função para iniciar a fase da estrela da morte
@@ -155,12 +156,12 @@ function iniciarJogo() {
 
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
-    if (okGameOver) {                                                         // Se o Game Over estiver habilitado
-        audioTrilhaSonora.pause();                                            // Pausa a trilha sonora do jogo
-        audioVoandoXWing.pause();                                             // Pausa o som do X-Wing voando
-        audioTrilhaSonoraEstrelaDaMorte.pause();                              // Pausa a trilha sonora da Estrela da Morte   
-        document.removeEventListener("keydown", teclasControlePressionadas);  // Remove os eventos de controle do X-Wing de keydown
-        document.removeEventListener("keyup", teclasControleSoltas);          // Remove os eventos de controle do X-Wing de keyup
+    if (okGameOver) {                                                                   // Se o Game Over estiver habilitado
+        audioTrilhaSonora.pause();                                                      // Pausa a trilha sonora do jogo
+        audioVoandoXWing.pause();                                                       // Pausa o som do X-Wing voando
+        audioTrilhaSonoraEstrelaDaMorte.pause();                                        // Pausa a trilha sonora da Estrela da Morte   
+        document.removeEventListener("keydown", teclasControlePressionadas);            // Remove os eventos de controle do X-Wing de keydown
+        document.removeEventListener("keyup", teclasControleSoltas);                    // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);
@@ -201,7 +202,7 @@ function gameOver() {
             clearInterval(atrasoSuspense);                                              // Finaliza o intervalo para não ficar repetindo em loop
             // Mostra a mensagem de fim de jogo
             const gameover = document.createElement("h1");                              // Constroi um objeto <h1>
-            gameover.innerHTML = "Game Over<br>O Imperio Venceu";                       // Adiciona um texto ao objeto criado
+            gameover.innerHTML = "Game &nbsp; Over<br>O &nbsp; Imperio &nbsp; Venceu";     // Adiciona um texto ao objeto criado
             gameover.className = "gameover";                                            // Defice uma classe ao objeto para adicionar formatação
             cenario.appendChild(gameover);                                              // Adiciona o objeto criado ao cenario
             menu.style.display = "none";                                                // Esconde o menu do jogo

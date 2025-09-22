@@ -110,9 +110,11 @@ function xwingSaindo() {
                     const vitoria = document.createElement("h1");              // Cria um elemento h1
                     vitoria.className = "gamewin";                             // Adiciona a classe para aplicar o estilo
                     // Adiciona o texto da vitória
-                    vitoria.innerHTML = `Contra todas as probabilidades, 
-                    voce triunfou!<br>Gracas a voce o terror tecnologico do Imperio caiu em ruinas,
-                    <br>trazendo uma nova era de esperanca para a Galaxia`;
+                    vitoria.innerHTML = `Contra &nbsp; todas &nbsp; as &nbsp; probabilidades, &nbsp; 
+                    voce &nbsp; triunfou!<br>Gracas &nbsp; a &nbsp; voce &nbsp; o &nbsp; terror &nbsp; 
+                    tecnologico &nbsp; do &nbsp; Imperio &nbsp; caiu &nbsp; em &nbsp; ruinas, &nbsp; 
+                    trazendo &nbsp; uma &nbsp; nova &nbsp; era &nbsp; de &nbsp; esperanca &nbsp; 
+                    para &nbsp; a &nbsp; Galaxia`;
                     // força o fade-in
                     setTimeout(() => {  
                         vitoria.style.opacity = 1;                             // Aplica o estilo de opacidade para fazer o fade-in
