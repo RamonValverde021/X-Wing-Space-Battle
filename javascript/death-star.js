@@ -48,7 +48,7 @@ function colisaoEstrelaDaMorte() {
                 deathstarRect.top < colisaoDisparo.bottom &&               // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
                 deathstarRect.bottom > colisaoDisparo.top                  // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
             ) {
-                vidaEstrelaDaMorte -= 4;                                   // Subtrai menos 4 pontos
+                vidaEstrelaDaMorte -= danoTiroXWing * 4;                   // Subtrai menos 4x pontos
                 pontosScore += 10;                                         // Aumenta a pontuação em 10 pontos 
                 pontos.innerText = `Pontos: ${pontosScore}`;               // Atualiza a pontuação do jogo
                 disparo.remove();                                          // Remove o projetil que acertou a Estrela da Morte

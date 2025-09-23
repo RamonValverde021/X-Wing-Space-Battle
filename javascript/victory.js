@@ -11,6 +11,8 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaProjeteisTieFighter);                             // Interrompe a criação de projeteis dos Tie-Fighters
     clearInterval(iniciaColisaoXWing);                                    // Interrompe as colisões com o X-Wing
     clearInterval(iniciaProjeteisPunicao);                                // Interrompe a criação de disparos de punição
+    clearInterval(iniciaCriarItensEspeciais);                             // Interrompe a criação de itens especiais
+    clearInterval(iniciaMovimentacaoItensEspeciais);                      // Interrompe a movimentação dos itens especiais
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0;                                                     // Define a variável de rotação do X-Wing para 0
@@ -88,7 +90,7 @@ function movimentarProjetilEspecial() {
 }
 
 // Função que faz o X-Wing sair voando rapido do cenario
-function xwingSaindo() {                                                       
+function xwingSaindo() {
     audioVoandoXWing.pause();                                                  // Pausa o audio do X-Wing Voando
 
     // Pega posição inicial
@@ -96,7 +98,7 @@ function xwingSaindo() {
     const speed = 50;                                                          // Define a velocidade de subida do X-Wing
 
     // Animação para mover o X-Wing para cima rapidamente
-    const intervalo = setInterval(() => {                               
+    const intervalo = setInterval(() => {
         posY -= speed;                                                         // Atualiza a posição vertical do X-Wing (move para cima rapidamente)
         xwing.style.top = posY + "px";                                         // Atualiza a posição no cenário
         // Verifica se o X-Wing saiu do cenário
@@ -116,7 +118,7 @@ function xwingSaindo() {
                     trazendo &nbsp; uma &nbsp; nova &nbsp; era &nbsp; de &nbsp; esperanca &nbsp; 
                     para &nbsp; a &nbsp; Galaxia`;
                     // força o fade-in
-                    setTimeout(() => {  
+                    setTimeout(() => {
                         vitoria.style.opacity = 1;                             // Aplica o estilo de opacidade para fazer o fade-in
                     }, 100);                                                   // 100ms já é suficiente
                     cenario.appendChild(vitoria);                              // Adiciona a mensagem ao cenário
@@ -128,7 +130,7 @@ function xwingSaindo() {
 }
 
 // Função que faz a explosão da Estrela da Morte
-function explosaoEstrelaDaMorte() {                            
+function explosaoEstrelaDaMorte() {
     clearInterval(iniciaProjeteisDeathStar);                                   // Interrompe a criação de projeteis da Estrela da Morte
     clearInterval(iniciaMovimentacaoProjeteisDeathStar);                       // Interrompe a movimentação dos projeteis da Estrela da Morte
     clearInterval(iniciaColisaoEstrelaDaMorte);                                // Interrompe as colisões com a Estrela da Morte

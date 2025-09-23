@@ -16,7 +16,7 @@ const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");    
 const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");  // Seleciona o span para a velocidade de criação dos TIEs.
 const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");          // Seleciona o span para o contador de inimigos destruídos.
 const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");                // Seleciona o span para a vida da Estrela da Morte.
-const dadosTempoParado = document.getElementById("tempoParado"); 
+const dadosTempoParado = document.getElementById("tempoParado");
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth;                      // Pega a largura de todod o cenario
 const alturaCenario = cenario.offsetHeight;                      // Pega a altura de todod o cenario 
@@ -24,7 +24,7 @@ const larguraXWing = xwing.offsetWidth;                          // Pega a largu
 const alturaXWing = xwing.offsetHeight;                          // Pega a altura do X-Wing
 const larguraTieFighter = 100;                                   // Pega a largura do Tie-Fighter
 const alturaTieFighter = 95.56;                                  // Pega a altura do Tie-Fighter
-const velocidadeMaximaXWing = 20;                                // Define a velocidade máxima do X-Wing
+const velocidadeMaximaXWing = 15;                                // Define a velocidade máxima do X-Wing
 const velMaximaRotacaoXWing = 5;                                 // 8 - Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;                              // 40 - Define a velocidade dos projeteis do X-Wing
 const velocidadeMaximaTieFighter = 12;                           // 12 - Define a velocidade máxima dos Tie Fighters
@@ -35,8 +35,10 @@ const velocidadeProjetilPunicao = 50;                            // 10 - Define 
 const anguloMaximo = 61;                                         // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 15;                              // Define a velocidade máxima do cenario
 const tempoDePunicao = 15;                                       // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição
+const velocidadeItemEspecial = 3;                                // Define a velocidade de decida dos itens especiais
 
-let velocidadeXWing = 10;                                        // 10 - Define a velocidade inicial do X-Wing 
+let velocidadeXWing = 5;                                        // 10 - Define a velocidade inicial do X-Wing 
+let danoTiroXWing = 1;                                           // Define o dano dos tiros do X-Wing
 let velocidadeTieFighter = 1;                                    // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
 let anguloAtaqueTieFighter = 0;                                  // Recebe o angulo de ataque dos Tie Fighters (em graus)
@@ -67,8 +69,11 @@ let timestampInicioParado = 0;                                   // Timestamp de
 let backgroundPositionY = 0;                                     // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                     // Flag para evitar múltiplos projéteis
 let countInimigosDestruidos = 0;                                 // Contador de inimigos destruídos
+let okPoderResistencia = false;
+let okPowerUp = false;
 
 // Variaveis para os intervalos do jogo
+let iniciaBossTimeout;
 let iniciaMovimentacaoCenario;
 let iniciaMovimentacaoXWing;
 let iniciaProjeteisXWing;
@@ -87,6 +92,8 @@ let iniciaProjeteisDeathStar;
 let iniciaMovimentacaoProjeteisDeathStar;
 let iniciaProjeteisPunicao;
 let iniciaMovimentacaoProjeteisPunicao;
+let iniciaCriarItensEspeciais;
+let iniciaMovimentacaoItensEspeciais;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
 document.getElementById("btn_Inicar").addEventListener("click", iniciarJogo);                      // Inicia o jogo clicando no botão
@@ -100,7 +107,7 @@ document.addEventListener("keydown", function (event) {                         
 });
 
 function iniciarJogo() {
-    console.log("Iniciando Jogo");   
+    console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
     somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando    
     botaoIniciar.style.display = "none";                                                           // Esconde o botão iniciar após clicar nele
@@ -132,6 +139,8 @@ function iniciarJogo() {
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
         iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
+        iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 5000);                        // Inica em loop a função de criação de itens especiais
+        iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);                   // Inica em loop a função de movimentação dos itens especiais
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
                 rotacaoXWing -= velRotacaoXWing;                                                   // Decrementa a rotação do X-Wing
@@ -141,15 +150,16 @@ function iniciarJogo() {
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                              // Aplica a rotação no X-Wing
             }
         }, 20);                                                                                    // Repetição do loop a cada 20ms
-        const iniciaBoss = setInterval(() => {                                                     // Inica o loop de verificação para dar inicio o boss da Estrela da Morte
-            if (iniciarBossDeathStar) {                                                            // Se a flag iniciarBossDeathStar for verdadeira
-                if (pontosScore >= 1000) {                                                        // Verifica se a pontuação é maior ou igual a 10000
-                    iniciarBossDeathStar = false;                                                  // Desativa a flag para não entrar mais nessa de iniciar boss
-                    clearInterval(iniciaBoss);                                                     // Finaliza o Loop de verificação
-                    bossDeathStar();                                                               // Chama a função para iniciar a fase da estrela da morte
-                }
+        
+        // Agenda o início do boss para daqui a 5 minutos (300.000 ms)
+        const tempoParaBoss = 5 * 60 * 1000;
+        iniciaBossTimeout = setTimeout(() => {
+            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
+            if (iniciarBossDeathStar) {
+                iniciarBossDeathStar = false; // Desativa a flag para não iniciar novamente
+                bossDeathStar(); // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 20);                                                                                    // Repetição do loop a cada 20ms
+        }, tempoParaBoss);
     }, 3000); // Atraso de 3 segundos
 }
 
@@ -163,6 +173,7 @@ function gameOver() {
         document.removeEventListener("keydown", teclasControlePressionadas);            // Remove os eventos de controle do X-Wing de keydown
         document.removeEventListener("keyup", teclasControleSoltas);                    // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
+        clearTimeout(iniciaBossTimeout);
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);
         clearInterval(iniciaMovimentacaoXWing);
@@ -181,6 +192,8 @@ function gameOver() {
         clearInterval(iniciaMovimentacaoProjeteisDeathStar);
         clearInterval(iniciaProjeteisPunicao);
         clearInterval(iniciaMovimentacaoProjeteisPunicao);
+        clearInterval(iniciaCriarItensEspeciais);
+        clearInterval(iniciaMovimentacaoItensEspeciais);
         habilitarAtaqueEspecial = false;                                                // Desabilita o ataque especial caso apareça o F na tela
         btnEspecialAtaque.style.display = "none";                                       // Esconde o botão de ataque especial
         explosaoNaves(xwing);                                                           // Chama a explosão do X-Wing

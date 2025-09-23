@@ -137,16 +137,18 @@ function colisaoXWing() {
             colisaoXWing.top + folgaColisao < colisaoTieFighter.bottom &&                // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do Tie-Fighter
             colisaoXWing.bottom - folgaColisao > colisaoTieFighter.top                   // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do Tie-Fighter
         ) {
-            pontosVida -= 20;                                                            // Diminui 20 pontos para cada Tie-Fighter que colidir com o X-Wing
             explosaoNaves(nave);                                                         // Chama a função de explosão
             nave.remove();                                                               // Remove o Tie-Fighter que colidiu com o X-Wing
-            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
-            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
-                atualizarMenu();                                                         // Atualiza a vida no menu
-            } else {                                                                     // Se a vida chegar a 0 ou menos
-                pontosVida = 0;                                                          // Fixa pontos de vida em 0
-                atualizarMenu();                                                         // Atualiza a vida no menu
-                gameOver();                                                              // Chama a função de Game Over
+            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+                pontosVida -= 20;                                                        // Diminui 20 pontos para cada Tie-Fighter que colidir com o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
+                if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                } else {                                                                 // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                      // Fixa pontos de vida em 0
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                    gameOver();                                                          // Chama a função de Game Over
+                }
             }
         }
     });
@@ -162,15 +164,17 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 2;                                                             // Diminui 2 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
-            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
-                atualizarMenu();                                                         // Atualiza a vida no menu
-            } else {                                                                     // Se a vida chegar a 0 ou menos
-                pontosVida = 0;                                                          // Fixa pontos de vida em 0
-                atualizarMenu();                                                         // Atualiza a vida no menu
-                gameOver();                                                              // Chama a função de Game Over
+            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+                pontosVida -= 4;                                                         // Diminui 4 pontos para cada projetil que acertar o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                } else {                                                                 // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                      // Fixa pontos de vida em 0
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                    gameOver();                                                          // Chama a função de Game Over
+                }
             }
         }
     });
@@ -186,15 +190,17 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 15;                                                            // Diminui 15 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
-            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
-                atualizarMenu();                                                         // Atualiza a vida no menu
-            } else {                                                                     // Se a vida chegar a 0 ou menos
-                pontosVida = 0;                                                          // Fixa pontos de vida em 0
-                atualizarMenu();                                                         // Atualiza a vida no menu
-                gameOver();                                                              // Chama a função de Game Over
+            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+                pontosVida -= 15;                                                        // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                } else {                                                                 // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                      // Fixa pontos de vida em 0
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                    gameOver();                                                          // Chama a função de Game Over
+                }
             }
         }
     });
@@ -210,16 +216,105 @@ function colisaoXWing() {
             colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
-            pontosVida -= 50;                                                            // Diminui 50 pontos para cada projetil que acertar o X-Wing
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                     // Se o pontos de vida cair para 20 pontos ou menos
-            if (pontosVida > 0) {                                                        // Se ainda tiver pontos de vida
-                atualizarMenu();                                                         // Atualiza a vida no menu
-            } else {                                                                     // Se a vida chegar a 0 ou menos
-                pontosVida = 0;                                                          // Fixa pontos de vida em 0
-                atualizarMenu();                                                         // Atualiza a vida no menu
-                gameOver();                                                              // Chama a função de Game Over
+            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+                pontosVida -= 50;                                                        // Diminui 50 pontos para cada projetil que acertar o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                } else {                                                                 // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                      // Fixa pontos de vida em 0
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                    gameOver();                                                          // Chama a função de Game Over
+                }
             }
+        }
+    });
+
+    // Colisão com a Vida Extra
+    const vidaExtra = document.querySelectorAll(".extra-life");                          // Seleciona todos os objetos da vida extra
+    vidaExtra.forEach((item) => {                                                        // Percorre todos os objetos da vida extra
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
+        const folgaColisao = 25;                                                         // Folga em pixels
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o item
+            colisaoXWing.left + folgaColisao < colisaoItem.right &&                      // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
+            colisaoXWing.right - folgaColisao > colisaoItem.left &&                      // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
+            colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
+            colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
+        ) {
+            pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
+            atualizarMenu();                                                             // Atualiza a pontuação no menu
+            item.remove();                                                               // Remove o item que colidiu com o X-Wing
+            if (pontosVida < 100) pontosVida += 30;                                      // Se os pontos de vida for menor que 100, ganha 20 pontos de vida
+            if (pontosVida >= 100) pontosVida = 100;                                     // Se os pontos de vida ultrapassar 100 pontos, mantem em 100 pontos de vida
+            atualizarMenu();                                                             // Atualiza a vida no menu
+        }
+    });
+
+    // Colisão com o Poder da Resistencia 
+    const poderResistencia = document.querySelectorAll(".resistence-power");             // Seleciona todos os objetos do poder de resistencia
+    poderResistencia.forEach((item) => {                                                 // Percorre todos os objetos do poder de resistencia
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
+        const folgaColisao = 25;                                                         // Folga em pixels
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o item
+            colisaoXWing.left + folgaColisao < colisaoItem.right &&                      // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
+            colisaoXWing.right - folgaColisao > colisaoItem.left &&                      // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
+            colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
+            colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
+        ) {
+            pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
+            atualizarMenu();                                                             // Atualiza a pontuação no menu
+            item.remove();                                                               // Remove o item que colidiu com o X-Wing
+            if (okPoderResistencia) return;                                              // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            okPoderResistencia = true;                                                   // Habilita a flag do Poder da Resistencia
+            // Efeito de piscar para a transição
+            let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
+            const blinkInterval = setInterval(() => {
+                // Alterna a classe para criar o efeito de piscar
+                xwing.className = (xwing.className === "x-wing_standard") ? "x-wing_resistence-power" : "x-wing_standard";
+                blinkTimes--;                                                            // Decrementa o contador de piscadas
+                if (blinkTimes <= 0) {                                                   // Se o contador chegar a 0
+                    clearInterval(blinkInterval);                                        // Para de piscar
+                    xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
+                }
+            }, 150);                                                                     // Intervalo do pisca-pisca (a cada 150ms)
+            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
+                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
+                okPoderResistencia = false;                                              // Desabilita a flag do Poder da Resistencia
+                xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
+            }, 10000);                                                                   // 10 segundos de duração total do poder
+        }
+    });
+
+    // Colisão com o Power-Up
+    const powerUp = document.querySelectorAll(".power-up");                              // Seleciona todos os objetos de Power-Up
+    powerUp.forEach((item) => {                                                          // Percorre todos os objetos de Power-Up
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
+        const folgaColisao = 25;                                                         // Folga em pixels
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o item
+            colisaoXWing.left + folgaColisao < colisaoItem.right &&                      // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
+            colisaoXWing.right - folgaColisao > colisaoItem.left &&                      // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
+            colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
+            colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
+        ) {
+            pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
+            atualizarMenu();                                                             // Atualiza a pontuação no menu
+            item.remove();                                                               // Remove o item que colidiu com o X-Wing
+            if (okPowerUp) return;                                                       // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            okPowerUp = true;                                                            // Habilita a flag do Power-Up
+            danoTiroXWing = 3;                                                           // Aumenta o dano dos tiros do X-Wing
+            clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
+            iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
+            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
+                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
+                okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
+                danoTiroXWing = 1;                                                       // Volta para o dano normal
+                clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
+                iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
+            }, 10000);                                                                   // 10 segundos de duração total do poder
         }
     });
     showEstatisticas();                                                                  // Atualiza as estatísticas do jogo

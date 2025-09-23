@@ -61,14 +61,16 @@ function moverNavesInimigas() {
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {           // Se o centro do Tie Fighter sair do cenario
                 tieFighters[i].remove();                                                   // Remove o Tie Fighter do cenario
-                pontosVida -= 3;                                                           // Diminui 2 pontos para cada projetil que acertar o X-Wing;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
-                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                   // Se o pontos de vida cair para 20 pontos ou menos
-                if (pontosVida > 0) {                                                      // Se ainda tiver pontos de vida
-                    atualizarMenu();                                                       // Atualiza a vida no menu
-                } else {                                                                   // Se a vida chegar a 0 ou menos
-                    pontosVida = 0;                                                        // Fixa pontos de vida em 0
-                    atualizarMenu();                                                       // Atualiza a vida no menu
-                    gameOver();                                                            // Chama a função de Game Over
+                if (!okPoderResistencia) {                                                 // Se o poder da resistencia estiver habilitado
+                    pontosVida -= 3;                                                       // Diminui 2 pontos para cada projetil que acertar o X-Wing;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                    if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();               // Se o pontos de vida cair para 20 pontos ou menos
+                    if (pontosVida > 0) {                                                  // Se ainda tiver pontos de vida
+                        atualizarMenu();                                                   // Atualiza a vida no menu
+                    } else {                                                               // Se a vida chegar a 0 ou menos
+                        pontosVida = 0;                                                    // Fixa pontos de vida em 0
+                        atualizarMenu();                                                   // Atualiza a vida no menu
+                        gameOver();                                                        // Chama a função de Game Over
+                    }
                 }
             }
         }
@@ -90,7 +92,7 @@ function colisaoTieFighter() {
                 colisaoNaveInimiga.top < colisaoDisparo.bottom &&                          // Verifica se o topo do Tie Fighter é menor que a parte de baixo do projetil
                 colisaoNaveInimiga.bottom > colisaoDisparo.top                             // Verifica se a parte de baixo do Tie Fighter é maior que o topo do projetil
             ) {
-                vidaAtuaTieFighter--;                                                      // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
+                vidaAtuaTieFighter -= danoTiroXWing;;                                                      // Diminui 1 ponto para cada projetil que acertar o Tie Fighter
                 pontosScore += 10;                                                         // Adiciona 10 pontos na pontuação para cada acerto no Tie Fighter
                 atualizarMenu();                                                           // Atualiza a pontuação no menu
                 disparo.remove();                                                          // Remove o projetil do cenario
