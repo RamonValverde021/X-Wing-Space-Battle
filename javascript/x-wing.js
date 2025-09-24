@@ -60,6 +60,13 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
         const tiro = document.createElement("div");                            // Cria um elemento div, que vai ser o projetil
         tiro.className = "projetil_x-wing";                                    // Adiciona a classe do projetil para aplicar o estilo
 
+        // Se o power-up estiver ativo 
+        if (okPowerUp) {
+            tiro.style.backgroundColor = "cyan";                               // Muda a cor do projétil para Ciano
+        } else {                                                               // Se o power-up estiver desativado
+            tiro.style.backgroundColor = "blue";                               // Muda a cor do projétil para o original, Azul
+        }
+
         // Posiciona o canto superior esquerdo para que o centro fique na spawn
         tiro.style.left = (spawn_center_x - half_w) + "px";                    // Centraliza horizontalmente
         tiro.style.top = (spawn_center_y - half_h) + "px";                     // Centraliza verticalmente
@@ -305,24 +312,14 @@ function colisaoXWing() {
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
             if (okPowerUp) return;                                                       // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
             okPowerUp = true;                                                            // Habilita a flag do Power-Up
-            danoTiroXWing = 3;                                                           // Aumenta o dano dos tiros do X-Wing
+            danoTiroXWing = 4;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
             
-            /*
-            const projeteis = document.querySelectorAll(".projetil_x-wing");                              // Seleciona todos os objetos de Power-Up
-            projeteis.forEach((tiro) => {
-                tiro.backgroundColor = "red";
-            });
-            */
-
-
-
-
             const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
                 clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
                 okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
-                danoTiroXWing = 1;                                                       // Volta para o dano normal
+                danoTiroXWing = 2;                                                       // Volta para o dano normal
                 clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
             }, 10000);                                                                   // 10 segundos de duração total do poder

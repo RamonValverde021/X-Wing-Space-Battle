@@ -147,7 +147,7 @@ function iniciarJogo() {
             clearInterval(iniciaItensEspeciaisTimeout);                                            // Finaliza o intervalo para não ficar repetindo em loop
             iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
-        }, 0.1 * 60 * 1000);                                                                       // Agenda o início do intens especiais para daqui a 1 minutos (60.000 ms)
+        }, 1 * 60 * 1000);                                                                       // Agenda o início do intens especiais para daqui a 1 minutos (60.000 ms)
 
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
