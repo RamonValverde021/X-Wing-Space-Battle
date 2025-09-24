@@ -54,7 +54,7 @@ let velRotacaoXWing = 2;                                         // 2 - Define a
 let giroHorario = false;                                         // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                     // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;                                 // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 800;                                    // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 1000;                                   // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                    // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                             // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                          // Flag para interromper a execução em loop da mensagem do Obi-Wan
@@ -164,7 +164,7 @@ function iniciarJogo() {
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
-        }, 0 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
+        }, 3 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
 
         iniciaBossTimeout = setTimeout(() => {
             if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado

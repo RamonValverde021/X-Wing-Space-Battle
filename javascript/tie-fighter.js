@@ -3,7 +3,7 @@
 function navesInimigas() {
     const tieFighter = document.createElement("div");                                      // Cria um elemento div, que vai ser o Tie Fighter
     tieFighter.className = "tie_fighter";                                                  // Adiciona a classe do Tie Fighter para aplicar o estilo
-    tieFighter.setAttribute("data-vida", 5);                                               // Cria o atributo data-vida para armazenar a vida do Tie Fighter
+    tieFighter.setAttribute("data-vida", 6);                                               // Cria o atributo data-vida para armazenar a vida do Tie Fighter
 
     // Posição inicial (aleatória na horizontal, topo da tela)
     const posicaoLeft = Math.floor(Math.random() * (larguraCenario - larguraTieFighter));  // Cria uma posição aleatória na horizontal dentro do cenario para o Tie Fighter

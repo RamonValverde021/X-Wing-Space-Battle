@@ -1,74 +1,38 @@
 /*------------------------------- ESTRELA DA MORTE -------------------------------*/
 function surgimentoEstrelaDaMorte() {
-    const estrela = document.getElementById("estacao_surge");
-    if (!estrela) {
-        const deathstar = document.createElement("div");
-        deathstar.id = "estacao_surge";
-        deathstar.className = "deathstar-rise";
-        cenario.appendChild(deathstar);
-        // Posição inicial 
-        let tamanhoEstrela = 0;
-        let subidaEstrela = 0;
-        const iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {       // Cria um intervalo para mover a Estrela da Morte
-            tamanhoEstrela++;                                           // 0.1 Decrementa a velocidade (quanto maior o valor, mais rápido desce)
-            subidaEstrela++;
-            deathstar.style.height = tamanhoEstrela + "px";                // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-            deathstar.style.width = tamanhoEstrela + "px";                 // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-            deathstar.style.bottom = subidaEstrela + "px";
-
-            if (tamanhoEstrela >= larguraCenario) {                        // Se a metade da Estrela da Morte avançar o fundo da tela
-                deathstar.style.height = larguraCenario + "px";            // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-                deathstar.style.width = larguraCenario + "px";             // Fixa a Estrela Da Morte onde ela parou
-                if (subidaEstrela >= alturaCenario) {
-                    console.log("fim subida: " + subidaEstrela);
-                    clearInterval(iniciaMovimentacaoEstrelaDaMorte);       // para quando sair da tela
-                    clearInterval(iniciaSurgimentoEstrelaDaMorte);
-                    deathstar.remove();
+    const estrela = document.getElementById("estacao_surge");         // Procura pelo elemento da estação que surge.
+    if (!estrela) {                                                   // Se o elemento da estação ainda não existir na tela.
+        const deathstar = document.createElement("div");              // Cria um novo elemento <div> para representar a Estrela da Morte.
+        deathstar.id = "estacao_surge";                               // Define o ID do novo elemento.
+        deathstar.className = "deathstar-rise";                       // Aplica a classe CSS para estilizar a animação de surgimento.
+        cenario.appendChild(deathstar);                               // Adiciona o elemento da Estrela da Morte ao cenário do jogo.
+        // Posição inicial
+        let tamanhoEstrela = 0;                                       // Inicializa a variável que controla o tamanho (largura e altura) da Estrela da Morte.
+        let subidaEstrela = 0;                                        // Inicializa a variável que controla a posição vertical (subida) da Estrela da Morte.
+        const iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {  // Inicia um intervalo para animar o movimento e crescimento da Estrela da Morte.
+            let incremento = 1;                                       // Define a velocidade inicial de crescimento.
+            if (tamanhoEstrela > 100) incremento = 2;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 100px.
+            if (tamanhoEstrela > 300) incremento = 3;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 300px.
+            if (tamanhoEstrela > 500) incremento = 4;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 500px.
+            if (tamanhoEstrela > 700) incremento = 5;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 700px.
+            tamanhoEstrela += incremento;                             // Adiciona o valor do incremento ao tamanho atual da Estrela da Morte
+            subidaEstrela += Math.max(1, Math.floor(incremento / 2)); // Aumenta a posição de subida, fazendo-a mover-se para cima.
+            deathstar.style.height = tamanhoEstrela + "px";           // Atualiza a altura do elemento da Estrela da Morte.
+            deathstar.style.width = tamanhoEstrela + "px";            // Atualiza a largura do elemento da Estrela da Morte.
+            deathstar.style.bottom = subidaEstrela + "px";            // Atualiza a posição vertical a partir da base da tela.
+            if (tamanhoEstrela >= larguraCenario) {                   // Se o tamanho da estrela atingir a largura do cenário.
+                deathstar.style.height = larguraCenario + "px";       // Fixa a altura no tamanho máximo da largura do cenário.
+                deathstar.style.width = larguraCenario + "px";        // Fixa a largura no tamanho máximo da largura do cenário.
+                if (subidaEstrela >= alturaCenario) {                 // Se a estrela já tiver subido completamente para fora da tela.
+                    console.log("fim subida: " + subidaEstrela);      // Exibe uma mensagem no console indicando o fim da animação.
+                    clearInterval(iniciaMovimentacaoEstrelaDaMorte);  // Para o intervalo de animação do movimento.
+                    clearInterval(iniciaSurgimentoEstrelaDaMorte);    // Para o intervalo que iniciou esta função.
+                    deathstar.remove();                               // Remove o elemento da Estrela da Morte do cenário.
                 }
             }
-        }, 100);
+        }, 250);
     }
 }
-
-/*
-function surgimentoEstrelaDaMorte() {
-    const estrela = document.getElementById("estacao_surge");
-    if (!estrela) {
-        const deathstar = document.createElement("div");
-        deathstar.id = "estacao_surge";
-        deathstar.className = "deathstar-rise";
-        cenario.appendChild(deathstar);
-        // Posição inicial 
-        let tamanhoEstrela = 0;
-        let subidaEstrela = 0;
-        const iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {       // Cria um intervalo para mover a Estrela da Morte
-            tamanhoEstrela += 1;                                           // 0.1 Decrementa a velocidade (quanto maior o valor, mais rápido desce)
-            deathstar.style.height = tamanhoEstrela + "px";                // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-            deathstar.style.width = tamanhoEstrela + "px";                 // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-            if (tamanhoEstrela >= (larguraCenario / 3)) {
-                if (okTamanho) {
-                    const estrela = deathstar.getBoundingClientRect();     // Pega as coordenadas do X-Wing    
-                    let coordenada = parseInt(estrela.bottom);
-                    subidaEstrela = coordenada - deathstar.offsetHeight;  
-                    okTamanho = false;
-                }
-                subidaEstrela++;
-                deathstar.style.bottom = subidaEstrela + "px";
-            }
-            if (tamanhoEstrela >= larguraCenario) {                        // Se a metade da Estrela da Morte avançar o fundo da tela
-                deathstar.style.height = larguraCenario + "px";            // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-                deathstar.style.width = larguraCenario + "px";             // Fixa a Estrela Da Morte onde ela parou
-                if (subidaEstrela >= alturaCenario) {
-                    console.log("fim subida: " + subidaEstrela);
-                    clearInterval(iniciaMovimentacaoEstrelaDaMorte);       // para quando sair da tela
-                    clearInterval(iniciaSurgimentoEstrelaDaMorte);
-                    deathstar.remove();
-                }
-            }
-        }, 100);
-    }
-}
-    */
 
 function bossDeathStar() {
     // Parar a criação de Tie Fighters e seus disparos
