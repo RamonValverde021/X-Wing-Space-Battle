@@ -1,32 +1,29 @@
 function criarItensEspeciais() {
-    const pausaDeInicio = setTimeout(() => {                                             // Cria uma pausa para não criar itens especiais com a abertura do jogo
-        clearInterval(pausaDeInicio);                                                    // Finaliza o intervalo para não ficar repetindo em loop
-        let sorteio = Math.floor(Math.random() * 6);                                     // Sorteia um valor entre 0 a 6
-        if (sorteio == 0 || sorteio == 1 || sorteio == 2) {                              // Se o valor for 0, 1 ou 2
-            const vida = document.createElement("div");                                  // Cria um elemento div, que vai ser o objeto da vida extra
-            const posicaoHorizontalVida = Math.floor(Math.random() * larguraCenario);    // Cria uma posição aleatória na horizontal 
-            vida.className = "extra-life";                                               // Adiciona a classe do objeto para aplicar o estilo
-            vida.style.left = posicaoHorizontalVida + "px";                              // Define a posição horizontal de origem do objeto
-            vida.style.top = "0px";                                                      // Define a posição vertical de origem do objeto
-            cenario.appendChild(vida);                                                   // Adiciona o objeto ao cenario
-        } else if (sorteio == 3) {                                                       // Se o valor for 3
-            const resistencia = document.createElement("div");                           // Cria um elemento div, que vai ser o objeto do poder de resistencia
-            const posicaiResistencia = Math.floor(Math.random() * larguraCenario);       // Cria uma posição aleatória na horizontal 
-            resistencia.className = "resistence-power";                                  // Adiciona a classe do objeto para aplicar o estilo
-            resistencia.style.left = posicaiResistencia + "px";                          // Define a posição horizontal de origem do objeto
-            resistencia.style.top = "0px";                                               // Define a posição vertical de origem do objeto
-            cenario.appendChild(resistencia);                                            // Adiciona o objeto ao cenario
-        } else if (sorteio == 4 || sorteio == 5) {                                       // Se o valor for 4 ou 5
-            const powerUp = document.createElement("div");                               // Cria um elemento div, que vai ser o objeto do Power Up
-            const posicaoPowerUp = Math.floor(Math.random() * larguraCenario);           // Cria uma posição aleatória na horizontal 
-            powerUp.className = "power-up";                                              // Adiciona a classe do objeto para aplicar o estilo
-            powerUp.style.left = posicaoPowerUp + "px";                                  // Define a posição horizontal de origem do objeto
-            powerUp.style.top = "0px";                                                   // Define a posição vertical de origem do objeto
-            cenario.appendChild(powerUp);                                                // Adiciona o objeto ao cenario
-        } else {
-            return;
-        }
-    }, 1 * 60 * 1000);  // Calculo para esperar em minutos
+    let sorteio = Math.floor(Math.random() * 6);                                     // Sorteia um valor entre 0 a 6
+    if (sorteio == 0 || sorteio == 1 || sorteio == 2) {                              // Se o valor for 0, 1 ou 2
+        const vida = document.createElement("div");                                  // Cria um elemento div, que vai ser o objeto da vida extra
+        const posicaoHorizontalVida = Math.floor(Math.random() * larguraCenario);    // Cria uma posição aleatória na horizontal 
+        vida.className = "extra-life";                                               // Adiciona a classe do objeto para aplicar o estilo
+        vida.style.left = posicaoHorizontalVida + "px";                              // Define a posição horizontal de origem do objeto
+        vida.style.top = "0px";                                                      // Define a posição vertical de origem do objeto
+        cenario.appendChild(vida);                                                   // Adiciona o objeto ao cenario
+    } else if (sorteio == 3) {                                                       // Se o valor for 3
+        const resistencia = document.createElement("div");                           // Cria um elemento div, que vai ser o objeto do poder de resistencia
+        const posicaiResistencia = Math.floor(Math.random() * larguraCenario);       // Cria uma posição aleatória na horizontal 
+        resistencia.className = "resistence-power";                                  // Adiciona a classe do objeto para aplicar o estilo
+        resistencia.style.left = posicaiResistencia + "px";                          // Define a posição horizontal de origem do objeto
+        resistencia.style.top = "0px";                                               // Define a posição vertical de origem do objeto
+        cenario.appendChild(resistencia);                                            // Adiciona o objeto ao cenario
+    } else if (sorteio == 4 || sorteio == 5) {                                       // Se o valor for 4 ou 5
+        const powerUp = document.createElement("div");                               // Cria um elemento div, que vai ser o objeto do Power Up
+        const posicaoPowerUp = Math.floor(Math.random() * larguraCenario);           // Cria uma posição aleatória na horizontal 
+        powerUp.className = "power-up";                                              // Adiciona a classe do objeto para aplicar o estilo
+        powerUp.style.left = posicaoPowerUp + "px";                                  // Define a posição horizontal de origem do objeto
+        powerUp.style.top = "0px";                                                   // Define a posição vertical de origem do objeto
+        cenario.appendChild(powerUp);                                                // Adiciona o objeto ao cenario
+    } else {
+        return;
+    }
 }
 
 function moverItensEspeciais() {

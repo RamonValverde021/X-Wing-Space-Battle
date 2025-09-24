@@ -33,7 +33,7 @@ const velocidadeProjetilTieFighter = 50;                         // 10 - Define 
 const velocidadeProjetilDeathStar = 50;                          // 10 - Define a velocidade dos projeteis da Estrela da Morte
 const velocidadeProjetilPunicao = 50;                            // 10 - Define a velocidade dos projeteis de punição
 const anguloMaximo = 61;                                         // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
-const velocidadeMaximaCenario = 15;                              // Define a velocidade máxima do cenario
+const velocidadeMaximaCenario = 100;                             // Define a velocidade máxima do cenario
 const tempoDePunicao = 15;                                       // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição
 const velocidadeItemEspecial = 3;                                // Define a velocidade de decida dos itens especiais
 
@@ -54,7 +54,7 @@ let velRotacaoXWing = 2;                                         // 2 - Define a
 let giroHorario = false;                                         // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                     // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;                                 // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 600;                                    // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 800;                                    // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                    // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                             // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                          // Flag para interromper a execução em loop da mensagem do Obi-Wan
@@ -74,6 +74,8 @@ let okPowerUp = false;
 
 // Variaveis para os intervalos do jogo
 let iniciaBossTimeout;
+let iniciaItensEspeciaisTimeout;
+let iniciaSurgimentoEstrelaDaMorteTimeout;
 let iniciaMovimentacaoCenario;
 let iniciaMovimentacaoXWing;
 let iniciaProjeteisXWing;
@@ -94,6 +96,7 @@ let iniciaProjeteisPunicao;
 let iniciaMovimentacaoProjeteisPunicao;
 let iniciaCriarItensEspeciais;
 let iniciaMovimentacaoItensEspeciais;
+let iniciaSurgimentoEstrelaDaMorte;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
 document.getElementById("btn_Inicar").addEventListener("click", iniciarJogo);                      // Inicia o jogo clicando no botão
@@ -139,8 +142,13 @@ function iniciarJogo() {
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
         iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
-        iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 5000);                        // Inica em loop a função de criação de itens especiais
-        iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);                   // Inica em loop a função de movimentação dos itens especiais
+
+        iniciaItensEspeciaisTimeout = setTimeout(() => {
+            clearInterval(iniciaItensEspeciaisTimeout);                                            // Finaliza o intervalo para não ficar repetindo em loop
+            iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
+            iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
+        }, 0.1 * 60 * 1000);                                                                       // Agenda o início do intens especiais para daqui a 1 minutos (60.000 ms)
+
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
                 rotacaoXWing -= velRotacaoXWing;                                                   // Decrementa a rotação do X-Wing
@@ -150,16 +158,19 @@ function iniciarJogo() {
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                              // Aplica a rotação no X-Wing
             }
         }, 20);                                                                                    // Repetição do loop a cada 20ms
-        
-        // Agenda o início do boss para daqui a 5 minutos (300.000 ms)
-        const tempoParaBoss = 5 * 60 * 1000;
+
+        iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
+            clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
+            iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
+        }, 3 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
+
         iniciaBossTimeout = setTimeout(() => {
-            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
-            if (iniciarBossDeathStar) {
-                iniciarBossDeathStar = false; // Desativa a flag para não iniciar novamente
-                bossDeathStar(); // Chama a função para iniciar a fase da estrela da morte
+            if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
+                iniciarBossDeathStar = false;                                                      // Desativa a flag para não iniciar novamente
+                bossDeathStar();                                                                   // Chama a função para iniciar a fase da estrela da morte
             }
-        }, tempoParaBoss);
+        }, 5 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 5 minutos (300.000 ms)
+
     }, 3000); // Atraso de 3 segundos
 }
 
@@ -174,6 +185,8 @@ function gameOver() {
         document.removeEventListener("keyup", teclasControleSoltas);                    // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
         clearTimeout(iniciaBossTimeout);
+        clearTimeout(iniciaItensEspeciaisTimeout);
+        clearTimeout(iniciaSurgimentoEstrelaDaMorteTimeout);
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);
         clearInterval(iniciaMovimentacaoXWing);
@@ -193,7 +206,6 @@ function gameOver() {
         clearInterval(iniciaProjeteisPunicao);
         clearInterval(iniciaMovimentacaoProjeteisPunicao);
         clearInterval(iniciaCriarItensEspeciais);
-        clearInterval(iniciaMovimentacaoItensEspeciais);
         habilitarAtaqueEspecial = false;                                                // Desabilita o ataque especial caso apareça o F na tela
         btnEspecialAtaque.style.display = "none";                                       // Esconde o botão de ataque especial
         explosaoNaves(xwing);                                                           // Chama a explosão do X-Wing

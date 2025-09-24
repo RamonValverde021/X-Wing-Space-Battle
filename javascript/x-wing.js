@@ -140,7 +140,7 @@ function colisaoXWing() {
             explosaoNaves(nave);                                                         // Chama a função de explosão
             nave.remove();                                                               // Remove o Tie-Fighter que colidiu com o X-Wing
             if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
-                pontosVida -= 20;                                                        // Diminui 20 pontos para cada Tie-Fighter que colidir com o X-Wing
+                pontosVida -= 50;                                                        // Diminui 50 pontos para cada Tie-Fighter que colidir com o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
                     atualizarMenu();                                                     // Atualiza a vida no menu
@@ -166,7 +166,7 @@ function colisaoXWing() {
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
             if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
-                pontosVida -= 4;                                                         // Diminui 4 pontos para cada projetil que acertar o X-Wing
+                pontosVida -= 5;                                                         // Diminui 5 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
                     atualizarMenu();                                                     // Atualiza a vida no menu
@@ -218,7 +218,7 @@ function colisaoXWing() {
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
             if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
-                pontosVida -= 50;                                                        // Diminui 50 pontos para cada projetil que acertar o X-Wing
+                pontosVida -= 60;                                                        // Diminui 60 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
                     atualizarMenu();                                                     // Atualiza a vida no menu
@@ -308,6 +308,17 @@ function colisaoXWing() {
             danoTiroXWing = 3;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
+            
+            /*
+            const projeteis = document.querySelectorAll(".projetil_x-wing");                              // Seleciona todos os objetos de Power-Up
+            projeteis.forEach((tiro) => {
+                tiro.backgroundColor = "red";
+            });
+            */
+
+
+
+
             const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
                 clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
                 okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
