@@ -26,11 +26,24 @@ function criarItensEspeciais() {
     }
 }
 
+// Item Full-Power
+let intervaloFullPower = 10000;                                                      // Libera a criação do item de Full-Power a cada 10000 pontos
+let contagemAnterior = 0;                                                            // Variavel de atuaização de contagem
+function criarItemFullPower() {
+    let contagemAtual = pontosScore;                                                 // Pega a pontuação atual do jogador.
+    if (contagemAtual - contagemAnterior >= intervaloFullPower) {                    // Verifica se o jogador ganhou pontos suficientes desde a última vez que o item foi criado.
+        contagemAnterior = contagemAtual;                                            // Atualiza a contagem para a próxima verificação.
+        const fullPower = document.createElement("div");                             // Cria um novo elemento <div> para o item.
+        const posicaiItem = Math.floor(Math.random() * larguraCenario);              // Sorteia uma posição horizontal aleatória para o item aparecer.
+        fullPower.className = "full-power";                                          // Define a classe CSS para estilizar o item.
+        fullPower.style.left = posicaiItem + "px";                                   // Define a posição horizontal do item.
+        fullPower.style.top = "0px";                                                 // Define a posição inicial no topo da tela.
+        cenario.appendChild(fullPower);                                              // Adiciona o item ao cenário do jogo.
+    }
+}
+
 function moverItensEspeciais() {
     const vidaExtra = document.querySelectorAll(".extra-life");                  // Seleciona todos os objetos da vida extra
-    const poderResistencia = document.querySelectorAll(".resistence-power");     // Seleciona todos os objetos do poder de resistencia
-    const powerUp = document.querySelectorAll(".power-up");                      // Seleciona todos os objetos de Power-Up
-
     for (let i = 0; i < vidaExtra.length; i++) {                                 // Percorre todos os objetos da vida extra
         if (vidaExtra[i]) {                                                      // Verifica se o objeto existe
             let posicaoItem = vidaExtra[i].offsetTop;                            // Pega a posição vertical atual do objeto
@@ -42,6 +55,7 @@ function moverItensEspeciais() {
         }
     }
 
+    const poderResistencia = document.querySelectorAll(".resistence-power");     // Seleciona todos os objetos do poder de resistencia
     for (let i = 0; i < poderResistencia.length; i++) {                          // Percorre todos os objetos do poder de resistencia
         if (poderResistencia[i]) {                                               // Verifica se o objeto existe
             let posicaoItem = poderResistencia[i].offsetTop;                     // Pega a posição vertical atual do objeto
@@ -53,6 +67,7 @@ function moverItensEspeciais() {
         }
     }
 
+    const powerUp = document.querySelectorAll(".power-up");                      // Seleciona todos os objetos de Power-Up
     for (let i = 0; i < powerUp.length; i++) {                                   // Percorre todos os objetos do Power-Up
         if (powerUp[i]) {                                                        // Verifica se o objeto existe
             let posicaoItem = powerUp[i].offsetTop;                              // Pega a posição vertical atual do objeto
@@ -60,6 +75,18 @@ function moverItensEspeciais() {
             powerUp[i].style.top = posicaoItem + "px";                           // Atualiza a posição vertical do objeto no cenario
             if (posicaoItem > alturaCenario) {                                   // Se o objeto sair do cenario 
                 powerUp[i].remove();                                             // Remove o objeto do cenario          
+            }
+        }
+    }
+
+    const fullPower = document.querySelectorAll(".full-power");                  // Seleciona todos os objetos de Full-Power
+    for (let i = 0; i < fullPower.length; i++) {                                 // Percorre todos os objetos do Full-Power
+        if (fullPower[i]) {                                                      // Verifica se o objeto existe
+            let posicaoItem = fullPower[i].offsetTop;                            // Pega a posição vertical atual do objeto
+            posicaoItem += velocidadeItemEspecial;                               // Atualiza a posição vertical do objeto, somando de acordo com a velocidade do objeto. Equação para mover para baixo
+            fullPower[i].style.top = posicaoItem + "px";                         // Atualiza a posição vertical do objeto no cenario
+            if (posicaoItem > alturaCenario) {                                   // Se o objeto sair do cenario 
+                fullPower[i].remove();                                           // Remove o objeto do cenario          
             }
         }
     }

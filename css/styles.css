@@ -408,3 +408,14 @@ div#cenario {
     background-position: center;
     z-index: 10;
 }
+
+.full-power {
+    position: absolute;
+    height: 50px;
+    width: 86px;
+    background-image: url('../images/special/special-3.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+}

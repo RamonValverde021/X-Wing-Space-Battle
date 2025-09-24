@@ -315,7 +315,7 @@ function colisaoXWing() {
             danoTiroXWing = 4;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
-            
+
             const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
                 clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
                 okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
@@ -323,6 +323,50 @@ function colisaoXWing() {
                 clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
             }, 10000);                                                                   // 10 segundos de duração total do poder
+        }
+    });
+
+    // Colisão com o Full-Power
+    const fullPower = document.querySelectorAll(".full-power");                            // Seleciona todos os objetos de Power-Up
+    fullPower.forEach((item) => {                                                        // Percorre todos os objetos de Power-Up
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
+        const folgaColisao = 25;                                                         // Folga em pixels
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o item
+            colisaoXWing.left + folgaColisao < colisaoItem.right &&                      // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
+            colisaoXWing.right - folgaColisao > colisaoItem.left &&                      // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
+            colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
+            colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
+        ) {
+            pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
+            pontosVida = 100;                                                            // Recarrega a vida ao máximo
+            atualizarMenu();                                                             // Atualiza a pontuação no menu
+            item.remove();                                                               // Remove o item que colidiu com o X-Wing
+            // Efeito de piscar para a transição
+            let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
+            const blinkInterval = setInterval(() => {
+                // Alterna a classe para criar o efeito de piscar
+                xwing.className = (xwing.className === "x-wing_standard") ? "x-wing_resistence-power" : "x-wing_standard";
+                blinkTimes--;                                                            // Decrementa o contador de piscadas
+                if (blinkTimes <= 0) {                                                   // Se o contador chegar a 0
+                    clearInterval(blinkInterval);                                        // Para de piscar
+                    xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
+                }
+            }, 150);
+            okPoderResistencia = true;                                                   // Habilita a flag do Poder da Resistencia
+            okPowerUp = true;                                                            // Habilita a flag do Power-Up
+            danoTiroXWing = 4;                                                           // Aumenta o dano dos tiros do X-Wing
+            clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
+            iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
+            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
+                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
+                okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
+                danoTiroXWing = 2;                                                       // Volta para o dano normal
+                clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
+                iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
+                okPoderResistencia = false;                                              // Desabilita a flag do Poder da Resistencia
+                xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
+            }, 15000);                                                                   // 15 segundos de duração total do poder
         }
     });
     showEstatisticas();                                                                  // Atualiza as estatísticas do jogo

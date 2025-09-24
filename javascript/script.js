@@ -95,6 +95,7 @@ let iniciaMovimentacaoProjeteisDeathStar;
 let iniciaProjeteisPunicao;
 let iniciaMovimentacaoProjeteisPunicao;
 let iniciaCriarItensEspeciais;
+let iniciaCriarItemFullPower;
 let iniciaMovimentacaoItensEspeciais;
 let iniciaSurgimentoEstrelaDaMorte;
 
@@ -146,8 +147,9 @@ function iniciarJogo() {
         iniciaItensEspeciaisTimeout = setTimeout(() => {
             clearInterval(iniciaItensEspeciaisTimeout);                                            // Finaliza o intervalo para não ficar repetindo em loop
             iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
+            iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
-        }, 1 * 60 * 1000);                                                                       // Agenda o início do intens especiais para daqui a 1 minutos (60.000 ms)
+        }, 1 * 60 * 1000);                                                                         // Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
 
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
@@ -162,7 +164,7 @@ function iniciarJogo() {
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
-        }, 3 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
+        }, 0 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
 
         iniciaBossTimeout = setTimeout(() => {
             if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
@@ -206,6 +208,7 @@ function gameOver() {
         clearInterval(iniciaProjeteisPunicao);
         clearInterval(iniciaMovimentacaoProjeteisPunicao);
         clearInterval(iniciaCriarItensEspeciais);
+        clearInterval(iniciaCriarItemFullPower);
         habilitarAtaqueEspecial = false;                                                // Desabilita o ataque especial caso apareça o F na tela
         btnEspecialAtaque.style.display = "none";                                       // Esconde o botão de ataque especial
         explosaoNaves(xwing);                                                           // Chama a explosão do X-Wing
