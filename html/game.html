@@ -14,7 +14,7 @@
    <script language="JavaScript" src="../javascript/tie-fighter.js" defer></script>
    <script language="JavaScript" src="../javascript/death-star.js" defer></script>
    <script language="JavaScript" src="../javascript/visual-effects.js" defer></script>
-   <script language="JavaScript" src="../javascript/sounds.js" defer></script>
+   <script language="JavaScript" src="../javascript/sounds-effects.js" defer></script>
    <script language="JavaScript" src="../javascript/controls.js" defer></script>
    <script language="JavaScript" src="../javascript/victory.js" defer></script>
    <script language="JavaScript" src="../javascript/specials.js" defer></script>
@@ -23,9 +23,17 @@
 <body>
    <div id="cenario" class="estrelasRepetidas">
       <div id="menu" class="menu fade-in">
-         <span id="vida" class="menu_iten">Vida: 100%</span>
-         <span id="pontos" class="menu_iten">Pontos: 0</span>
+         <section id="menu_1" class="section_menu">
+            <span id="vida" class="menu_iten">Vida: 100%</span>
+         </section>
+         <section id="menu_2" class="section_menu">
+            <span id="tempo_gameplay" class="menu_iten">Tempo: 00:00</span>
+         </section>
+         <section id="menu_3" class="section_menu">
+            <span id="pontos" class="menu_iten">Pontos: 0</span>
+         </section>
       </div>
+
       <p id="ataque_especial" class="use_a_forca">F</p>
       <section id="dados-jogo" class="data_game">
          <span id="vel_x-wing" class="data_iten">Vel. X-Wing: 20</span>

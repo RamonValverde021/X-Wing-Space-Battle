@@ -1,4 +1,17 @@
 /*------------------------------- EFEITOS VISUAIS -------------------------------*/
+// Inica a contagem de tempo da Gameplay
+function contagemTempoGameplay() {
+    tempoTotalSegundos++;                                                       // Incrementa o contador de segundos a cada chamada (que ocorre a cada segundo)
+    const minutos = Math.floor(tempoTotalSegundos / 60);                        // Calcula os minutos dividindo o total de segundos por 60 e arredondando para baixo.
+    const segundos = tempoTotalSegundos % 60;                                   // Calcula os segundos restantes usando o operador de módulo (resto da divisão).
+    // Formata os minutos e segundos para que sempre tenham dois dígitos, 
+    // adicionando um '0' à esquerda se necessário.
+    const minutosFormatados = String(minutos).padStart(2, '0');
+    const segundosFormatados = String(segundos).padStart(2, '0');
+    tempoJogo.innerText = `Tempo: ${minutosFormatados}:${segundosFormatados}`;  // Atualiza o texto do elemento no HTML com o tempo formatado.
+}
+
+
 // Inicia a movimentação do cenário via JavaScript
     function moverCenario() {
         // A variável 'velocidadeCenario' funciona de forma inversa: quanto menor o seu valor, maior será o 'incremento', resultando em um movimento mais rápido do cenário.
@@ -35,7 +48,7 @@ function mostrarToasty() {                                  // função para mos
     const toast = document.getElementById("stormtropper");  // Pega o objeto que será o toast
     toast.classList.add("show");                            // Adiciona a classe show para exibir o toast
     const audio = new Audio('../audios/toasty_sound.mp3');  // Audio do Toasty
-    audio.volume = 0.6;                                     // Define o volume do audio
+    audio.volume = 1;                                       // Define o volume do audio
     audio.play();                                           // Toca o audio
     setTimeout(() => {                                      // Depois de 1 segundo
         toast.classList.remove("show");                     // Remove a classe show para esconder o toast

@@ -250,6 +250,7 @@ function colisaoXWing() {
             colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
             colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
         ) {
+            somItensEspeciais(1);                                                        // Toca o som do item especial de Vida Extra
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
@@ -271,6 +272,7 @@ function colisaoXWing() {
             colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
             colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
         ) {
+            somItensEspeciais(2);                                                        // Toca o som do item especial de Poder da Resistencia
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
@@ -307,6 +309,7 @@ function colisaoXWing() {
             colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
             colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
         ) {
+            somItensEspeciais(4);                                                        // Toca o som do item especial de Power-Up
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
@@ -338,6 +341,13 @@ function colisaoXWing() {
             colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
             colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
         ) {
+            if (audioTrilhaSonora.played) {
+                audioTrilhaSonora.volume = 0;                                            // Muta a trilha sonora principal
+            }
+            if (audioTrilhaSonoraEstrelaDaMorte.played) {
+                audioTrilhaSonoraEstrelaDaMorte.volume = 0;                              // Muta a trilha sonora da Estrela da Morte
+            }
+            somItensEspeciais(3);                                                        // Toca o som do item especial de Power-Up
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             pontosVida = 100;                                                            // Recarrega a vida ao máximo
             atualizarMenu();                                                             // Atualiza a pontuação no menu
@@ -366,6 +376,12 @@ function colisaoXWing() {
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
                 okPoderResistencia = false;                                              // Desabilita a flag do Poder da Resistencia
                 xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
+                if (audioTrilhaSonora.played) {
+                    audioTrilhaSonora.volume = 0.7;                                      // Reativa o volume da trilha sonora principal normalmente
+                }
+                if (audioTrilhaSonoraEstrelaDaMorte.played) {
+                    audioTrilhaSonoraEstrelaDaMorte.volume = 1;                        // Reativa o volume da trilha sonora da Estrela da Morte normalmente
+                }
             }, 15000);                                                                   // 15 segundos de duração total do poder
         }
     });
@@ -390,6 +406,7 @@ function criarProjeteisPunicao() {
             estaSendoPunido = true;                                                      // Ativa a flag para evitar múltiplos disparos
             timestampInicioParado = 0;                                                   // Reseta o timestamp para uma nova contagem
             tempoParado = 0;                                                             // Reseta o contador de tempo parado para a UI
+            somTiroPunicao();                                                            // Toca o som do tiro de punição
         }
     } else {
         // Se a nave se mover, reseta os contadores

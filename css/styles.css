@@ -114,6 +114,23 @@ body#index {
     }
 }
 
+.section_menu {
+    width: 33%;
+}
+
+section#menu_1 {
+    text-align: left;
+}
+
+section#menu_2 {
+    text-align: center;
+}
+
+section#menu_3 {
+    text-align: right;
+}
+
+
 /* Formatação do cenario do jogo */
 div#cenario {
     position: relative;
@@ -295,7 +312,7 @@ div#cenario {
     bottom: 100%;
     height: 100vw;
     width: 100vw;
-    background-image: url('../images/deathstar/deathstar-3.png');
+    background-image: url('../images/deathstar/deathstar-1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

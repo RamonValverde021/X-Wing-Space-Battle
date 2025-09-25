@@ -62,7 +62,7 @@ function moverNavesInimigas() {
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {           // Se o centro do Tie Fighter sair do cenario
                 tieFighters[i].remove();                                                   // Remove o Tie Fighter do cenario
                 if (!okPoderResistencia) {                                                 // Se o poder da resistencia estiver habilitado
-                    pontosVida -= 5;                                                      // Diminui 10 pontos para cada projetil que acertar o X-Wing;                                                           // Diminui 3 pontos para cada projetil que acertar o X-Wing;                                                          // Diminui 15 pontos para cada projetil que acertar o X-Wing
+                    pontosVida -= 5;                                                       // Diminui 3 pontos para cada nave que sair do cenario                                                      
                     if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();               // Se o pontos de vida cair para 20 pontos ou menos
                     if (pontosVida > 0) {                                                  // Se ainda tiver pontos de vida
                         atualizarMenu();                                                   // Atualiza a vida no menu
@@ -98,7 +98,7 @@ function colisaoTieFighter() {
                 disparo.remove();                                                          // Remove o projetil do cenario
                 if (vidaAtuaTieFighter <= 0) {                                             // Se a vida do Tie Fighter chegar a 0
                     countNavesDestruidas++;                                                // Incrementa o contador de naves destruídas
-                    velocidadeTieFighter += 0.5;                                           // Aumenta a velocidade dos Tie Fighters
+                    velocidadeTieFighter += 0.4;                                           // Aumenta a velocidade dos Tie Fighters
                     velocidadeXWing += 0.1;                                                // Aumenta a velocidade do X-Wing
                     velRotacaoXWing += 0.1;                                                // Aumenta a velocidade de rotação do X-Wing
                     velocidadeCenario -= 1;                                                // Diminui o valor da duração, aumentando a velocidade do cenário
@@ -115,7 +115,7 @@ function colisaoTieFighter() {
                         velocidadeTieFighter = velocidadeMaximaTieFighter;                 // Limita a velocidade máxima dos Tie Fighters
                     }
                     if (quantidadeTieFighters >= quantidadeMaximaTieFighters) {            // Limita o tempo mínimo de criação dos Tie Fighters
-                        quantidadeTieFighters -= 100;                                      // Diminui o tempo de criação dos Tie Fighters
+                        quantidadeTieFighters -= 50;                                      // Diminui o tempo de criação dos Tie Fighters
                         if (iniciarBossDeathStar == true) {                                // Resolve um bug de criação de Tie-Fighters mesmo após a interrupção na icialização do Boss Estrela da Morte
                             clearInterval(iniciaNavesInimigas);                            // Limpa o intervalo atual
                             iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);  // Reinicia o intervalo com o novo tempo  

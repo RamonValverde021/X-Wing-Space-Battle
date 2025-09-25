@@ -120,6 +120,16 @@ window.addEventListener("gamepadconnected", (e) => {
                 if (index === 8) {                                                                         // Se o botão View/Select (índice 8) foi clicado.
                     painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";  // Alterna a visibilidade do painel de estatísticas.
                 }
+
+                // Iniciar Jogo (Botão Start) - corresponde à tecla 'ENTER'
+                if (index === 9) {                                                                         // Se o botão Star (índice 9) foi clicado.
+                    if (jogoIniciado == false) {                                                           // Se o jogo não começou ainda     
+                        iniciarJogo();                                                                     // Inicia o jogo
+                    }
+                    if (okGameOver == false) {
+                        location.reload();
+                    }
+                }
             }
         });
 

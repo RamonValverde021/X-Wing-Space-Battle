@@ -64,27 +64,21 @@ function projetilEspecial() {
 }
 
 function movimentarProjetilEspecial() {
-    const tiros = document.querySelectorAll(".torpedo_x-wing");                // Seleciona todos os projeteis do X-Wing
-    const estrelaDaMorte = document.getElementById("estrela-da-morte");        // Seleciona a Estrela da Morte
-    for (let i = 0; i < tiros.length; i++) {                                   // Percorre todos os projéteis
-        if (tiros[i]) {                                                        // Verifica se o projétil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;                       // Pega a posição vertical atual do projétil
-            posicaoTopProjetil -= velocidadeProjetilXWing;                     // Atualiza a posição vertical do projétil (move para cima)
-            tiros[i].style.top = posicaoTopProjetil + "px";                    // Atualiza a posição no cenário
-            if (estrelaDaMorte) {                                              // Verifica se a Estrela da Morte ainda existe
-                const deathStarRect = estrelaDaMorte.getBoundingClientRect();  // Pega as coordenadas da Estrela da Morte
-                const deathStarTop = deathStarRect.top;                        // Topo absoluto da Estrela da Morte
-                const deathStarHeight = deathStarRect.height;                  // Altura da Estrela da Morte
-                const deathStarMiddle = deathStarTop + (deathStarHeight / 2);  // Calcula a metade da altura da Estrela da Morte
-                if (posicaoTopProjetil <= deathStarMiddle) {                   // Verifica se o projétil atingiu a metade da Estrela da Morte
-                    tiros[i].remove();                                         // Remove o projétil (para de subir e some)
-                    const intervaloMovimento = setInterval(() => {             // Delay para ativar a sequência de vitória (como no original)
-                        clearInterval(intervaloMovimento);                     // Limpa o intervalo para evitar múltiplas chamadas
-                        xwingSaindo();                                         // Chama a função que faz o X-Wing sair voando
-                    }, 1000);                                                  // 1 segundo de delay
-                    return;                                                    // Sai do loop para esse projétil (já foi processado)
-                }
+    const tiros = document.querySelectorAll(".torpedo_x-wing");            // Seleciona todos os projeteis do X-Wing
+    for (let i = 0; i < tiros.length; i++) {                               // Percorre todos os projéteis
+        if (tiros[i]) {                                                    // Verifica se o projétil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;                   // Pega a posição vertical atual do projétil
+            posicaoTopProjetil -= velocidadeProjetilXWing;                 // Atualiza a posição vertical do projétil (move para cima)
+            tiros[i].style.top = posicaoTopProjetil + "px";                // Atualiza a posição no cenário
+            if (posicaoTopProjetil <= 50) {                                // Verifica se o projétil atingiu um pouco abixo do topo do cenário
+                tiros[i].remove();                                         // Remove o projétil (para de subir e some)
+                const intervaloMovimento = setInterval(() => {             // Delay para ativar a sequência de vitória (como no original)
+                    clearInterval(intervaloMovimento);                     // Limpa o intervalo para evitar múltiplas chamadas
+                    xwingSaindo();                                         // Chama a função que faz o X-Wing sair voando
+                }, 1000);                                                  // 1 segundo de delay
+                return;                                                    // Sai do loop para esse projétil (já foi processado)
             }
+
         }
     }
 }
@@ -109,6 +103,7 @@ function xwingSaindo() {
                 explosaoEstrelaDaMorte();                                      // Chama a função que faz a explosão da Estrela da Morte
                 const tempoPosExplosao = setInterval(() => {                   // Delay para mostrar a mensagem de vitória
                     clearInterval(tempoPosExplosao);                           // Limpa o intervalo para evitar múltiplas chamadas
+                    clearInterval(iniciaContagemTempoGameplay);                // Interrompe a contagem do tempo de jogo
                     const vitoria = document.createElement("h1");              // Cria um elemento h1
                     vitoria.className = "gamewin";                             // Adiciona a classe para aplicar o estilo
                     // Adiciona o texto da vitória

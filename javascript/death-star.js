@@ -9,7 +9,7 @@ function surgimentoEstrelaDaMorte() {
         // Posição inicial
         let tamanhoEstrela = 0;                                       // Inicializa a variável que controla o tamanho (largura e altura) da Estrela da Morte.
         let subidaEstrela = 0;                                        // Inicializa a variável que controla a posição vertical (subida) da Estrela da Morte.
-        const iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {  // Inicia um intervalo para animar o movimento e crescimento da Estrela da Morte.
+        const iniciaSurgimentoNoFundo = setInterval(() => {           // Inicia um intervalo para animar o movimento e crescimento da Estrela da Morte.
             let incremento = 1;                                       // Define a velocidade inicial de crescimento.
             if (tamanhoEstrela > 100) incremento = 2;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 100px.
             if (tamanhoEstrela > 300) incremento = 3;                 // Aumenta a velocidade de crescimento quando o tamanho passa de 300px.
@@ -25,7 +25,7 @@ function surgimentoEstrelaDaMorte() {
                 deathstar.style.width = larguraCenario + "px";        // Fixa a largura no tamanho máximo da largura do cenário.
                 if (subidaEstrela >= alturaCenario) {                 // Se a estrela já tiver subido completamente para fora da tela.
                     console.log("fim subida: " + subidaEstrela);      // Exibe uma mensagem no console indicando o fim da animação.
-                    clearInterval(iniciaMovimentacaoEstrelaDaMorte);  // Para o intervalo de animação do movimento.
+                    clearInterval(iniciaSurgimentoNoFundo);           // Para o intervalo de animação do movimento.
                     clearInterval(iniciaSurgimentoEstrelaDaMorte);    // Para o intervalo que iniciou esta função.
                     deathstar.remove();                               // Remove o elemento da Estrela da Morte do cenário.
                 }
@@ -56,10 +56,12 @@ function bossDeathStar() {
             if (estrelaDestruida == false) {                          // Se a Estrela da Morte não foi destruída
                 posY -= 0.1;                                          // 0.1 Decrementa a velocidade (quanto maior o valor, mais rápido desce)
                 deathstar.style.bottom = posY + "%";                  // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-                if (posY <= -20) {                                    // Se a metade da Estrela da Morte avançar o fundo da tela
+                if (posY <= -70) {                                    // Se a metade da Estrela da Morte avançar o fundo da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();          // Interrompe a trilha sonora da Estrela da Morte
-                    deathstar.style.bottom = "-20%";                  // Fixa a Estrela Da Morte onde ela parou
+                    deathstar.style.bottom = "-70%";                  // Fixa a Estrela Da Morte onde ela parou
                     clearInterval(iniciaMovimentacaoEstrelaDaMorte);  // para quando sair da tela
+                    pontosVida = 0;                                   // Zera a pontuação de vida
+                    atualizarMenu();                                  // Atualiza a pontuação no menu
                     gameOver();                                       // Chama a função de Game Over
                 }
             }
@@ -77,10 +79,10 @@ function colisaoEstrelaDaMorte() {
         todosDisparos.forEach((disparo) => {                               // Para cada disparo do X-Wing
             const colisaoDisparo = disparo.getBoundingClientRect();        // Pega as coordenadas do disparo
             if (
-                deathstarRect.left < colisaoDisparo.right &&               // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
-                deathstarRect.right > colisaoDisparo.left &&               // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
-                deathstarRect.top < colisaoDisparo.bottom &&               // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
-                deathstarRect.bottom > colisaoDisparo.top                  // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
+                deathstarRect.left - 350 < colisaoDisparo.right + 100 &&   // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
+                deathstarRect.right - 350 > colisaoDisparo.left + 100 &&   // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
+                deathstarRect.top - 350 < colisaoDisparo.bottom + 100 &&   // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
+                deathstarRect.bottom - 350 > colisaoDisparo.top + 100      // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
             ) {
                 vidaEstrelaDaMorte -= danoTiroXWing * 4;                   // Subtrai menos 4x pontos
                 pontosScore += 10;                                         // Aumenta a pontuação em 10 pontos 
@@ -114,6 +116,7 @@ function criarProjeteisDeathStar() {
     disparo.style.left = posicaoHorizontal + "px";                         // Define a posição horizontal de origem do projetil
     disparo.style.top = "0px";                                             // Define a posição vertical de origem do projetil
     cenario.appendChild(disparo);                                          // Adiciona o projetil ao cenario
+    somCanhoesEstrelaDaMorte();                                            // Toca o som dos canhões da Estrela da Morte
 }
 
 function moverProjeteisDeathStar() {
