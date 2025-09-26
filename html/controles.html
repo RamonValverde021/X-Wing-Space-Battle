@@ -7,25 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
     <title>StarWars - X-Wing Space Battle</title>
-    <link rel="icon" href="./images/icon.png">
-    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <link rel="icon" href="../images/icon.png">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
 </head>
 
-<body id="index">
-    <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar Game &nbsp;&nbsp;&nbsp; ❱</Iniciar></button>
-    <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle-2.mp4"></video>
+<body id="controles">
+
     <script>
-        const btn = document.getElementById("playIntro");
-        const video = document.getElementById("introVideo");
-        btn.addEventListener("click", () => {
-            btn.style.display = "none";      // esconde botão
-            video.style.display = "block";   // mostra vídeo
-            video.play();                    // começa vídeo
-        });
-        // quando o vídeo terminar → redireciona para o jogo
-        video.addEventListener("ended", () => {
-            window.location.href = "./html/game.html"; // troca para a página do game
-        });
 
         // Script para ler entradas do controle de X-Box
         window.addEventListener("gamepadconnected", (e) => {

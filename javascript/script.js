@@ -183,12 +183,12 @@ function iniciarJogo() {
 
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
-    if (okGameOver) {                                                                   // Se o Game Over estiver habilitado
-        audioTrilhaSonora.pause();                                                      // Pausa a trilha sonora do jogo
-        audioVoandoXWing.pause();                                                       // Pausa o som do X-Wing voando
-        audioTrilhaSonoraEstrelaDaMorte.pause();                                        // Pausa a trilha sonora da Estrela da Morte   
-        document.removeEventListener("keydown", teclasControlePressionadas);            // Remove os eventos de controle do X-Wing de keydown
-        document.removeEventListener("keyup", teclasControleSoltas);                    // Remove os eventos de controle do X-Wing de keyup
+    if (okGameOver) {                                                                              // Se o Game Over estiver habilitado
+        audioTrilhaSonora.pause();                                                                 // Pausa a trilha sonora do jogo
+        audioVoandoXWing.pause();                                                                  // Pausa o som do X-Wing voando
+        audioTrilhaSonoraEstrelaDaMorte.pause();                                                   // Pausa a trilha sonora da Estrela da Morte   
+        document.removeEventListener("keydown", teclasControlePressionadas);                       // Remove os eventos de controle do X-Wing de keydown
+        document.removeEventListener("keyup", teclasControleSoltas);                               // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
         clearInterval(iniciaContagemTempoGameplay);
         clearTimeout(iniciaBossTimeout);
