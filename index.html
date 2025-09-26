@@ -12,16 +12,53 @@
 </head>
 
 <body id="index">
-    <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar Game &nbsp;&nbsp;&nbsp; ❱</Iniciar></button>
+    <div id="botoes_Index" class="painel_botoes">
+        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar Game &nbsp;&nbsp;&nbsp; ❱</Iniciar>
+        </button>
+        <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Controles &nbsp;&nbsp;&nbsp; ❱</Iniciar>
+        </button>
+    </div>
+
     <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle-2.mp4"></video>
     <script>
-        const btn = document.getElementById("playIntro");
+        const botoes = document.getElementById("botoes_Index");
+        const btnIniciar = document.getElementById("playIntro");
+        const btnControles = document.getElementById("btnManualControles");
         const video = document.getElementById("introVideo");
-        btn.addEventListener("click", () => {
-            btn.style.display = "none";      // esconde botão
-            video.style.display = "block";   // mostra vídeo
-            video.play();                    // começa vídeo
+
+        // Inicia com o botão Iniciar selecionado
+        btnIniciar.className = "botaoIndexSelecionado";
+        btnControles.className = "botaoIndex";
+
+        btnIniciar.addEventListener("click", () => {
+            botoes.style.display = "none";      // esconde botão
+            video.style.display = "block";      // mostra vídeo
+            video.play();                       // começa vídeo
         });
+
+        btnControles.addEventListener("click", () => {
+            botoes.style.display = "none";      // esconde botão
+            window.location.href = './html/manualControles.html';
+        });
+
+        btnIniciar.addEventListener("mouseover", () => {
+            btnIniciar.className = "botaoIndexSelecionado";
+            if (btnControles.className === "botaoIndexSelecionado") btnControles.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseover", () => {
+            btnControles.className = "botaoIndexSelecionado";
+            if (btnIniciar.className === "botaoIndexSelecionado") btnIniciar.className = "botaoIndex";
+        });
+
+        btnIniciar.addEventListener("mouseout", () => {
+            btnIniciar.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseout", () => {
+            btnControles.className = "botaoIndex";
+        });
+
         // quando o vídeo terminar → redireciona para o jogo
         video.addEventListener("ended", () => {
             window.location.href = "./html/game.html"; // troca para a página do game
@@ -42,23 +79,38 @@
                 gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
                     const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
                     if (foiClicado) {
-                        if (index === 9) {
-                            btn.style.display = "none";      // esconde botão
-                            video.style.display = "block";   // mostra vídeo
-                            video.play();                    // começa vídeo                                                                       // Se o botão View/Select (índice 8) foi clicado.
+                        if (index === 9 || index === 0) {        // Botão Start ou A
+                            const botoes = document.getElementById("botoes_Index");
+                            const btnIniciar = document.getElementById("playIntro");
+                            const btnControles = document.getElementById("btnManualControles");
+                            const video = document.getElementById("introVideo");
+                            if (btnIniciar.className === "botaoIndexSelecionado") {
+                                botoes.style.display = "none";   // esconde botão
+                                video.style.display = "block";   // mostra vídeo
+                                video.play();                    // começa vídeo
+                            } else if (btnControles.className === "botaoIndexSelecionado") {
+                                window.location.href = './html/manualControles.html';
+                            }
+                        } else if (index === 14) {               // Botão Seta Esquerda
+                            document.getElementById("playIntro").className = "botaoIndexSelecionado";
+                            document.getElementById("btnManualControles").className = "botaoIndex";
+                        } else if (index === 15) {               // Botão Seta Direita
+                            document.getElementById("playIntro").className = "botaoIndex";
+                            document.getElementById("btnManualControles").className = "botaoIndexSelecionado";
                         }
                     }
                 });
                 // Salva o estado atual dos botões para comparar no próximo frame
-                prevButtons = gp.buttons.map(b => ({ pressed: b.pressed, value: b.value }));                       // Salva o estado atual de todos os botões para a próxima verificação.
-                requestAnimationFrame(update);                                                                     // Agenda a próxima execução da função 'update' para o próximo quadro de animação.
+                prevButtons = gp.buttons.map(b => ({ pressed: b.pressed, value: b.value }));  // Salva o estado atual de todos os botões para a próxima verificação.
+                requestAnimationFrame(update);                                                // Agenda a próxima execução da função 'update' para o próximo quadro de animação.
             }
             update();
         });
 
-        window.addEventListener("gamepaddisconnected", (e) => {                                                    // Adiciona um ouvinte de evento para quando um controle é desconectado.
-            console.log("Controle desconectado:", e.gamepad);                                                      // Exibe no console que o controle foi desconectado.
+        window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
+            console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
         });
+
     </script>
 </body>
 

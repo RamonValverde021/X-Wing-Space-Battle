@@ -120,14 +120,14 @@ function criarProjeteisDeathStar() {
 }
 
 function moverProjeteisDeathStar() {
-    const tiros = document.querySelectorAll(".projetil_death-star");  // Seleciona todos os elementos com a classe projetil_death-star, ou seja, todos os projeteis
-    for (let i = 0; i < tiros.length; i++) {                          // Percorre todos os projeteis
-        if (tiros[i]) {                                               // Verifica se o projetil existe
-            let posicaoTopProjetil = tiros[i].offsetTop;              // Pega a posição vertical atual do projetil
-            posicaoTopProjetil += velocidadeProjetilDeathStar;        // Atualiza a posição vertical do projetil, somando de acordo com a velocidade do projetil. Equação para mover para baixo
-            tiros[i].style.top = posicaoTopProjetil + "px";           // Atualiza a posição vertical do projetil no cenario
-            if (posicaoTopProjetil > alturaCenario) {                 // Se o projetil sair do cenario 
-                tiros[i].remove();                                    // Remove o projetil do cenario          
+    const tiros = document.querySelectorAll(".projetil_death-star");       // Seleciona todos os elementos com a classe projetil_death-star, ou seja, todos os projeteis
+    for (let i = 0; i < tiros.length; i++) {                               // Percorre todos os projeteis
+        if (tiros[i]) {                                                    // Verifica se o projetil existe
+            let posicaoTopProjetil = tiros[i].offsetTop;                   // Pega a posição vertical atual do projetil
+            posicaoTopProjetil += velocidadeProjetilDeathStar;             // Atualiza a posição vertical do projetil, somando de acordo com a velocidade do projetil. Equação para mover para baixo
+            tiros[i].style.top = posicaoTopProjetil + "px";                // Atualiza a posição vertical do projetil no cenario
+            if (posicaoTopProjetil > alturaCenario) {                      // Se o projetil sair do cenario 
+                tiros[i].remove();                                         // Remove o projetil do cenario          
             }
         }
     }
