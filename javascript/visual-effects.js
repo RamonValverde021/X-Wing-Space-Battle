@@ -13,13 +13,13 @@ function contagemTempoGameplay() {
 
 
 // Inicia a movimentação do cenário via JavaScript
-    function moverCenario() {
-        // A variável 'velocidadeCenario' funciona de forma inversa: quanto menor o seu valor, maior será o 'incremento', resultando em um movimento mais rápido do cenário.
-        // O número 100 é um fator de escala para que a velocidade pareça adequada ao jogo.
-        const incremento = 100 / velocidadeCenario;                      // Calcula o quanto o fundo deve se mover neste quadro da animação. 
-        backgroundPositionY += incremento;                               // Acumula o valor do incremento na posição Y total do fundo.
-        cenario.style.backgroundPositionY = `${backgroundPositionY}px`;  // Aplica a nova posição vertical (backgroundPositionY) ao estilo CSS do elemento 'cenario'.
-    }
+function moverCenario() {
+    // A variável 'velocidadeCenario' funciona de forma inversa: quanto menor o seu valor, maior será o 'incremento', resultando em um movimento mais rápido do cenário.
+    // O número 100 é um fator de escala para que a velocidade pareça adequada ao jogo.
+    const incremento = 100 / velocidadeCenario;                      // Calcula o quanto o fundo deve se mover neste quadro da animação. 
+    backgroundPositionY += incremento;                               // Acumula o valor do incremento na posição Y total do fundo.
+    cenario.style.backgroundPositionY = `${backgroundPositionY}px`;  // Aplica a nova posição vertical (backgroundPositionY) ao estilo CSS do elemento 'cenario'.
+}
 
 // Efeito de nave explodindo
 function explosaoNaves(nave) {
@@ -57,8 +57,15 @@ function mostrarToasty() {                                  // função para mos
 
 // Atualizar o menu do jogo
 function atualizarMenu() {
-    vida.innerText = `Vida: ${pontosVida}%`;                // Atualiza a vida no menu
-    pontos.innerText = `Pontos: ${pontosScore}`;            // Atualiza a pontuação no menu
+    vida.innerText = `Vida: ${pontosVida}%`;                                                              // Atualiza a vida no menu
+    pontos.innerText = `Pontos: ${pontosScore}`;                                                          // Atualiza a pontuação no menu
+    if (barraDeVidaEstrelaDaMorte.style.display !== "none") {                                             // Se a barra de vida da Estrela da Morte não estiver oculta
+        // Regra de três para calcular a porcentagem da vida
+        const vidaTotalEstrelaDaMorte = 4500;                                                             // Valor inicial da vida
+        const porcentagemVida = (vidaEstrelaDaMorte / vidaTotalEstrelaDaMorte) * 100;                     // Calucla um mapeamento para 3000 = 100% de vida
+        barraDeVidaEstrelaDaMorte.style.width = `${porcentagemVida}%`;                                    // Atualiza a largura da barra de vida
+        if(porcentagemVida === 0) barraDeVidaEstrelaDaMorte.style.display = "none";                       // Se a barra de vida chegar a 0, oculta a barra de vida  
+    }
 }
 
 // Atualizando as estatisticas do jogo

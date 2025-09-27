@@ -38,8 +38,9 @@ function bossDeathStar() {
     // Parar a criação de Tie Fighters e seus disparos
     clearInterval(iniciaNavesInimigas);                               // Interrompe a criação dos Tie-Fighters
     clearInterval(iniciaProjeteisTieFighter);                         // Interrompe a criação de projeteis dos Tie-Fighters
+    barraDeVidaEstrelaDaMorte.style.display = "block";                // Mostra a barra de vida da Estrela da Morte
     audioTrilhaSonora.pause();                                        // Interrompe a trilha sonora principal
-    pontosVida = 100;                                                 // Recarrega avida para enfrentar a estrela da morte 
+    pontosVida = 1000;                                                 // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                                  // Atualiza o Menu de status do jogo
     const intervaloSuspense = setInterval(() => {                     // Cria um atraso antes da Estrela da Morte Aparecer
         clearInterval(intervaloSuspense);                             // DEsativa o loop do atraso
@@ -79,15 +80,16 @@ function colisaoEstrelaDaMorte() {
         todosDisparos.forEach((disparo) => {                               // Para cada disparo do X-Wing
             const colisaoDisparo = disparo.getBoundingClientRect();        // Pega as coordenadas do disparo
             if (
-                deathstarRect.left - 350 < colisaoDisparo.right + 100 &&   // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
-                deathstarRect.right - 350 > colisaoDisparo.left + 100 &&   // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
-                deathstarRect.top - 350 < colisaoDisparo.bottom + 100 &&   // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
-                deathstarRect.bottom - 350 > colisaoDisparo.top + 100      // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
+                deathstarRect.left < colisaoDisparo.right + 100 &&         // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
+                deathstarRect.right > colisaoDisparo.left + 100 &&         // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
+                deathstarRect.top < colisaoDisparo.bottom + 100 &&         // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
+                deathstarRect.bottom > colisaoDisparo.top + 100            // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
             ) {
                 vidaEstrelaDaMorte -= danoTiroXWing * 4;                   // Subtrai menos 4x pontos
-                pontosScore += 10;                                         // Aumenta a pontuação em 10 pontos 
+                pontosScore += 12;                                         // Aumenta a pontuação em 12 pontos 
                 pontos.innerText = `Pontos: ${pontosScore}`;               // Atualiza a pontuação do jogo
                 disparo.remove();                                          // Remove o projetil que acertou a Estrela da Morte
+                atualizarMenu();                                           // Atualiza o Menu de status do jogo
                 if (vidaEstrelaDaMorte <= 0) {                             // Se a vida da Estrela da Morte for menor ou igual a 0
                     if (sinalObiWan) {                                     // Se o sinal do Obi-Wan estiver habilitado
                         sinalObiWan = false;                               // Desabilita o sinal do Obi-Wan para não ficar repetindo infinitamente

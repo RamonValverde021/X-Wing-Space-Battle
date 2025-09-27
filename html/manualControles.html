@@ -7,46 +7,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
     <title>StarWars - X-Wing Space Battle</title>
-    <link rel="icon" href="../images/icon.png">
-    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="icon" href="../images/icon-192.png">
+    <link rel="stylesheet" type="text/css" href="../css/manualControles.css">
 </head>
 <style>
-    #painel_Controles {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center
-    }
-
-    .item_comando {
-        font-weight: 500;
-        font-size: 30px;
-        color: yellow;
-        padding: 2px 15px 5px 15px;
-    }
-
-    .item_evidenciado {
-         font-size: 35px;
-    }
+    
 </style>
 
 <body id="controles">
-
-    <div id="painel_Controles" class="painel_comandos">
-        <span class="item_comando">⬆ &nbsp; &nbsp; &nbsp;  =  &nbsp; Mover nave para cima</span>
-        <span class="item_comando">⬇ &nbsp; &nbsp; &nbsp;  = &nbsp; Mover nave para baixo</span>
-        <span class="item_comando">⬅ &nbsp; = &nbsp; Mover nave para esquerda</span>
-        <span class="item_comando">⮕ &nbsp; = &nbsp; Mover nave para direita</span>
-
-        <span class="item_comando"><span class="item_evidenciado">Y</span>&nbsp; &nbsp; &nbsp;  =  &nbsp;Atirar</span>
-        <span class="item_comando"><span class="item_evidenciado">X</span>&nbsp; &nbsp; &nbsp;  =  &nbsp;Atirar</span>
-        <span class="item_comando"><span class="item_evidenciado">A</span>&nbsp; &nbsp; &nbsp;  =  &nbsp;Atirar</span>
-        <span class="item_comando"><span class="item_evidenciado">B</span>&nbsp; &nbsp; &nbsp;  =  &nbsp;Atirar</span>
-
+    <div class="painel_comandos">
+        <section class="painel_dados">
+            <span id="legenda_instrucoes" class="item_comando">Controle &nbsp; &nbsp; / &nbsp; &nbsp; Teclado &nbsp;
+                &nbsp; = &nbsp; &nbsp;
+                Legenda</span><br>
+            <span class="item_comando">⬆<span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+                    cima</span></span>
+            <span class="item_comando">⬇<span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+                    baixo</span></span>
+            <span class="item_comando">⬅<span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+                    esquerda</span></span>
+            <span class="item_comando">⮕<span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+                    direita</span></span>
+            <span class="item_comando">LB / A<span class="item_legenda"> = &nbsp; &nbsp; Girar &nbsp; Nave &nbsp;
+                    sentido &nbsp; antihorario</span></span>
+            <span class="item_comando">RB / D<span class="item_legenda"> = &nbsp; &nbsp; Girar &nbsp; Nave &nbsp;
+                    sentido &nbsp; horario</span></span>
+            <span class="item_comando">RT / Espaco<span class="item_legenda"> = &nbsp; &nbsp; Atirar</span></span>
+            <span class="item_comando">Y / F<span class="item_legenda"> = &nbsp; &nbsp; Ataque &nbsp;
+                    especial</span></span>
+            <span class="item_comando">X / Sem Tecla<span class="item_legenda"> = &nbsp; &nbsp; Sem &nbsp;
+                    comando</span></span>
+            <span class="item_comando">A / Espaco<span class="item_legenda"> = &nbsp; &nbsp; Atirar</span></span>
+            <span class="item_comando">B / Backspace<span class="item_legenda"> = &nbsp; &nbsp; Voltar &nbsp;
+                    pagina</span></span>
+            <span class="item_comando">START / Enter<span class="item_legenda"> = &nbsp; &nbsp; Inicia &nbsp; o &nbsp;
+                    Jogo</span></span>
+            <span class="item_comando">BACK / P<span class="item_legenda"> = &nbsp; &nbsp; Abre &nbsp; o &nbsp; painel
+                    &nbsp; de &nbsp; estatisticas</span></span>
+        </section>
     </div>
 
-
     <script>
+        document.addEventListener("keydown", function (event) {               // Função para iniciar o jogo com apertar do Enter
+            console.log(event.key);
+            if (event.key === "Backspace") {                                  // Se a tecla apertada for o Enter
+                window.location.href = '../index.html';
+            }
+        });
         // Script para ler entradas do controle de X-Box
         window.addEventListener("gamepadconnected", (e) => {
             // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)

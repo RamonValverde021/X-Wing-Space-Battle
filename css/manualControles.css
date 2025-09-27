@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'fontPixelArt';
+    src: url("../font/ARCADECLASSIC.TTF");
+}
+
+* {
+    /* Resetar modulos de espaçamentos*/
+    margin: 0px;
+    padding: 0px;
+    font-family: fontPixelArt;
+}
+
+body#controles {
+    background-image: url('../images/background_2.png');
+    background-color: black;
+    background-size: contain;
+    /* Para que a imagem cubra toda a tela */
+    background-repeat: no-repeat;
+    /* Para evitar repetição da imagem */
+    background-position: center center;
+    /* Para centralizar a imagem */
+    background-attachment: fixed;
+}
+
+.painel_comandos {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.painel_dados {
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-direction: column;
+    padding: 1% 20px 2% 5%;
+    width: 600px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#legenda_instrucoes {
+    font-weight: 500;
+    font-size: 30px;
+}
+
+.item_comando {
+    font-weight: 500;
+    font-size: 25px;
+    color: yellow;
+    padding: 5px 15px;
+}
+
+.item_legenda {
+    padding: 5px 15px;
+}

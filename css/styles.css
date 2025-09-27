@@ -24,18 +24,6 @@ body#index {
     background-attachment: fixed;
 }
 
-body#controles {
-    background-image: url('../images/background_2.png');
-    background-color: black;
-    background-size: contain;
-    /* Para que a imagem cubra toda a tela */
-    background-repeat: no-repeat;
-    /* Para evitar repetição da imagem */
-    background-position: center center;
-    /* Para centralizar a imagem */
-    background-attachment: fixed;
-}
-
 .painel_botoes {
     position: absolute;
     display: flex;
@@ -45,7 +33,7 @@ body#controles {
     margin: 0 35%;
     width: 50%;
     bottom: 16%;
-     z-index: 10;
+    z-index: 10;
 }
 
 .botaoIndex {
@@ -154,6 +142,30 @@ section#menu_3 {
     text-align: right;
 }
 
+.life_boss {
+    position: absolute;
+    top: 50px; 
+    width: 100%;
+    height: 21px;
+     z-index: 10;
+}
+
+#life_deathstar {
+    display: none;
+    background-color: yellow;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+#life_deathstar p {
+    position: absolute;
+    left: 2%;
+    top: 3px;
+    color: blue;
+    font-size: 15px;
+    z-index: 12; 
+}
 
 /* Formatação do cenario do jogo */
 div#cenario {

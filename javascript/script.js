@@ -5,9 +5,11 @@ const xwing = document.getElementById("x-wing");                                
 const botaoIniciar = document.getElementById("btn_Inicar");                              // Seleciona o botão "Iniciar Jogo".
 const menu = document.getElementById("menu");                                            // Seleciona a div que contém o menu de status (vida, pontos).
 const vida = document.getElementById("vida");                                            // Seleciona o span que mostra a vida do jogador.
-const tempoJogo = document.getElementById("tempo_gameplay");                              // Seleciona o span que mostra o tempo de jogo.
+const tempoJogo = document.getElementById("tempo_gameplay");                             // Seleciona o span que mostra o tempo de jogo.
 const pontos = document.getElementById("pontos");                                        // Seleciona o span que mostra a pontuação.
 const btnEspecialAtaque = document.getElementById("ataque_especial");                    // Seleciona o elemento que indica o ataque especial (letra 'F').
+const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
+
 // Estastiticas do jogo
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
 const dadosVelXWing = document.getElementById("vel_x-wing");                             // Seleciona o span para a velocidade da X-Wing.
@@ -56,7 +58,7 @@ let velRotacaoXWing = 2;                                                        
 let giroHorario = false;                                                                 // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                                             // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarBossDeathStar = true;                                                         // Flag para iniciar a fase da estrela da morte
-let vidaEstrelaDaMorte = 3000;                                                           // 600 Pontos de vida iniciais da Estrela da Morte
+let vidaEstrelaDaMorte = 4500;                                                           // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                                            // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                                                     // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                                                  // Flag para interromper a execução em loop da mensagem do Obi-Wan
@@ -168,7 +170,7 @@ function iniciarJogo() {
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
-        }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 3 minutos (2 minutos a menos que o incio da esttrela da morte)
+        }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
 
         iniciaBossTimeout = setTimeout(() => {
             if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado

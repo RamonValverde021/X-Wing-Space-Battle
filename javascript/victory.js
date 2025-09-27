@@ -111,7 +111,7 @@ function xwingSaindo() {
                     voce &nbsp; triunfou!<br>Gracas &nbsp; a &nbsp; voce &nbsp; o &nbsp; terror &nbsp; 
                     tecnologico &nbsp; do &nbsp; Imperio &nbsp; caiu &nbsp; em &nbsp; ruinas, &nbsp; 
                     trazendo &nbsp; uma &nbsp; nova &nbsp; era &nbsp; de &nbsp; esperanca &nbsp; 
-                    para &nbsp; a &nbsp; Galaxia`;
+                    para &nbsp; a &nbsp; Galaxia.`;
                     // força o fade-in
                     setTimeout(() => {
                         vitoria.style.opacity = 1;                             // Aplica o estilo de opacidade para fazer o fade-in
