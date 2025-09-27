@@ -9,7 +9,7 @@ const tempoJogo = document.getElementById("tempo_gameplay");                    
 const pontos = document.getElementById("pontos");                                        // Seleciona o span que mostra a pontuação.
 const btnEspecialAtaque = document.getElementById("ataque_especial");                    // Seleciona o elemento que indica o ataque especial (letra 'F').
 const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
-
+const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 // Estastiticas do jogo
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
 const dadosVelXWing = document.getElementById("vel_x-wing");                             // Seleciona o span para a velocidade da X-Wing.
@@ -57,11 +57,14 @@ let rotacaoXWing = 0;                                                           
 let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
 let giroHorario = false;                                                                 // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                                             // Flag para controlar a rotação do X-Wing no sentido anti-horário
+let iniciarDarthVader = true;                                                            // Flag para iniciar a fase do Darth Vader
 let iniciarBossDeathStar = true;                                                         // Flag para iniciar a fase da estrela da morte
+let vidaDarthVader = 3000;                                                               // 3000 Pontos de vida iniciais do Darth Vader
 let vidaEstrelaDaMorte = 4500;                                                           // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                                            // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                                                     // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                                                  // Flag para interromper a execução em loop da mensagem do Obi-Wan
+let velocidadeDisparosDarthVader = 500;                                                  // Cadencia de disparo do Darth Vader (em milisegundos)
 let velocidadeDisparosDeathStar = 500;                                                   // Cadencia de disparo da Estrela da Morte (em milisegundos)
 let okGameOver = true;                                                                   // Flag para iniciar a execução do Game Over após liberar o ataque especial
 let posicaoHorizontal = larguraCenario / 2 - (larguraXWing / 2);                         // Posição horizontal inicial do X-Wing
@@ -77,7 +80,8 @@ let okPoderResistencia = false;
 let okPowerUp = false;
 
 // Variaveis para os intervalos do jogo
-let iniciaBossTimeout;
+let iniciaBossEstrelaDaMorteTimeout;
+let iniciaBossDarthVaderTimeout;
 let iniciaItensEspeciaisTimeout;
 let iniciaSurgimentoEstrelaDaMorteTimeout;
 let iniciaContagemTempoGameplay;
@@ -92,9 +96,12 @@ let iniciaProjeteisTieFighter;
 let iniciaMovimentacaoProjeteisTieFighter;
 let iniciaColisaoTieFighter;
 let iniciaRotacaoXWing;
+let iniciaColisaoDarthVader;
 let iniciaColisaoEstrelaDaMorte;
 let iniciaMovimentoTorpedoEspecial;
 let iniciaMovimentacaoEstrelaDaMorte;
+let iniciaProjeteisDarthVader;
+let iniciaMovimentacaoProjeteisDarthVader;
 let iniciaProjeteisDeathStar;
 let iniciaMovimentacaoProjeteisDeathStar;
 let iniciaProjeteisPunicao;
@@ -145,6 +152,7 @@ function iniciarJogo() {
         iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);         // Inica em loop a função de movimentação dos projeteis dos Tie-Fighters
         iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                              // Inica em loop a função de detecção de colisão dos Tie-Fighters
         iniciaColisaoXWing = setInterval(colisaoXWing, 10);                                        // Inica em loop a função de detecção de colisão do X-Wing 
+        iniciaColisaoDarthVader = setInterval(colisaoDarthVader, 10);                              // Inica em loop a função de detecção de colisão do Darth Vader
         iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inica em loop a função de detecção de colisão da Estrela da Morte
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
@@ -167,17 +175,30 @@ function iniciarJogo() {
             }
         }, 20);                                                                                    // Repetição do loop a cada 20ms
 
+        /*
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
         }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
 
-        iniciaBossTimeout = setTimeout(() => {
+        iniciaBossEstrelaDaMorteTimeout = setTimeout(() => {
             if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
                 iniciarBossDeathStar = false;                                                      // Desativa a flag para não iniciar novamente
                 bossDeathStar();                                                                   // Chama a função para iniciar a fase da estrela da morte
             }
         }, 5 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 5 minutos (300.000 ms)
+        */
+
+
+
+        iniciaBossDarthVaderTimeout = setTimeout(() => {
+            if (iniciarDarthVader) {                                                               // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
+                iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
+                bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
+            }
+        }, 0.2 * 60 * 1000);
+
+
 
     }, 3000); // Atraso de 3 segundos
 }
@@ -193,7 +214,7 @@ function gameOver() {
         document.removeEventListener("keyup", teclasControleSoltas);                               // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
         clearInterval(iniciaContagemTempoGameplay);
-        clearTimeout(iniciaBossTimeout);
+        clearTimeout(iniciaBossEstrelaDaMorteTimeout);
         clearTimeout(iniciaItensEspeciaisTimeout);
         clearTimeout(iniciaSurgimentoEstrelaDaMorteTimeout);
         clearInterval(iniciaProjeteisXWing);

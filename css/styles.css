@@ -144,10 +144,10 @@ section#menu_3 {
 
 .life_boss {
     position: absolute;
-    top: 50px; 
+    top: 50px;
     width: 100%;
     height: 21px;
-     z-index: 10;
+    z-index: 10;
 }
 
 #life_deathstar {
@@ -158,13 +158,21 @@ section#menu_3 {
     z-index: 10;
 }
 
-#life_deathstar p {
+#life_darth-vader {
+    display: none;
+    background-color: yellow;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.legenda_barra_de_vida {
     position: absolute;
     left: 2%;
     top: 3px;
     color: blue;
     font-size: 15px;
-    z-index: 12; 
+    z-index: 12;
 }
 
 /* Formatação do cenario do jogo */
@@ -239,6 +247,19 @@ div#cenario {
     z-index: 10;
 }
 
+/* Formatação Darth  Vader */
+.darth_vader {
+    /* Precisa desse parametro para a movimentação do javascript funcionar */
+    position: absolute;
+    height: 81px;
+    width: 100px;
+    background-image: url('../images/tie_fighter/vader_fighter.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+}
+
 /* Formatação projeteis X-Wing */
 .projetil_x-wing {
     position: absolute;
@@ -270,6 +291,17 @@ div#cenario {
     z-index: 10;
 }
 
+/* Formatação projeteis Darth Vader */
+.projetil_darth-vader {
+    position: absolute;
+    width: 6px;
+    height: 50px;
+    background-color: green;
+    transform-origin: center;
+    z-index: 10;
+}
+
+/* Formatação projeteis Death Star */
 .projetil_death-star {
     position: absolute;
     width: 10px;
@@ -279,6 +311,7 @@ div#cenario {
     z-index: 10;
 }
 
+/* Formatação projeteis Death Star */
 .projetil_punicao {
     position: absolute;
     width: 15px;

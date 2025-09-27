@@ -58,13 +58,24 @@ function mostrarToasty() {                                  // função para mos
 // Atualizar o menu do jogo
 function atualizarMenu() {
     vida.innerText = `Vida: ${pontosVida}%`;                                                              // Atualiza a vida no menu
-    pontos.innerText = `Pontos: ${pontosScore}`;                                                          // Atualiza a pontuação no menu
+    pontos.innerText = `Pontos: ${pontosScore}`;
+    
+    // Atualiza a barra de vida da Estrela da Morte
     if (barraDeVidaEstrelaDaMorte.style.display !== "none") {                                             // Se a barra de vida da Estrela da Morte não estiver oculta
         // Regra de três para calcular a porcentagem da vida
         const vidaTotalEstrelaDaMorte = 4500;                                                             // Valor inicial da vida
         const porcentagemVida = (vidaEstrelaDaMorte / vidaTotalEstrelaDaMorte) * 100;                     // Calucla um mapeamento para 3000 = 100% de vida
         barraDeVidaEstrelaDaMorte.style.width = `${porcentagemVida}%`;                                    // Atualiza a largura da barra de vida
         if(porcentagemVida <= 0) barraDeVidaEstrelaDaMorte.style.display = "none";                        // Se a barra de vida esgotar, oculta a barra de vida  
+    }
+
+    // Atualiza a barra de vida do Darth Vader
+    if (barraDeVidaDarthVader.style.display !== "none") {                                                 // Se a barra de vida da Estrela da Morte não estiver oculta
+        // Regra de três para calcular a porcentagem da vida
+        const vidaTotalDarthVader = 3000;                                                                 // Valor inicial da vida
+        const porcentagemVida = (vidaDarthVader / vidaTotalDarthVader) * 100;                             // Calucla um mapeamento para 3000 = 100% de vida
+        barraDeVidaDarthVader.style.width = `${porcentagemVida}%`;                                        // Atualiza a largura da barra de vida
+        if(porcentagemVida <= 0) barraDeVidaDarthVader.style.display = "none";                            // Se a barra de vida esgotar, oculta a barra de vida  
     }
 }
 
