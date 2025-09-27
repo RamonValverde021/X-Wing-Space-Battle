@@ -64,7 +64,7 @@ function atualizarMenu() {
         const vidaTotalEstrelaDaMorte = 4500;                                                             // Valor inicial da vida
         const porcentagemVida = (vidaEstrelaDaMorte / vidaTotalEstrelaDaMorte) * 100;                     // Calucla um mapeamento para 3000 = 100% de vida
         barraDeVidaEstrelaDaMorte.style.width = `${porcentagemVida}%`;                                    // Atualiza a largura da barra de vida
-        if(porcentagemVida === 0) barraDeVidaEstrelaDaMorte.style.display = "none";                       // Se a barra de vida chegar a 0, oculta a barra de vida  
+        if(porcentagemVida <= 0) barraDeVidaEstrelaDaMorte.style.display = "none";                        // Se a barra de vida esgotar, oculta a barra de vida  
     }
 }
 
