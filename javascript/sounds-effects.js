@@ -8,7 +8,7 @@ function trilhaSonora() {
 
 const audioTrilhaSonoraDarthVader = new Audio('../audios/deathstar_suite-2.MP3');  // Audio da trilha sonora do boss Estrela da Morte
 function trilhaSonoraDarthVader() {
-    audioTrilhaSonoraDarthVader.volume = 1;
+    audioTrilhaSonoraDarthVader.volume = 0.7;
     audioTrilhaSonoraDarthVader.play();
 }
 
@@ -127,12 +127,16 @@ function somItensEspeciais(item) {
         audio.volume = 0.7;
         audio.play();
     } else if (item == 3) {
-        const audio = new Audio('../audios/star-wars-full-power.MP3');
+        const audio = new Audio('../audios/star-wars-full-power.mp3');
         audio.volume = 1;
         audio.play();
     } else if (item == 4) {
         const audio = new Audio('../audios/R2D2.mp3');
-        audio.volume = 0.5;
+        audio.volume = 0.7;
+        audio.play();
+    } else if (item == 5) {
+        const audio = new Audio('../audios/special-item-3.wav');
+        audio.volume = 1;
         audio.play();
     }
 }

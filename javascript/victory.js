@@ -51,14 +51,14 @@ function projetilEspecial() {
     // projetil do lado esquerdo
     const tiroEsquerdo = document.createElement("div");                   // Cria um elemento div, que vai ser o projetil especial
     tiroEsquerdo.className = "torpedo_x-wing";                            // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = centerX + 35 + "px";                        // Define a posição horizontal esquerda do projetil referente a posição central horizontal do X-Wing
-    tiroEsquerdo.style.top = centerY - 150 + "px";                        // Define a posição vertical do projetil referente a posição central vertical do X-Wing
+    tiroEsquerdo.style.left = centerX + 30 + "px";                        // Define a posição horizontal esquerda do projetil referente a posição central horizontal do X-Wing
+    tiroEsquerdo.style.top = centerY - 110 + "px";                        // Define a posição vertical do projetil referente a posição central vertical do X-Wing
     cenario.appendChild(tiroEsquerdo);                                    // Adiciona o projetil ao cenario
     // projetil do lado direito
     const tiroDireito = document.createElement("div");                    // Cria um elemento div, que vai ser o projetil especial
     tiroDireito.className = "torpedo_x-wing";                             // Adiciona a classe do projetil para aplicar o estilo
-    tiroDireito.style.left = centerX - 55 + "px";                         // Define a posição horizontal direita do projetil referente a posição central horizontal do X-Wing
-    tiroDireito.style.top = centerY - 150 + "px";                         // Define a posição vertical do projetil referente a posição central vertical do X-Wing
+    tiroDireito.style.left = centerX - 35 + "px";                         // Define a posição horizontal direita do projetil referente a posição central horizontal do X-Wing
+    tiroDireito.style.top = centerY - 110 + "px";                         // Define a posição vertical do projetil referente a posição central vertical do X-Wing
     cenario.appendChild(tiroDireito);                                     // Adiciona o projetil ao cenario
     somCanhoesXWingProtons();                                             // Chama o som do disparo de canhões de protons do X-Wing
 }
@@ -129,13 +129,15 @@ function explosaoEstrelaDaMorte() {
     clearInterval(iniciaProjeteisDeathStar);                                   // Interrompe a criação de projeteis da Estrela da Morte
     clearInterval(iniciaMovimentacaoProjeteisDeathStar);                       // Interrompe a movimentação dos projeteis da Estrela da Morte
     clearInterval(iniciaColisaoEstrelaDaMorte);                                // Interrompe as colisões com a Estrela da Morte
+    clearInterval(iniciaCriarItensEspeciais);                                  // Interrompe a criação de itens especiais
+    clearInterval(iniciaCriarItemFullPower);                                   // Interrompe a criação de itens full power
     const disparosDeathStar = document.querySelectorAll(".projetil_death-star");  // Seleciona todos os projeteis da Estrela da Morte
     disparosDeathStar.forEach((disparos) => disparos.remove());                // Remove todos os projeteis da Estrela da Morte
     pontosScore += 10000;                                                      // Adiciona 10000 pontos ao score
     const deathstarElement = document.getElementById("estrela-da-morte");      // Seleciona a Estrela da Morte
     const deathstarRect = deathstarElement.getBoundingClientRect();            // Pega as coordenadas da Estrela da Morte
     audioTrilhaSonoraDarthVader.pause();                                       // Interrompe a trilha sonora do Darth Vader
-    //audioTrilhaSonoraEstrelaDaMorte.pause();                                 // Interrompe a trilha sonora da Estrela da Morte
+    audioTrilhaSonoraEstrelaDaMorte.pause();                                   // Interrompe a trilha sonora da Estrela da Morte
     estrelaDestruida = true;                                                   // Marca que a Estrela-da-Morte foi destruída
     const explosao = document.createElement("div");                            // Cria um elemento div, que vai ser a explosão da Estrela da Morte
     explosao.className = "explosao";                                           // Adiciona a classe da explosão para aplicar o estilo

@@ -65,6 +65,48 @@ function movimentarProjetilEspecial() {
 
 
 
+
+function colisaoEstrelaDaMorte() {
+    const deathstarElement = document.getElementById("estrela-da-morte");  // Pega o objeto criado da Estrela da Morte
+    const todosDisparos = document.querySelectorAll(".projetil_x-wing");   // Pega todos os disparos do X-Wing
+    if (deathstarElement) {                                                // Se objeto Estrela da Morte existir 
+        const deathstarRect = deathstarElement.getBoundingClientRect();    // Pega as coordenadas da Estrela da Morte
+        todosDisparos.forEach((disparo) => {                               // Para cada disparo do X-Wing
+            const colisaoDisparo = disparo.getBoundingClientRect();        // Pega as coordenadas do disparo
+            if (
+                deathstarRect.left < colisaoDisparo.right &&               // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
+                deathstarRect.right > colisaoDisparo.left &&               // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
+                deathstarRect.top < colisaoDisparo.bottom &&               // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
+                deathstarRect.bottom > colisaoDisparo.top                  // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
+            ) {
+                vidaAtualEstrelaDaMorte -= danoTiroXWing;                  // Subtrai a vida da Estrela da Morte
+                pontosScore += 12;                                         // Aumenta a pontuação em 12 pontos 
+                pontos.innerText = `Pontos: ${pontosScore}`;               // Atualiza a pontuação do jogo
+                atualizarMenu();                                           // Atualiza o Menu de status do jogo
+                disparo.remove();                                          // Remove o projetil que acertou a Estrela da Morte
+                if (vidaAtualEstrelaDaMorte <= 0) {                        // Se a vida da Estrela da Morte for menor ou igual a 0
+                    if (sinalObiWan) {                                     // Se o sinal do Obi-Wan estiver habilitado
+                        sinalObiWan = false;                               // Desabilita o sinal do Obi-Wan para não ficar repetindo infinitamente
+                        somSinalObiWan();                                  // Chama o sinal da voz do Obi-Wan
+                        const terminarMensagem = setInterval(() => {       // Cria um intervalo para esperar finalizar o audio do Obi-Wan
+                            if (pontosVida > 0) {                          // Se ainda tiver vida 
+                                clearInterval(terminarMensagem);           // Deleta o intervalo
+                                habilitarAtaqueEspecial = true;            // Habilita o ataque especial
+                                btnEspecialAtaque.style.display = "block"; // Exibe na tela o sinal da tecla F
+                            }
+                        }, 2000);                                          // Tempo para esperar finalizar o audio do Obi-Wan
+                    }
+                } else {                                                             // Se a vida da Estrela da Morte for maior que 0
+                    deathstarElement.setAttribute("data-vida", vidaAtualEstrelaDaMorte);  // Atualiza o parametro da vida da Estrela da Morte
+                }
+                showEstatisticas();                                                  // Atualiza o painel de estasticas do jogo                          
+            }
+        });
+    }
+}
+
+
+
 // Script para ler entradas do controle de X-Box
 window.addEventListener("gamepadconnected", (e) => {
     // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)

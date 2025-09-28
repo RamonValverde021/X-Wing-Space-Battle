@@ -37,12 +37,13 @@ function bossDarthVader() {
             if (posY >= targetY) {                                                                        // Verifica se a nave alcançou a posição alvo.
                 clearInterval(entradaInterval);                                                           // Para a animação de entrada.
                 // Inicia a lógica de movimento e ataque após a entrada
-                iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 1);                           // Inicia o intervalo para o movimento de perseguição da nave.
+                okBatalhaDarthVader = true;                                                               // Atualiza a flag indicando que a batalha começou
+                iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
             }
         }, 20);                                                                                           // O intervalo de animação é executado a cada 20 milissegundos.
         // Inicia os disparos
         iniciaProjeteisDarthVader = setInterval(criarProjeteisDarthVader, velocidadeDisparosDarthVader);  // Inicia o intervalo para criar projéteis.
-        iniciaMovimentacaoProjeteisDarthVader = setInterval(moverProjeteisDarthVader, 20);                // Inicia o intervalo para mover os projéteis.
+        iniciaMovimentacaoProjeteisDarthVader = setInterval(moverProjeteisDarthVader, 50);                // Inicia o intervalo para mover os projéteis.
     }, 2000);                                                                                             // O atraso antes da aparição do chefe é de 2000 milissegundos (2 segundos).
 }
 
@@ -60,15 +61,18 @@ function colisaoDarthVader() {
                 darthVaderRect.top < colisaoDisparo.bottom &&                                             // Verifica se o topo de Vader está acima da base do tiro.
                 darthVaderRect.bottom > colisaoDisparo.top                                                // Verifica se a base de Vader está abaixo do topo do tiro.
             ) {                                                                                           // Se todas as condições forem verdadeiras, houve uma colisão.
-                vidaDarthVader -= danoTiroXWing;                                                          // Subtrai a vida de Darth Vader com base no dano do tiro do jogador.
+                vidaAtualDarthVader -= danoTiroXWing;                                                     // Subtrai a vida de Darth Vader com base no dano do tiro do jogador.
                 pontosScore += 1;                                                                         // Adiciona 10 pontos à pontuação do jogador.
                 disparo.remove();                                                                         // Remove o projétil que colidiu.
                 atualizarMenu();                                                                          // Chama a função para atualizar a barra de vida de Darth Vader e a pontuação.
-                if (vidaDarthVader <= 0) {                                                                // Verifica se a vida de Darth Vader chegou a zero ou menos.
-                    if (!darthVaderDerrotado) derrotarDarthVader(darthVaderElement);                      // Se ainda não foi marcado como derrotado, chama a função de derrota.
+                if (vidaAtualDarthVader <= 0) {                                                           // Verifica se a vida de Darth Vader chegou a zero ou menos.
+                    if (!darthVaderDerrotado) {
+                        explosaoNaves(darthVaderElement);
+                        derrotarDarthVader(darthVaderElement);                                            // Se ainda não foi marcado como derrotado, chama a função de derrota.
+                    }
                     darthVaderDerrotado = true;                                                           // Define a flag de derrota como verdadeira para evitar múltiplas chamadas.
                 } else {                                                                                  // Se Darth Vader ainda tem vida.
-                    darthVaderElement.setAttribute("data-vida", vidaDarthVader);                          // Atualiza o atributo 'data-vida' com o novo valor.
+                    darthVaderElement.setAttribute("data-vida", vidaAtualDarthVader);                          // Atualiza o atributo 'data-vida' com o novo valor.
                 }
                 showEstatisticas();                                                                       // Atualiza o painel de estatísticas do jogo.
             }
@@ -78,6 +82,7 @@ function colisaoDarthVader() {
 
 // Função que controla o movimento e rotação de Darth Vader.
 function moverDarthVader() {
+    okBatalhaDarthVader = false;                                                                          // Atualiza a flag indicando que a batalha terminou
     const darthVaderElement = document.getElementById("darthvader");                                      // Obtém o elemento da nave de Darth Vader.
     if (!darthVaderElement || darthVaderDerrotado) return;                                                // Se a nave não existe ou já foi derrotada, interrompe a função.
 
@@ -165,14 +170,14 @@ function criarProjeteisDarthVader() {
     // Portanto, adicionamos 90 graus de volta para obter o ângulo correto para a matemática do projétil.
     const theta = (anguloDarthVader + 90) * Math.PI / 180;                                                // Converte o ângulo de volta para o padrão matemático e para radianos.
     // Velocidade e componentes
-    const speed = 50;                                                                                     // Define a velocidade dos projéteis.
+    const speed = velocidadeProjetilDarthVader;                                                           // Define a velocidade dos projéteis.
     const vx = speed * Math.cos(theta);                                                                   // Calcula o componente de velocidade horizontal (X).
     const vy = speed * Math.sin(theta);                                                                   // Calcula o componente de velocidade vertical (Y).
 
     // Posições locais dos canhões (esquerdo e direito) em relação ao centro da nave.
     const muzzles = [
-        { lx: -20, ly: -15 },                                                                             // Posição do canhão esquerdo (20px para a esquerda, 15px para a frente).
-        { lx: 20, ly: -15 }                                                                               // Posição do canhão direito (20px para a direita, 15px para a frente).
+        { lx: -5, ly: 20 },                                                                               // Posição do canhão esquerdo (20px para a esquerda, 15px para a frente).
+        { lx: 7, ly: 20 }                                                                                 // Posição do canhão direito (20px para a direita, 15px para a frente).
     ];
 
     // Metade das dimensões do projétil para centralizar na criação.
@@ -185,22 +190,24 @@ function criarProjeteisDarthVader() {
         const spawn_center_x = center_x + (muzzle.lx * Math.cos(theta - Math.PI / 2) - muzzle.ly * Math.sin(theta - Math.PI / 2));
         const spawn_center_y = center_y + (muzzle.lx * Math.sin(theta - Math.PI / 2) + muzzle.ly * Math.cos(theta - Math.PI / 2));
 
-        // Cria o elemento do projétil.
-        const tiro = document.createElement("div");                                                       // Cria um novo elemento <div> para o projétil.
-        tiro.className = "projetil_darth-vader";                                                          // Aplica a classe CSS para estilização.
+        for (let c = 0; c < 3; c++) {
+            // Cria o elemento do projétil.
+            const tiro = document.createElement("div");                                                       // Cria um novo elemento <div> para o projétil.
+            tiro.className = "projetil_darth-vader";                                                          // Aplica a classe CSS para estilização.
 
-        // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn calculada.
-        tiro.style.left = (spawn_center_x - half_w) + "px";                                               // Centraliza horizontalmente.
-        tiro.style.top = (spawn_center_y - half_h) + "px";                                                // Centraliza verticalmente.
+            // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn calculada.
+            tiro.style.left = (spawn_center_x - half_w) + "px";                                               // Centraliza horizontalmente.
+            tiro.style.top = (spawn_center_y - half_h) + "px";                                                // Centraliza verticalmente.
 
-        // Aplica a mesma rotação da nave ao projétil para que ele saia alinhado.
-        tiro.style.transform = `rotate(${anguloDarthVader}deg)`;
+            // Aplica a mesma rotação da nave ao projétil para que ele saia alinhado.
+            tiro.style.transform = `rotate(${anguloDarthVader}deg)`;
 
-        // Armazena os vetores de velocidade no projétil para a função de movimento.
-        tiro.setAttribute("data-vx", vx.toFixed(2));
-        tiro.setAttribute("data-vy", vy.toFixed(2));
+            // Armazena os vetores de velocidade no projétil para a função de movimento.
+            tiro.setAttribute("data-vx", vx.toFixed(2));
+            tiro.setAttribute("data-vy", vy.toFixed(2));
 
-        cenario.appendChild(tiro);                                                                        // Adiciona o projétil ao cenário.
+            cenario.appendChild(tiro);
+        }                                                                     // Adiciona o projétil ao cenário.
     });
     somCanhoesTieFighter();                                                                               // Toca o som de disparo (reutilizado).
 }
@@ -237,7 +244,7 @@ function derrotarDarthVader(darthVaderElement) {
     const derrotaInterval = setInterval(() => {                                                           // Inicia um intervalo para a animação de derrota.
         const vaderRect = darthVaderElement.getBoundingClientRect();                                      // Obtém as coordenadas e dimensões atuais da nave.
         let newLeft = vaderRect.left + rotacaoXWing;                                                      // Define o movimento diagonal para a direita.
-        let newTop = vaderRect.top - 5;                                                                  // Define o movimento diagonal para cima.
+        let newTop = vaderRect.top - 5;                                                                   // Define o movimento diagonal para cima.
         rotacao += 30;                                                                                    // Incrementa o ângulo de rotação para um giro rápido.
 
         darthVaderElement.style.left = newLeft + "px";                                                    // Aplica a nova posição horizontal.
@@ -251,13 +258,4 @@ function derrotarDarthVader(darthVaderElement) {
             iniciandoBossEstrelaDaMorte();
         }
     }, 50);                                                                                               // O intervalo da animação é executado a cada 20 milissegundos.
-}
-
-function iniciandoBossEstrelaDaMorte() {
-    iniciaBossEstrelaDaMorteTimeout = setTimeout(() => {
-        if (iniciarBossDeathStar) {                                                                       // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
-            iniciarBossDeathStar = false;                                                                 // Desativa a flag para não iniciar novamente
-            bossDeathStar();                                                                              // Chama a função para iniciar a fase da estrela da morte
-        }
-    }, 10 * 1000);                                                                                        // Agenda o início do boss para daqui a 10 segundos
 }

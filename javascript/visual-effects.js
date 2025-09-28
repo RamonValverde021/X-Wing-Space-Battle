@@ -63,8 +63,7 @@ function atualizarMenu() {
     // Atualiza a barra de vida da Estrela da Morte
     if (barraDeVidaEstrelaDaMorte.style.display !== "none") {                                             // Se a barra de vida da Estrela da Morte não estiver oculta
         // Regra de três para calcular a porcentagem da vida
-        const vidaTotalEstrelaDaMorte = 4500;                                                             // Valor inicial da vida
-        const porcentagemVida = (vidaEstrelaDaMorte / vidaTotalEstrelaDaMorte) * 100;                     // Calucla um mapeamento para 3000 = 100% de vida
+        const porcentagemVida = (vidaAtualEstrelaDaMorte / vidaEstrelaDaMorte) * 100;                     // Calucla um mapeamento para 3000 = 100% de vida
         barraDeVidaEstrelaDaMorte.style.width = `${porcentagemVida}%`;                                    // Atualiza a largura da barra de vida
         if(porcentagemVida <= 0) barraDeVidaEstrelaDaMorte.style.display = "none";                        // Se a barra de vida esgotar, oculta a barra de vida  
     }
@@ -72,14 +71,24 @@ function atualizarMenu() {
     // Atualiza a barra de vida do Darth Vader
     if (barraDeVidaDarthVader.style.display !== "none") {                                                 // Se a barra de vida da Estrela da Morte não estiver oculta
         // Regra de três para calcular a porcentagem da vida
-        const vidaTotalDarthVader = 660;                                                                  // Valor inicial da vida
-        const porcentagemVida = (vidaDarthVader / vidaTotalDarthVader) * 100;                             // Calucla um mapeamento para 3000 = 100% de vida
+        const porcentagemVida = (vidaAtualDarthVader / vidaDarthVader) * 100;                             // Calucla um mapeamento para 3000 = 100% de vida
         barraDeVidaDarthVader.style.width = `${porcentagemVida}%`;                                        // Atualiza a largura da barra de vida
         if(porcentagemVida <= 0) barraDeVidaDarthVader.style.display = "none";                            // Se a barra de vida esgotar, oculta a barra de vida  
     }
 }
 
 // Atualizando as estatisticas do jogo
+const dadosVelXWing = document.getElementById("vel_x-wing");                                              // Seleciona o span para a velocidade do X-Wing.
+const dadosAngXWing = document.getElementById("ang_x-wing");                                              // Seleciona o span para o angulo do X-Wing.
+const dadosVelRotXWing = document.getElementById("vel_rotacao_x-wing");                                   // Seleciona o span para a velocidade de rotação.
+const dadosVelTieFighter = document.getElementById("vel_tie-fighter");                                    // Seleciona o span para a velocidade dos TIE Fighters.
+const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");                              // Seleciona o span para o ângulo de ataque dos TIEs.
+const dadosVelConstrucaoTieFighter = document.getElementById("vel_constr_tie-fighter");                   // Seleciona o span para a velocidade de criação dos TIEs.
+const dadosInimigosDestruidos = document.getElementById("inimigos_destruidos");                           // Seleciona o span para o contador de inimigos destruídos.
+const dadosVidaDarthVader = document.getElementById("lifeDarthVader");                                    // Seleciona o span para a vida do Darth Vader
+const dadosVidaEstrelaDaMorte = document.getElementById("lifeDeathStar");                                 // Seleciona o span para a vida da Estrela da Morte.
+const dadosTempoParado = document.getElementById("tempoParado");                                          // Seleciona o span para o tempo em que o X-Wing está parado.
+
 function showEstatisticas() {
     dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;     
     dadosAngXWing.innerText = `Angulo X-Wing: ${rotacaoXWing.toFixed(2)}°`;
@@ -88,6 +97,7 @@ function showEstatisticas() {
     dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;                   // Atualiza no painel o ângulo de ataque dos Tie-Fighter no menu
     dadosVelConstrucaoTieFighter.innerText = `Vel. Constr. Tie-Fighter: ${quantidadeTieFighters} ms`;     // Atualiza no painel a velocidade de construção dos Tie-Fighter no menu
     dadosInimigosDestruidos.innerText = `Inimigos Destruidos: ${countNavesDestruidas}`;                   // Atualiza no painel a quantidade de inimigos destruídos no menu
-    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaEstrelaDaMorte}`;                        // Atualiza no painel a vida da Estrela da Morte no menu
+    dadosVidaDarthVader.innerText = `Darth Vader: ${vidaAtualDarthVader}`;                                // Atualiza no painel a vida do Darth Vader no menu
+    dadosVidaEstrelaDaMorte.innerText = `Estrela da Morte: ${vidaAtualEstrelaDaMorte}`;                   // Atualiza no painel a vida da Estrela da Morte no menu
     dadosTempoParado.innerText = `Tempo Parado: ${tempoParado / 1000} s`;                                 // Atualiza no painel o tempo em que o X-Wing está parado
 }

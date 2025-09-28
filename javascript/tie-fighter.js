@@ -61,7 +61,7 @@ function moverNavesInimigas() {
             if (centerX < -halfWidth || centerX > larguraCenario + halfWidth ||
                 centerY < -halfHeight || centerY > alturaCenario + halfHeight) {           // Se o centro do Tie Fighter sair do cenario
                 tieFighters[i].remove();                                                   // Remove o Tie Fighter do cenario
-                if (!okPoderResistencia) {                                                 // Se o poder da resistencia estiver habilitado
+                if (!okResistencePower) {                                                 // Se o poder da resistencia estiver habilitado
                     pontosVida -= 5;                                                       // Diminui 3 pontos para cada nave que sair do cenario                                                      
                     if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();               // Se o pontos de vida cair para 20 pontos ou menos
                     if (pontosVida > 0) {                                                  // Se ainda tiver pontos de vida
@@ -154,14 +154,14 @@ const construirProjeteisTieFighter = (tieFighter) => {
     // projetil do lado esquerdo
     const tiroEsquerdo = document.createElement("div");                                    // Cria um elemento div, que vai ser o projetil
     tiroEsquerdo.className = "projetil_tie-fighter";                                       // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = centerX + 5 + "px";                                          // Define a posição horizontal do projetil esquerdo referente a posição central horizontal do Tie Fighter
-    tiroEsquerdo.style.top = centerY - 15 + "px";                                           // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    tiroEsquerdo.style.left = centerX - 22 + "px";                                          // Define a posição horizontal do projetil esquerdo referente a posição central horizontal do Tie Fighter
+    tiroEsquerdo.style.top = centerY - 40 + "px";                                           // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
     cenario.appendChild(tiroEsquerdo);                                                     // Adiciona o projetil ao cenario
     // projetil do lado direito
     const tiroDireito = document.createElement("div");                                     // Cria um elemento div, que vai ser o projetil
     tiroDireito.className = "projetil_tie-fighter";                                        // Adiciona a classe do projetil para aplicar o estilo
-    tiroDireito.style.left = centerX - 10 + "px";                                          // Define a posição horizontal do projetil direito referente a posição central horizontal do Tie Fighter
-    tiroDireito.style.top = centerY - 15 + "px";                                            // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    tiroDireito.style.left = centerX - 12 + "px";                                          // Define a posição horizontal do projetil direito referente a posição central horizontal do Tie Fighter
+    tiroDireito.style.top = centerY - 40 + "px";                                            // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
     cenario.appendChild(tiroDireito);                                                      // Adiciona o projetil ao cenario
 }
 

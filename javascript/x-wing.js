@@ -38,8 +38,8 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
 
     // Posições locais dos canos de tiro (esquerdo e direito, ligeiramente à frente)
     const muzzles = [                                                          // Posições relativas ao centro da nave, em pixels
-        { lx: -45, ly: -10 },                                                  // Posição do cano esquerdo
-        { lx: 45, ly: -10 }                                                    // Posição do cano direito
+        { lx: -32, ly: -5 },                                                   // Posição do cano esquerdo
+        { lx: 32, ly: -5 }                                                     // Posição do cano direito
     ];
 
     // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
@@ -48,8 +48,8 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
     const vy = speed * -Math.cos(theta);                                       // Componente Y da velocidade do projétil
 
     // Metade das dimensões do projétil para centralizar
-    const half_w = 3;                                                          // Metade da largura do projétil
-    const half_h = 15;                                                         // Metade da altura do projétil
+    const half_w = 2;                                                          // Metade da largura do projétil
+    const half_h = 25;                                                         // Metade da altura do projétil
 
     muzzles.forEach(muzzle => { // Para cada cano de tiro
         // Posição de spawn rotacionada (matriz de rotação)
@@ -61,10 +61,12 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
         tiro.className = "projetil_x-wing";                                    // Adiciona a classe do projetil para aplicar o estilo
 
         // Se o power-up estiver ativo 
-        if (okPowerUp) {
+        if (okPowerUp) {                                                       // Se o power-up estiver ativo
+            tiro.style.backgroundColor = "orange";                             // Muda a cor do projétil para Laranja
+        } else if (okFullPower) {                                              // Se o Full-Power estiver ativo
             tiro.style.backgroundColor = "cyan";                               // Muda a cor do projétil para Ciano
-        } else {                                                               // Se o power-up estiver desativado
-            tiro.style.backgroundColor = "blue";                               // Muda a cor do projétil para o original, Azul
+        } else {                                                               // Se nenhum poder especial estiver ativo
+            tiro.style.backgroundColor = "red";                                // Muda a cor do projétil para o normal, vermelho
         }
 
         // Posiciona o canto superior esquerdo para que o centro fique na spawn
@@ -102,8 +104,8 @@ function moverProjeteisXWing() {
             let top = parseFloat(disparo.style.top);                                     // Converte de string para float
 
             // Calcula centro atual
-            const half_w = 2.5;                                                          // Metade da largura do projétil
-            const half_h = 15;                                                           // Metade da altura do projétil
+            const half_w = 2;                                                            // Metade da largura do projétil
+            const half_h = 25;                                                           // Metade da altura do projétil
             let center_x = left + half_w;                                                // Centro X do projétil
             let center_y = top + half_h;                                                 // Centro Y do projétil
 
@@ -146,7 +148,7 @@ function colisaoXWing() {
         ) {
             explosaoNaves(nave);                                                         // Chama a função de explosão
             nave.remove();                                                               // Remove o Tie-Fighter que colidiu com o X-Wing
-            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
                 pontosVida -= 50;                                                        // Diminui 50 pontos para cada Tie-Fighter que colidir com o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
@@ -172,7 +174,7 @@ function colisaoXWing() {
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
                 pontosVida -= 5;                                                         // Diminui 5 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
@@ -198,7 +200,7 @@ function colisaoXWing() {
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
                 pontosVida -= 2;                                                         // Diminui 5 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
@@ -224,7 +226,7 @@ function colisaoXWing() {
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
                 pontosVida -= 15;                                                        // Diminui 15 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
@@ -250,7 +252,7 @@ function colisaoXWing() {
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
                 pontosVida -= 60;                                                        // Diminui 60 pontos para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
@@ -302,8 +304,8 @@ function colisaoXWing() {
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
-            if (okPoderResistencia) return;                                              // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
-            okPoderResistencia = true;                                                   // Habilita a flag do Poder da Resistencia
+            if (okResistencePower) return;                                              // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            okResistencePower = true;                                                   // Habilita a flag do Poder da Resistencia
             // Efeito de piscar para a transição
             let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
             const blinkInterval = setInterval(() => {
@@ -317,7 +319,7 @@ function colisaoXWing() {
             }, 150);                                                                     // Intervalo do pisca-pisca (a cada 150ms)
             const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
                 clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
-                okPoderResistencia = false;                                              // Desabilita a flag do Poder da Resistencia
+                okResistencePower = false;                                              // Desabilita a flag do Poder da Resistencia
                 xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
             }, 10000);                                                                   // 10 segundos de duração total do poder
         }
@@ -356,7 +358,7 @@ function colisaoXWing() {
     });
 
     // Colisão com o Full-Power
-    const fullPower = document.querySelectorAll(".full-power");                            // Seleciona todos os objetos de Power-Up
+    const fullPower = document.querySelectorAll(".full-power");                          // Seleciona todos os objetos de Power-Up
     fullPower.forEach((item) => {                                                        // Percorre todos os objetos de Power-Up
         const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
         const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
@@ -370,14 +372,22 @@ function colisaoXWing() {
             if (audioTrilhaSonora.played) {
                 audioTrilhaSonora.volume = 0;                                            // Muta a trilha sonora principal
             }
+            if (audioTrilhaSonoraDarthVader.played) {
+                audioTrilhaSonoraDarthVader.volume = 0;                                  // Muta a trilha sonora do Darth Vader
+            }
             if (audioTrilhaSonoraEstrelaDaMorte.played) {
                 audioTrilhaSonoraEstrelaDaMorte.volume = 0;                              // Muta a trilha sonora da Estrela da Morte
             }
-            somItensEspeciais(3);                                                        // Toca o som do item especial de Power-Up
+            somItensEspeciais(5);                                                        // Toca o som do item especial do Power-Up
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
-            pontosVida = 100;                                                            // Recarrega a vida ao máximo
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
+            if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            okFullPower = true;                                                          // Habilita a flag do Power-Up
+            okResistencePower = true;                                                    // Habilita a flag do Poder da Resistencia
+            somItensEspeciais(3);                                                        // Toca a trilha sonoroa do Full-Power
+            pontosVida = 100;                                                            // Recarrega a vida ao máximo
+            atualizarMenu();                                                             // Atualiza a vida no menu
             // Efeito de piscar para a transição
             let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
             const blinkInterval = setInterval(() => {
@@ -389,26 +399,27 @@ function colisaoXWing() {
                     xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
                 }
             }, 150);
-            okPoderResistencia = true;                                                   // Habilita a flag do Poder da Resistencia
-            okPowerUp = true;                                                            // Habilita a flag do Power-Up
             danoTiroXWing = 5;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
             const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
                 clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
-                okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
+                okResistencePower = false;                                               // Desabilita a flag do Poder da Resistencia
+                okFullPower = false;                                                     // Desabilita a flag do Poder da Resistencia
                 danoTiroXWing = 3;                                                       // Volta para o dano normal
                 clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
-                okPoderResistencia = false;                                              // Desabilita a flag do Poder da Resistencia
                 xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
                 if (audioTrilhaSonora.played) {
                     audioTrilhaSonora.volume = 0.7;                                      // Reativa o volume da trilha sonora principal normalmente
                 }
-                if (audioTrilhaSonoraEstrelaDaMorte.played) {
-                    audioTrilhaSonoraEstrelaDaMorte.volume = 1;                        // Reativa o volume da trilha sonora da Estrela da Morte normalmente
+                if (audioTrilhaSonoraDarthVader.played) {
+                    audioTrilhaSonoraDarthVader.volume = 0.7;                            // Reativa o volume da trilha sonora do Darth Vader
                 }
-            }, 15000);                                                                   // 15 segundos de duração total do poder
+                if (audioTrilhaSonoraEstrelaDaMorte.played) {
+                    audioTrilhaSonoraEstrelaDaMorte.volume = 0.7;                        // Reativa o volume da trilha sonora da Estrela da Morte normalmente
+                }
+            }, 17000);                                                                   // 17 segundos de duração total do poder, o mesmo tempo do audio
         }
     });
     showEstatisticas();                                                                  // Atualiza as estatísticas do jogo

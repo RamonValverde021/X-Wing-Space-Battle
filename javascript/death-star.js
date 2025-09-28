@@ -34,13 +34,22 @@ function surgimentoEstrelaDaMorte() {
     }
 }
 
+function iniciandoBossEstrelaDaMorte() {
+    iniciaBossEstrelaDaMorteTimeout = setTimeout(() => {
+        if (iniciarBossDeathStar) {                                   // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
+            iniciarBossDeathStar = false;                             // Desativa a flag para não iniciar novamente
+            bossDeathStar();                                          // Chama a função para iniciar a fase da estrela da morte
+        }
+    }, 10);                                                           // Agenda o início do boss para daqui a 10 segundos
+}
+
 function bossDeathStar() {
     // Parar a criação de Tie Fighters e seus disparos
     clearInterval(iniciaNavesInimigas);                               // Interrompe a criação dos Tie-Fighters
     clearInterval(iniciaProjeteisTieFighter);                         // Interrompe a criação de projeteis dos Tie-Fighters
     barraDeVidaEstrelaDaMorte.style.display = "block";                // Mostra a barra de vida da Estrela da Morte
     audioTrilhaSonora.pause();                                        // Interrompe a trilha sonora principal
-    pontosVida = 1000;                                                 // Recarrega avida para enfrentar a estrela da morte 
+    pontosVida = 100;                                                 // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                                  // Atualiza o Menu de status do jogo
     const intervaloSuspense = setInterval(() => {                     // Cria um atraso antes da Estrela da Morte Aparecer
         clearInterval(intervaloSuspense);                             // DEsativa o loop do atraso
@@ -52,14 +61,21 @@ function bossDeathStar() {
         deathstar.setAttribute("data-vida", vidaEstrelaDaMorte);      // Cria o atributo data-vida para armazenar a vida da Estrela da Morte
         cenario.insertAdjacentElement("afterbegin", deathstar);       // Adiciona a Estrela da Morte no início do cenario
         let posY = 100;                                               // Posição inicial 
+        let aumentoTamanho = 100; 
+        let ajusteBorda = 50;
         deathstar.style.bottom = posY + "%";                          // Define a posição vertical inicial da Estrela da Morte
         iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {        // Cria um intervalo para mover a Estrela da Morte
             if (estrelaDestruida == false) {                          // Se a Estrela da Morte não foi destruída
                 posY -= 0.1;                                          // 0.1 Decrementa a velocidade (quanto maior o valor, mais rápido desce)
+                aumentoTamanho += 0.01;
+                ajusteBorda += 0.01;
                 deathstar.style.bottom = posY + "%";                  // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
-                if (posY <= -70) {                                    // Se a metade da Estrela da Morte avançar o fundo da tela
+                deathstar.style.width = aumentoTamanho + "vw";
+                deathstar.style.height = aumentoTamanho + "vw";
+                 deathstar.style.borderRadius = ajusteBorda + "vw";
+                if (posY <= -110) {                                    // Se a metade da Estrela da Morte avançar o fundo da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();          // Interrompe a trilha sonora da Estrela da Morte
-                    deathstar.style.bottom = "-70%";                  // Fixa a Estrela Da Morte onde ela parou
+                    deathstar.style.bottom = "-110%";                  // Fixa a Estrela Da Morte onde ela parou
                     clearInterval(iniciaMovimentacaoEstrelaDaMorte);  // para quando sair da tela
                     pontosVida = 0;                                   // Zera a pontuação de vida
                     atualizarMenu();                                  // Atualiza a pontuação no menu
@@ -80,17 +96,38 @@ function colisaoEstrelaDaMorte() {
         todosDisparos.forEach((disparo) => {                               // Para cada disparo do X-Wing
             const colisaoDisparo = disparo.getBoundingClientRect();        // Pega as coordenadas do disparo
             if (
-                deathstarRect.left < colisaoDisparo.right + 100 &&         // Verifica se o lado esquerdo da Estrela da Morte é menor que o lado direito do projetil
-                deathstarRect.right > colisaoDisparo.left + 100 &&         // Verifica se o lado direito da Estrela da Morte é maior que o lado esquerdo do projetil
-                deathstarRect.top < colisaoDisparo.bottom + 100 &&         // Verifica se o topo da Estrela da Morte é menor que a parte de baixo do projetil
-                deathstarRect.bottom > colisaoDisparo.top + 100            // Verifica se a parte de baixo da Estrela da Morte é maior que o topo do projetil
+                // 1. Verificação Rápida (Bounding Box): Verifica se as caixas retangulares se sobrepõem.
+                deathstarRect.left < colisaoDisparo.right &&
+                deathstarRect.right > colisaoDisparo.left &&
+                deathstarRect.top < colisaoDisparo.bottom &&
+                deathstarRect.bottom > colisaoDisparo.top
             ) {
-                vidaEstrelaDaMorte -= danoTiroXWing * 4;                   // Subtrai menos 4x pontos
-                pontosScore += 12;                                         // Aumenta a pontuação em 12 pontos 
-                pontos.innerText = `Pontos: ${pontosScore}`;               // Atualiza a pontuação do jogo
-                disparo.remove();                                          // Remove o projetil que acertou a Estrela da Morte
-                atualizarMenu();                                           // Atualiza o Menu de status do jogo
-                if (vidaEstrelaDaMorte <= 0) {                             // Se a vida da Estrela da Morte for menor ou igual a 0
+                // 2. Verificação Precisa (Colisão Circular)
+                const deathstarCenterX = deathstarRect.left + deathstarRect.width / 2;
+                const deathstarCenterY = deathstarRect.top + deathstarRect.height / 2;
+                const deathstarRadius = deathstarRect.width / 2;
+
+                // Encontra o ponto mais próximo no retângulo do projétil ao centro do círculo.
+                const closestX = Math.max(colisaoDisparo.left, Math.min(deathstarCenterX, colisaoDisparo.right));
+                const closestY = Math.max(colisaoDisparo.top, Math.min(deathstarCenterY, colisaoDisparo.bottom));
+
+                // Calcula a distância entre o ponto mais próximo e o centro do círculo.
+                const distanceX = deathstarCenterX - closestX;
+                const distanceY = deathstarCenterY - closestY;
+                const distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+
+                // Se a distância ao quadrado for menor que o raio ao quadrado, há colisão.
+                if (distanceSquared < (deathstarRadius * deathstarRadius)) {
+                    // Verifica se o projétil já colidiu para não aplicar dano múltiplo
+                    if (!disparo.hasAttribute("data-collided")) {          // Se for a primeira colisão deste projétil
+                        disparo.setAttribute("data-collided", "true");     // Marca o projétil como colidido para não causar mais dano ou criar outro timer
+                        vidaAtualEstrelaDaMorte -= danoTiroXWing;          // Subtrai a vida da Estrela da Morte
+                        pontosScore += 10;                                 // Aumenta a pontuação em 10 pontos
+                        atualizarMenu();                                   // Atualiza o Menu de status do jogo
+                        setTimeout(() => disparo.remove(), 200);           // Agenda a remoção do projétil para daqui a 200ms, permitindo que ele "penetre" visualmente.
+                    }
+                }
+                if (vidaAtualEstrelaDaMorte <= 0) {                        // Se a vida da Estrela da Morte for menor ou igual a 0
                     if (sinalObiWan) {                                     // Se o sinal do Obi-Wan estiver habilitado
                         sinalObiWan = false;                               // Desabilita o sinal do Obi-Wan para não ficar repetindo infinitamente
                         somSinalObiWan();                                  // Chama o sinal da voz do Obi-Wan
@@ -102,10 +139,10 @@ function colisaoEstrelaDaMorte() {
                             }
                         }, 2000);                                          // Tempo para esperar finalizar o audio do Obi-Wan
                     }
-                } else {                                                             // Se a vida da Estrela da Morte for maior que 0
-                    deathstarElement.setAttribute("data-vida", vidaEstrelaDaMorte);  // Atualiza o parametro da vida da Estrela da Morte
+                } else {                                                   // Se a vida da Estrela da Morte for maior que 0
+                    deathstarElement.setAttribute("data-vida", vidaAtualEstrelaDaMorte);  // Atualiza o parametro da vida da Estrela da Morte
                 }
-                showEstatisticas();                                                  // Atualiza o painel de estasticas do jogo                          
+                showEstatisticas();                                        // Atualiza o painel de estasticas do jogo                          
             }
         });
     }
