@@ -134,7 +134,8 @@ function explosaoEstrelaDaMorte() {
     pontosScore += 10000;                                                      // Adiciona 10000 pontos ao score
     const deathstarElement = document.getElementById("estrela-da-morte");      // Seleciona a Estrela da Morte
     const deathstarRect = deathstarElement.getBoundingClientRect();            // Pega as coordenadas da Estrela da Morte
-    audioTrilhaSonoraEstrelaDaMorte.pause();                                   // Interrompe a trilha sonora da Estrela da Morte
+    audioTrilhaSonoraDarthVader.pause();                                       // Interrompe a trilha sonora do Darth Vader
+    //audioTrilhaSonoraEstrelaDaMorte.pause();                                 // Interrompe a trilha sonora da Estrela da Morte
     estrelaDestruida = true;                                                   // Marca que a Estrela-da-Morte foi destruída
     const explosao = document.createElement("div");                            // Cria um elemento div, que vai ser a explosão da Estrela da Morte
     explosao.className = "explosao";                                           // Adiciona a classe da explosão para aplicar o estilo

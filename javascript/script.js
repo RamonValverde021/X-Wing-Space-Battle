@@ -12,7 +12,8 @@ const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");    
 const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 // Estastiticas do jogo
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
-const dadosVelXWing = document.getElementById("vel_x-wing");                             // Seleciona o span para a velocidade da X-Wing.
+const dadosVelXWing = document.getElementById("vel_x-wing");                             // Seleciona o span para a velocidade do X-Wing.
+const dadosAngXWing = document.getElementById("ang_x-wing");                             // Seleciona o span para o angulo do X-Wing.
 const dadosVelRotXWing = document.getElementById("vel_rotacao_x-wing");                  // Seleciona o span para a velocidade de rotação.
 const dadosVelTieFighter = document.getElementById("vel_tie-fighter");                   // Seleciona o span para a velocidade dos TIE Fighters.
 const dadosAnguloTieFighter = document.getElementById("angulo_tie-fighter");             // Seleciona o span para o ângulo de ataque dos TIEs.
@@ -59,12 +60,12 @@ let giroHorario = false;                                                        
 let giroAntiHorario = false;                                                             // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarDarthVader = true;                                                            // Flag para iniciar a fase do Darth Vader
 let iniciarBossDeathStar = true;                                                         // Flag para iniciar a fase da estrela da morte
-let vidaDarthVader = 3000;                                                               // 3000 Pontos de vida iniciais do Darth Vader
+let vidaDarthVader = 660;                                                                // 300 Pontos de vida iniciais do Darth Vader
 let vidaEstrelaDaMorte = 4500;                                                           // 600 Pontos de vida iniciais da Estrela da Morte
 let estrelaDestruida = false;                                                            // Flag para verificar se a Estrela da Morte foi destruída
 let habilitarAtaqueEspecial = false;                                                     // Flag para habilitar o ataque especial
 let sinalObiWan = true;                                                                  // Flag para interromper a execução em loop da mensagem do Obi-Wan
-let velocidadeDisparosDarthVader = 500;                                                  // Cadencia de disparo do Darth Vader (em milisegundos)
+let velocidadeDisparosDarthVader = 1000;                                                 // Cadencia de disparo do Darth Vader (em milisegundos)
 let velocidadeDisparosDeathStar = 500;                                                   // Cadencia de disparo da Estrela da Morte (em milisegundos)
 let okGameOver = true;                                                                   // Flag para iniciar a execução do Game Over após liberar o ataque especial
 let posicaoHorizontal = larguraCenario / 2 - (larguraXWing / 2);                         // Posição horizontal inicial do X-Wing
@@ -146,7 +147,7 @@ function iniciarJogo() {
         iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                                     // Inica em loop a função de movimentação do X-Wing, repetição do loop a cada 20ms
         iniciaProjeteisXWing = setInterval(atirar, 150);                                           // Inica em loop a função para atirar com o X-Wing
         iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                   // Inica em loop a função de movimentação dos projeteis do X-Wing
-        iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);                   // Inica em loop a construção de naves inimigas
+        //iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);                   // Inica em loop a construção de naves inimigas
         iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);                     // Inica em loop a função para movimentação os Tie-Fighters
         iniciaProjeteisTieFighter = setInterval(criarProjeteisTieFighter, velocidadeDisparosTieFighter);  // Inica em loop a função de criação de disparos dos Tie-Fighters
         iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);         // Inica em loop a função de movimentação dos projeteis dos Tie-Fighters
@@ -163,7 +164,7 @@ function iniciarJogo() {
             iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
             iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
-        }, 1 * 60 * 1000);                                                                         // Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
+        }, 0.01 * 60 * 1000);                                                                         // Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
 
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
@@ -173,32 +174,19 @@ function iniciarJogo() {
                 rotacaoXWing += velRotacaoXWing;                                                   // Incrementa a rotação do X-Wing
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                              // Aplica a rotação no X-Wing
             }
-        }, 20);                                                                                    // Repetição do loop a cada 20ms
+        }, 80);                                                                                    // Repetição do loop a cada 20ms
 
-        /*
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
-        }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
-
-        iniciaBossEstrelaDaMorteTimeout = setTimeout(() => {
-            if (iniciarBossDeathStar) {                                                            // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
-                iniciarBossDeathStar = false;                                                      // Desativa a flag para não iniciar novamente
-                bossDeathStar();                                                                   // Chama a função para iniciar a fase da estrela da morte
-            }
-        }, 5 * 60 * 1000);                                                                         // Agenda o início do boss para daqui a 5 minutos (300.000 ms)
-        */
-
-
+        }, 3 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
 
         iniciaBossDarthVaderTimeout = setTimeout(() => {
             if (iniciarDarthVader) {                                                               // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 0.2 * 60 * 1000);
-
-
+        }, 0 * 60 * 1000);
 
     }, 3000); // Atraso de 3 segundos
 }
@@ -238,6 +226,8 @@ function gameOver() {
         clearInterval(iniciaMovimentacaoProjeteisPunicao);
         clearInterval(iniciaCriarItensEspeciais);
         clearInterval(iniciaCriarItemFullPower);
+        clearInterval(iniciaProjeteisDarthVader);
+        clearInterval(iniciaMovimentacaoDarthVader);
 
         habilitarAtaqueEspecial = false;                                                // Desabilita o ataque especial caso apareça o F na tela
         btnEspecialAtaque.style.display = "none";                                       // Esconde o botão de ataque especial

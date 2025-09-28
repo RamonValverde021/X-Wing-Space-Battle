@@ -145,7 +145,8 @@ section#menu_3 {
 .life_boss {
     position: absolute;
     top: 50px;
-    width: 100%;
+    width: 98%;
+    padding: 0 1%;
     height: 21px;
     z-index: 10;
 }
@@ -169,9 +170,9 @@ section#menu_3 {
 .legenda_barra_de_vida {
     position: absolute;
     left: 2%;
-    top: 3px;
+    top: 1px;
     color: blue;
-    font-size: 15px;
+    font-size: 19px;
     z-index: 12;
 }
 

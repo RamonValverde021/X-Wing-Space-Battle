@@ -186,6 +186,32 @@ function colisaoXWing() {
         }
     });
 
+    // Colisão com projeteis do Darth Vader
+    const todosDisparosDarthVader = document.querySelectorAll(".projetil_darth-vader");  // Pega todos os disparos do Darth Vader
+    todosDisparosDarthVader.forEach((disparo) => {                                       // Percorre todos os projeteis
+        const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
+        const colisaoDisparo = disparo.getBoundingClientRect();                          // Pega as coordenadas do projetil
+        if (                                                                             // Verifica se houve colisão entre o X-Wing e o projetil
+            colisaoXWing.left < colisaoDisparo.right &&                                  // Verifica se o lado esquerdo do X-Wing é menor que o lado direito do projetil
+            colisaoXWing.right > colisaoDisparo.left &&                                  // Verifica se o lado direito do X-Wing é maior que o lado esquerdo do projetil
+            colisaoXWing.top < colisaoDisparo.bottom &&                                  // Verifica se o topo do X-Wing é menor que a parte de baixo do projetil
+            colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
+        ) {
+            disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
+            if (!okPoderResistencia) {                                                   // Se o poder da resistencia estiver habilitado
+                pontosVida -= 2;                                                         // Diminui 5 pontos para cada projetil que acertar o X-Wing
+                if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
+                if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                } else {                                                                 // Se a vida chegar a 0 ou menos
+                    pontosVida = 0;                                                      // Fixa pontos de vida em 0
+                    atualizarMenu();                                                     // Atualiza a vida no menu
+                    gameOver();                                                          // Chama a função de Game Over
+                }
+            }
+        }
+    });
+
     // Colisão com projeteis da Estrela da Morte
     const todosDisparosDeathStar = document.querySelectorAll(".projetil_death-star");    // Pega todos os disparos da Estrela da Morte
     todosDisparosDeathStar.forEach((disparo) => {                                        // Percorre todos os projeteis

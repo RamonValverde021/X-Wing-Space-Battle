@@ -45,7 +45,7 @@ function bossDeathStar() {
     const intervaloSuspense = setInterval(() => {                     // Cria um atraso antes da Estrela da Morte Aparecer
         clearInterval(intervaloSuspense);                             // DEsativa o loop do atraso
         velocidadeCenario = 200;
-        trilhaSonoraEstrelaDaMorte();                                 // Inicia a trilha sonora da Estrela da Morte
+        //trilhaSonoraEstrelaDaMorte();                                 // Inicia a trilha sonora da Estrela da Morte
         const deathstar = document.createElement("div");              // Cria um elemento div, que vai ser a Estrela da Morte
         deathstar.id = "estrela-da-morte";                            // Adiciona um id a Estrela da Morte
         deathstar.className = "deathstar";                            // Adiciona a classe da Estrela da Morte para aplicar o estilo

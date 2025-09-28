@@ -6,6 +6,12 @@ function trilhaSonora() {
     audioTrilhaSonora.play();
 }
 
+const audioTrilhaSonoraDarthVader = new Audio('../audios/deathstar_suite-2.MP3');  // Audio da trilha sonora do boss Estrela da Morte
+function trilhaSonoraDarthVader() {
+    audioTrilhaSonoraDarthVader.volume = 1;
+    audioTrilhaSonoraDarthVader.play();
+}
+
 const audioTrilhaSonoraEstrelaDaMorte = new Audio('../audios/deathstar_suite-2.MP3');  // Audio da trilha sonora do boss Estrela da Morte
 function trilhaSonoraEstrelaDaMorte() {
     audioTrilhaSonoraEstrelaDaMorte.volume = 1;
@@ -79,14 +85,14 @@ function somCanhoesTieFighter() {
 }
 
 function somTiroPunicao() {
-    const audio = new Audio('../audios/tiro_punicao.mp3');    
-    audio.volume = 1;                                            
-    audio.currentTime = 0;                                          
-    audio.play(); 
+    const audio = new Audio('../audios/tiro_punicao.mp3');
+    audio.volume = 1;
+    audio.currentTime = 0;
+    audio.play();
 }
 
 function somCanhoesEstrelaDaMorte() {
-    const audios = [                                                
+    const audios = [
         '../audios/shot_death_star-1.mp3',
         '../audios/shot_death_star-2.mp3',
         '../audios/shot_death_star-3.mp3',
@@ -113,20 +119,20 @@ function somVitoria() {
 
 function somItensEspeciais(item) {
     if (item == 1) {
-        const audio = new Audio('../audios/special-item-1.wav');    
-        audio.volume = 1;                                           
+        const audio = new Audio('../audios/special-item-1.wav');
+        audio.volume = 1;
         audio.play();
     } else if (item == 2) {
-        const audio = new Audio('../audios/special-item-2.mp3');     
-        audio.volume = 0.7;                                           
+        const audio = new Audio('../audios/special-item-2.mp3');
+        audio.volume = 0.7;
         audio.play();
     } else if (item == 3) {
-        const audio = new Audio('../audios/star-wars-full-power.MP3');    
+        const audio = new Audio('../audios/star-wars-full-power.MP3');
         audio.volume = 1;
         audio.play();
     } else if (item == 4) {
-        const audio = new Audio('../audios/R2D2.mp3');     
-        audio.volume = 0.5;                                           
+        const audio = new Audio('../audios/R2D2.mp3');
+        audio.volume = 0.5;
         audio.play();
     }
 }

@@ -72,7 +72,7 @@ function atualizarMenu() {
     // Atualiza a barra de vida do Darth Vader
     if (barraDeVidaDarthVader.style.display !== "none") {                                                 // Se a barra de vida da Estrela da Morte não estiver oculta
         // Regra de três para calcular a porcentagem da vida
-        const vidaTotalDarthVader = 3000;                                                                 // Valor inicial da vida
+        const vidaTotalDarthVader = 660;                                                                  // Valor inicial da vida
         const porcentagemVida = (vidaDarthVader / vidaTotalDarthVader) * 100;                             // Calucla um mapeamento para 3000 = 100% de vida
         barraDeVidaDarthVader.style.width = `${porcentagemVida}%`;                                        // Atualiza a largura da barra de vida
         if(porcentagemVida <= 0) barraDeVidaDarthVader.style.display = "none";                            // Se a barra de vida esgotar, oculta a barra de vida  
@@ -81,7 +81,8 @@ function atualizarMenu() {
 
 // Atualizando as estatisticas do jogo
 function showEstatisticas() {
-    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;                               // Atualiza no painel a velocidade do X-Wing no menu
+    dadosVelXWing.innerText = `Vel. X-Wing: ${velocidadeXWing.toFixed(2)}`;     
+    dadosAngXWing.innerText = `Angulo X-Wing: ${rotacaoXWing.toFixed(2)}°`;
     dadosVelRotXWing.innerText = `Vel. Rotacao X-Wing: ${velRotacaoXWing.toFixed(2)}`;                    // Atualiza no painel a velocidade de rotação do X-Wing no menu
     dadosVelTieFighter.innerText = `Vel. Tie-Fighter: ${velocidadeTieFighter.toFixed(2)}`;                // Atualiza no painel a velocidade do Tie-Fighter no menu
     dadosAnguloTieFighter.innerText = `Angulo Tie-Fighter: ${anguloAtaqueTieFighter}°`;                   // Atualiza no painel o ângulo de ataque dos Tie-Fighter no menu
