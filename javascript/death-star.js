@@ -51,8 +51,7 @@ function bossDeathStar() {
     audioTrilhaSonora.pause();                                        // Interrompe a trilha sonora principal
     pontosVida = 100;                                                 // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                                  // Atualiza o Menu de status do jogo
-    const intervaloSuspense = setInterval(() => {                     // Cria um atraso antes da Estrela da Morte Aparecer
-        clearInterval(intervaloSuspense);                             // DEsativa o loop do atraso
+    setTimeout(() => {                                                // Cria um atraso antes da Estrela da Morte Aparecer
         velocidadeCenario = 200;
         //trilhaSonoraEstrelaDaMorte();                                 // Inicia a trilha sonora da Estrela da Morte
         const deathstar = document.createElement("div");              // Cria um elemento div, que vai ser a Estrela da Morte
@@ -131,9 +130,8 @@ function colisaoEstrelaDaMorte() {
                     if (sinalObiWan) {                                     // Se o sinal do Obi-Wan estiver habilitado
                         sinalObiWan = false;                               // Desabilita o sinal do Obi-Wan para não ficar repetindo infinitamente
                         somSinalObiWan();                                  // Chama o sinal da voz do Obi-Wan
-                        const terminarMensagem = setInterval(() => {       // Cria um intervalo para esperar finalizar o audio do Obi-Wan
+                        setTimeout(() => {       // Cria um intervalo para esperar finalizar o audio do Obi-Wan
                             if (pontosVida > 0) {                          // Se ainda tiver vida 
-                                clearInterval(terminarMensagem);           // Deleta o intervalo
                                 habilitarAtaqueEspecial = true;            // Habilita o ataque especial
                                 btnEspecialAtaque.style.display = "block"; // Exibe na tela o sinal da tecla F
                             }

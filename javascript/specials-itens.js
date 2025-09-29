@@ -27,18 +27,18 @@ function criarItensEspeciais() {
 }
 
 // Item Full-Power
-let intervaloFullPower = 10000;                                                      // 10000 - Libera a criação do item de Full-Power a cada 10000 pontos
-let contagemAnterior = 0;                                                            // Variavel de atuaização de contagem
+let intervaloFullPower = 10000;                                                  // 10000 - Libera a criação do item de Full-Power a cada 10000 pontos
+let contagemAnterior = 0;                                                        // Variavel de atuaização de contagem
 function criarItemFullPower() {
-    let contagemAtual = pontosScore;                                                 // Pega a pontuação atual do jogador.
-    if (contagemAtual - contagemAnterior >= intervaloFullPower) {                    // Verifica se o jogador ganhou pontos suficientes desde a última vez que o item foi criado.
-        contagemAnterior = contagemAtual;                                            // Atualiza a contagem para a próxima verificação.
-        const fullPower = document.createElement("div");                             // Cria um novo elemento <div> para o item.
-        const posicaiItem = Math.floor(Math.random() * larguraCenario);              // Sorteia uma posição horizontal aleatória para o item aparecer.
-        fullPower.className = "full-power";                                          // Define a classe CSS para estilizar o item.
-        fullPower.style.left = posicaiItem + "px";                                   // Define a posição horizontal do item.
-        fullPower.style.top = "0px";                                                 // Define a posição inicial no topo da tela.
-        cenario.appendChild(fullPower);                                              // Adiciona o item ao cenário do jogo.
+    let contagemAtual = pontosScore;                                             // Pega a pontuação atual do jogador.
+    if (contagemAtual - contagemAnterior >= intervaloFullPower) {                // Verifica se o jogador ganhou pontos suficientes desde a última vez que o item foi criado.
+        contagemAnterior = contagemAtual;                                        // Atualiza a contagem para a próxima verificação.
+        const fullPower = document.createElement("div");                         // Cria um novo elemento <div> para o item.
+        const posicaiItem = Math.floor(Math.random() * larguraCenario);          // Sorteia uma posição horizontal aleatória para o item aparecer.
+        fullPower.className = "full-power";                                      // Define a classe CSS para estilizar o item.
+        fullPower.style.left = posicaiItem + "px";                               // Define a posição horizontal do item.
+        fullPower.style.top = "0px";                                             // Define a posição inicial no topo da tela.
+        cenario.appendChild(fullPower);                                          // Adiciona o item ao cenário do jogo.
     }
 }
 

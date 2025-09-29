@@ -72,8 +72,7 @@ function movimentarProjetilEspecial() {
             tiros[i].style.top = posicaoTopProjetil + "px";                // Atualiza a posição no cenário
             if (posicaoTopProjetil <= 50) {                                // Verifica se o projétil atingiu um pouco abixo do topo do cenário
                 tiros[i].remove();                                         // Remove o projétil (para de subir e some)
-                const intervaloMovimento = setInterval(() => {             // Delay para ativar a sequência de vitória (como no original)
-                    clearInterval(intervaloMovimento);                     // Limpa o intervalo para evitar múltiplas chamadas
+                setTimeout(() => {             // Delay para ativar a sequência de vitória (como no original)
                     xwingSaindo();                                         // Chama a função que faz o X-Wing sair voando
                 }, 1000);                                                  // 1 segundo de delay
                 return;                                                    // Sai do loop para esse projétil (já foi processado)
@@ -98,11 +97,9 @@ function xwingSaindo() {
         // Verifica se o X-Wing saiu do cenário
         if (posY <= -alturaXWing) {                                            // Se o X-Wing saiu do topo do cenário
             clearInterval(intervalo);                                          // Para a animação
-            const tempoExplosao = setInterval(() => {                          // Delay para ativar a sequência de vitória (como no original)
-                clearInterval(tempoExplosao);                                  // Limpa o intervalo para evitar múltiplas chamadas
+            setTimeout(() => {                                                 // Delay para dar tempo do X-Wing sair da tela e começar a explosao da Estrela da Morte
                 explosaoEstrelaDaMorte();                                      // Chama a função que faz a explosão da Estrela da Morte
-                const tempoPosExplosao = setInterval(() => {                   // Delay para mostrar a mensagem de vitória
-                    clearInterval(tempoPosExplosao);                           // Limpa o intervalo para evitar múltiplas chamadas
+                setTimeout(() => {                                             // Delay para mostrar a mensagem de vitória
                     clearInterval(iniciaContagemTempoGameplay);                // Interrompe a contagem do tempo de jogo
                     const vitoria = document.createElement("h1");              // Cria um elemento h1
                     vitoria.className = "gamewin";                             // Adiciona a classe para aplicar o estilo
@@ -148,8 +145,7 @@ function explosaoEstrelaDaMorte() {
     deathstarElement.remove();                                                 // Remove a Estrela da Morte do cenário
     cenario.appendChild(explosao);                                             // Adiciona a explosão ao cenário
     somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte
-    const intervaloExplosao = setTimeout(() => {                               // Delay para remover a explosão após o efeito
+    setTimeout(() => {                                                         // Delay para remover a explosão após o efeito
         explosao.remove();                                                     // Remove a explosão do cenário
-        clearInterval(intervaloExplosao);                                      // Limpa o timeout para evitar múltiplas chamadas
     }, 5000);                                                                  // Remove a explosão após 5 segundos
 }

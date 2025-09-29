@@ -2,6 +2,9 @@
 // Função para mover o X-Wing
 function moverXWing() {
     // as variaveis direcaoHorizontal e direcaoVertical soman ou subtraem na coordenada atual do X-Wing, a velocidadeXWing define o quão rapido ele se move
+
+    if (isBoosting) return; // Se estiver no modo boost, ignora os controles normais
+
     posicaoHorizontal += direcaoHorizontal * velocidadeXWing;                  // atuzliza as coordenadas horizontais do X-Wing
     positionVertical += direcaoVertical * velocidadeXWing;                     // atuzliza as coordenadas verticais do X-Wing
     // limitando a movimentação do X-Wing para não ultrapassar o cenario na horizontal
@@ -62,7 +65,7 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
 
         // Se o power-up estiver ativo 
         if (okPowerUp) {                                                       // Se o power-up estiver ativo
-            tiro.style.backgroundColor = "orange";                             // Muda a cor do projétil para Laranja
+            tiro.style.backgroundColor = "magenta";                            // Muda a cor do projétil para Laranja
         } else if (okFullPower) {                                              // Se o Full-Power estiver ativo
             tiro.style.backgroundColor = "cyan";                               // Muda a cor do projétil para Ciano
         } else {                                                               // Se nenhum poder especial estiver ativo
@@ -200,8 +203,8 @@ function colisaoXWing() {
             colisaoXWing.bottom > colisaoDisparo.top                                     // Verifica se a parte de baixo do X-Wing é maior que o topo do projetil
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
-            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
-                pontosVida -= 2;                                                         // Diminui 5 pontos para cada projetil que acertar o X-Wing
+            if (!okResistencePower) {                                                    // Se o poder da resistencia estiver habilitado
+                pontosVida -= 2;                                                         // Diminui 2 ponto para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
                     atualizarMenu();                                                     // Atualiza a vida no menu
@@ -305,6 +308,7 @@ function colisaoXWing() {
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
             if (okResistencePower) return;                                              // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
             okResistencePower = true;                                                   // Habilita a flag do Poder da Resistencia
             // Efeito de piscar para a transição
             let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
@@ -317,9 +321,8 @@ function colisaoXWing() {
                     xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
                 }
             }, 150);                                                                     // Intervalo do pisca-pisca (a cada 150ms)
-            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
-                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
-                okResistencePower = false;                                              // Desabilita a flag do Poder da Resistencia
+            setTimeout(() => {                                                           // Define o tempo total do poder e o retorno ao normal
+                okResistencePower = false;                                               // Desabilita a flag do Poder da Resistencia
                 xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
             }, 10000);                                                                   // 10 segundos de duração total do poder
         }
@@ -342,14 +345,13 @@ function colisaoXWing() {
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
             if (okPowerUp) return;                                                       // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
             okPowerUp = true;                                                            // Habilita a flag do Power-Up
             danoTiroXWing = 5;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
-
-            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
-                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
-                okPowerUp = false;                                                       // Desabilita a flag do Poder da Resistencia
+            setTimeout(() => {                                                           // Define o tempo total do poder e o retorno ao normal
+                okPowerUp = false;                                                       // Desabilita a flag do Power-Up
                 danoTiroXWing = 2;                                                       // Volta para o dano normal
                 clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
@@ -385,6 +387,7 @@ function colisaoXWing() {
             if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
             okFullPower = true;                                                          // Habilita a flag do Power-Up
             okResistencePower = true;                                                    // Habilita a flag do Poder da Resistencia
+            okPowerUp = false;                                                           // Desabilita a flag do Poder do Power-Up
             somItensEspeciais(3);                                                        // Toca a trilha sonoroa do Full-Power
             pontosVida = 100;                                                            // Recarrega a vida ao máximo
             atualizarMenu();                                                             // Atualiza a vida no menu
@@ -402,8 +405,7 @@ function colisaoXWing() {
             danoTiroXWing = 5;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
-            const duracaoPoder = setTimeout(() => {                                      // Define o tempo total do poder e o retorno ao normal
-                clearInterval(duracaoPoder);                                             // Finaliza o intervalo para não ficar repetindo em loop
+            setTimeout(() => {                                                           // Define o tempo total do poder e o retorno ao normal
                 okResistencePower = false;                                               // Desabilita a flag do Poder da Resistencia
                 okFullPower = false;                                                     // Desabilita a flag do Poder da Resistencia
                 danoTiroXWing = 3;                                                       // Volta para o dano normal
@@ -467,3 +469,62 @@ function moverProjeteisPunicao() {
     }
     estaSendoPunido = false;                                                             // Libera para próximo ataque
 }
+
+// Aciona um boost / impulsão no X-Wing
+function boostXWing() {
+    if (isBoosting) return;                                                              // Se um boost já estiver em andamento, interrompe a função para evitar múltiplos boosts.
+    isBoosting = true;                                                                   // Ativa a flag 'isBoosting' para suspender os controles normais do jogador.
+
+    // 1. Parâmetros do Boost
+    const boostDistance = 500;                                                           // Define a distância total que a nave percorrerá durante o boost, em pixels.
+    const boostDuration = 250;                                                           // Define a duração total do boost, em milissegundos.
+    const frames = boostDuration / (1000 / 60);                                          // Calcula o número total de "quadros" ou "passos" da animação, assumindo 60 FPS.
+    let framesPassed = 0;                                                                // Inicializa um contador para os quadros que já se passaram na animação.
+
+    // 2. Calcular a direção e a distância por passo
+    const anguloRad = rotacaoXWing * Math.PI / 180;                                      // Converte o ângulo de rotação atual da X-Wing (em graus) para radianos.
+    const boostDirectionX = Math.sin(anguloRad);                                         // Calcula o componente horizontal (eixo X) do vetor de direção do boost.
+    const boostDirectionY = -Math.cos(anguloRad);                                        // Calcula o componente vertical (eixo Y) do vetor de direção (negativo porque o Y cresce para baixo).
+    const distancePerFrameX = (boostDirectionX * boostDistance) / frames;                // Calcula a distância que a nave deve se mover no eixo X a cada quadro da animação.
+    const distancePerFrameY = (boostDirectionY * boostDistance) / frames;                // Calcula a distância que a nave deve se mover no eixo Y a cada quadro da animação.
+
+    // 3. Iniciar a animação
+    const boostInterval = setInterval(() => {                                            // Inicia um intervalo que executará a animação do boost a cada quadro (aproximadamente 60 vezes por segundo).
+        framesPassed++;                                                                  // Incrementa o contador de quadros para rastrear o progresso da animação.
+
+        // Atualiza a posição da X-Wing
+        posicaoHorizontal += distancePerFrameX;                                          // Adiciona o deslocamento do quadro atual à posição horizontal da nave.
+        positionVertical += distancePerFrameY;                                           // Adiciona o deslocamento do quadro atual à posição vertical da nave.
+
+        // Limita a nave dentro do cenário (boundary check)
+        posicaoHorizontal = Math.max(0, Math.min(posicaoHorizontal, larguraCenario - larguraXWing));  // Garante que a nave não ultrapasse as bordas esquerda ou direita do cenário.
+        positionVertical = Math.max(0, Math.min(positionVertical, alturaCenario - alturaXWing));      // Garante que a nave não ultrapasse as bordas superior ou inferior do cenário.
+
+        // Aplica a nova posição
+        xwing.style.left = `${posicaoHorizontal}px`;                                     // Atualiza a propriedade 'left' do CSS do elemento X-Wing com a nova posição horizontal.
+        xwing.style.top = `${positionVertical}px`;                                       // Atualiza a propriedade 'top' do CSS do elemento X-Wing com a nova posição vertical.
+
+        // 4. Finalizar o boost
+        if (framesPassed >= frames) {                                                    // Verifica se a animação completou todos os seus quadros.
+            clearInterval(boostInterval);                                                // Para o intervalo, finalizando a animação do boost.
+            isBoosting = false;                                                          // Desativa a flag 'isBoosting', devolvendo os controles normais ao jogador.
+        }
+    }, 1000 / 60);                                                                       // Define a frequência do intervalo para aproximadamente 60 quadros por segundo (FPS), resultando em uma animação suave.
+}
+
+function giroReversoXWing() {
+    if (isDoingManeuver || isBoosting) return;                                           // Impede a manobra se outra já estiver em andamento.
+    isDoingManeuver = true;                                                              // Ativa a flag para bloquear outras ações.
+    const targetRotation = rotacaoXWing + 180;                                           // Define o alvo da rotação.
+    const rotationStep = 10;                                                             // Quantos graus girar a cada quadro da animação.
+    const maneuverInterval = setInterval(() => {
+        if (Math.abs(targetRotation - rotacaoXWing) <= rotationStep) {                   // Verifica se a rotação atual está próxima do alvo.
+            rotacaoXWing = targetRotation;                                               // Ajusta para o valor final exato.
+            clearInterval(maneuverInterval);                                             // Para a animação.
+            isDoingManeuver = false;                                                     // Libera a flag.
+        } else {
+            rotacaoXWing += rotationStep;                                                // Gira a nave um pouco.
+        }
+        xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                            // Aplica a nova rotação.
+    }, 20);                                                                              // Executa a cada 20ms para uma animação fluida.
+} 

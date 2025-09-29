@@ -35,7 +35,17 @@ const teclasControleSoltas = (tecla) => {
 
 // Função para verifica se as teclas de controle estão clicadas
 const teclasControleClicadas = (tecla) => {
-    if (tecla.key === "p" || tecla.key === "P") {                       // Se a tecla apertada for "p" ou "P"
+    //console.log(tecla.key);                                           // Exibe no console a tecla pressionada
+    if (tecla.key === "w" || tecla.key === "W") {                       // Se a tecla apertada for "w" ou "W"
+        if (soltarBoost == true) {                                      // Se o Boost estiver liberado
+            boostXWing();                                               // Chama a função de Boost do X-Wing
+            if (okFullPower) return;                                    // Se o Full-Power não estiver ativado
+            soltarBoost = false;                                        // Atualiza a flag para desativar o Boost
+            setTimeout(() => soltarBoost = true, 5000);                 // Reativa o boost após 5s
+        }
+    } else if (tecla.key === "s" || tecla.key === "S") {                // Se a tecla apertada for "s" ou "S"
+        giroReversoXWing();                                             // Chama a função de giro reverso do X-Wing
+    } else if (tecla.key === "p" || tecla.key === "P") {                // Se a tecla apertada for "p" ou "P"
         if (painelDados.style.display === "none") {                     // Se o painel de estatística do jogo estiver oculto
             painelDados.style.display = "flex";                         // Mostra o painel de estatística do jogo
         } else {                                                        // Se o painel de estatística do jogo estiver visivel
@@ -109,6 +119,14 @@ window.addEventListener("gamepadconnected", (e) => {
         gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
             const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
             if (foiClicado) {                                                                              // Se o botão foi "clicado" (pressionado uma vez).
+                //console.log(index);                                                                      // Exibe no console o botão pressionado
+                // Boost X-Wing
+                if (index === 2 && soltarBoost == true) {                                                  // Se o botão X (índice 2) foi clicado.
+                    boostXWing();                                                                          // Chama a função de Boost do X-Wing
+                    if (okFullPower) return;                                                               // Se o Full-Power não estiver ativado
+                    soltarBoost = false;                                                                   // Atualiza a flag para desativar o Boost
+                    setTimeout(() => soltarBoost = true, 5000);                                            // Reativa o boost após 5s
+                }
                 // Ataque especial (Botão Y) - corresponde à tecla 'F'
                 if (index === 3 && habilitarAtaqueEspecial) {                                              // Se o botão Y (índice 3) foi clicado e o ataque especial está habilitado.
                     habilitarAtaqueEspecial = false;                                                       // Desabilita o ataque especial 
@@ -120,19 +138,23 @@ window.addEventListener("gamepadconnected", (e) => {
                 if (index === 8) {                                                                         // Se o botão View/Select (índice 8) foi clicado.
                     painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";  // Alterna a visibilidade do painel de estatísticas.
                 }
-
                 // Iniciar Jogo (Botão Start) - corresponde à tecla 'ENTER'
                 if (index === 9) {                                                                         // Se o botão Star (índice 9) foi clicado.
                     if (jogoIniciado == false) {                                                           // Se o jogo não começou ainda     
-                        iniciarJogo();                                                                     // Inicia o jogo
+                        btnIniciar.className = "botao-selecionado";                                        // Adiciona a classe botaobotao-selecionado
+                        setTimeout(() => iniciarJogo(), 800);                                              // Inicia o jogo
                     }
-                    if (okGameOver == false) {
-                        location.reload();
+                    if (okGameOver == false) {                                                             // Se o jogo terminou
+                        btnReiniciar.className = "botao-selecionado";                                      // Adiciona a classe botaobotao-selecionado
+                        setTimeout(() => reiniciarJogo(), 800);                                            // Reinica o jogo
                     }
+                }
+                // Giro reverso X-Wing
+                if (index === 6) {                                                                         // Se o botão Star (índice 9) foi clicado.
+                    giroReversoXWing();                                                                    // Chama a função de giro reverso do X-Wing
                 }
             }
         });
-
         // Salva o estado atual dos botões para comparar no próximo frame
         prevButtons = gp.buttons.map(b => ({ pressed: b.pressed, value: b.value }));                       // Salva o estado atual de todos os botões para a próxima verificação.
         requestAnimationFrame(update);                                                                     // Agenda a próxima execução da função 'update' para o próximo quadro de animação.

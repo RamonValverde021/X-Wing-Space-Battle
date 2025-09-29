@@ -17,8 +17,7 @@ function bossDarthVader() {
     pontosVida += 50;                                                                                     // Adiciona 50 pontos à vida do jogador como bônus para a batalha.
     if (pontosVida >= 100) pontosVida = 100;                                                               // Garante que a vida não ultrapasse 100.
     atualizarMenu();                                                                                      // Chama a função para atualizar a exibição da vida e outros status no menu.
-    const intervaloSuspense = setInterval(() => {                                                         // Cria um temporizador para um atraso dramático antes da aparição do chefe.
-        clearInterval(intervaloSuspense);                                                                 // Limpa o próprio temporizador para que ele execute apenas uma vez.
+    setTimeout(() => {                                                                                    // Cria um temporizador para um atraso dramático antes da aparição do chefe.
         trilhaSonoraDarthVader();                                                                         // Inicia trilha sonora do Darth Vader.
         const darthvader = document.createElement("div");                                                 // Cria um novo elemento <div> no HTML para representar a nave de Darth Vader.
         darthvader.id = "darthvader";                                                                     // Define o ID do elemento como "darthvader" para fácil acesso.
@@ -62,7 +61,7 @@ function colisaoDarthVader() {
                 darthVaderRect.bottom > colisaoDisparo.top                                                // Verifica se a base de Vader está abaixo do topo do tiro.
             ) {                                                                                           // Se todas as condições forem verdadeiras, houve uma colisão.
                 vidaAtualDarthVader -= danoTiroXWing;                                                     // Subtrai a vida de Darth Vader com base no dano do tiro do jogador.
-                pontosScore += 1;                                                                         // Adiciona 10 pontos à pontuação do jogador.
+                pontosScore += 5;                                                                         // Adiciona 10 pontos à pontuação do jogador.
                 disparo.remove();                                                                         // Remove o projétil que colidiu.
                 atualizarMenu();                                                                          // Chama a função para atualizar a barra de vida de Darth Vader e a pontuação.
                 if (vidaAtualDarthVader <= 0) {                                                           // Verifica se a vida de Darth Vader chegou a zero ou menos.
@@ -72,7 +71,7 @@ function colisaoDarthVader() {
                     }
                     darthVaderDerrotado = true;                                                           // Define a flag de derrota como verdadeira para evitar múltiplas chamadas.
                 } else {                                                                                  // Se Darth Vader ainda tem vida.
-                    darthVaderElement.setAttribute("data-vida", vidaAtualDarthVader);                          // Atualiza o atributo 'data-vida' com o novo valor.
+                    darthVaderElement.setAttribute("data-vida", vidaAtualDarthVader);                     // Atualiza o atributo 'data-vida' com o novo valor.
                 }
                 showEstatisticas();                                                                       // Atualiza o painel de estatísticas do jogo.
             }
@@ -113,7 +112,7 @@ function moverDarthVader() {
     // A nave tentará ficar a uma distância entre `maxDistance` e `minDistance`.
     const maxDistance = 300;                                                                              // Define a distância máxima que a nave tentará manter antes de se aproximar.
     const minDistance = 280;                                                                              // Define a distância mínima que a nave tentará manter antes de se afastar.
-    const velocidadeVader = 1;                                                                            // Define a velocidade de movimento para frente/trás de Vader.
+    const velocidadeVader = 2;                                                                            // Define a velocidade de movimento para frente/trás de Vader.
     const velocidadeStrafe = 0.8;                                                                         // Define a velocidade do movimento lateral.
 
     let moveX = 0;                                                                                        // Inicializa a variável de movimento horizontal.
@@ -176,8 +175,8 @@ function criarProjeteisDarthVader() {
 
     // Posições locais dos canhões (esquerdo e direito) em relação ao centro da nave.
     const muzzles = [
-        { lx: -5, ly: 20 },                                                                               // Posição do canhão esquerdo (20px para a esquerda, 15px para a frente).
-        { lx: 7, ly: 20 }                                                                                 // Posição do canhão direito (20px para a direita, 15px para a frente).
+        { lx: -5, ly: 50 },                                                                               // Posição do canhão esquerdo (20px para a esquerda, 15px para a frente).
+        { lx: 7, ly: 50 }                                                                                 // Posição do canhão direito (20px para a direita, 15px para a frente).
     ];
 
     // Metade das dimensões do projétil para centralizar na criação.
@@ -190,24 +189,22 @@ function criarProjeteisDarthVader() {
         const spawn_center_x = center_x + (muzzle.lx * Math.cos(theta - Math.PI / 2) - muzzle.ly * Math.sin(theta - Math.PI / 2));
         const spawn_center_y = center_y + (muzzle.lx * Math.sin(theta - Math.PI / 2) + muzzle.ly * Math.cos(theta - Math.PI / 2));
 
-        for (let c = 0; c < 3; c++) {
-            // Cria o elemento do projétil.
-            const tiro = document.createElement("div");                                                       // Cria um novo elemento <div> para o projétil.
-            tiro.className = "projetil_darth-vader";                                                          // Aplica a classe CSS para estilização.
+        // Cria o elemento do projétil.
+        const tiro = document.createElement("div");                                                       // Cria um novo elemento <div> para o projétil.
+        tiro.className = "projetil_darth-vader";                                                          // Aplica a classe CSS para estilização.
 
-            // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn calculada.
-            tiro.style.left = (spawn_center_x - half_w) + "px";                                               // Centraliza horizontalmente.
-            tiro.style.top = (spawn_center_y - half_h) + "px";                                                // Centraliza verticalmente.
+        // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn calculada.
+        tiro.style.left = (spawn_center_x - half_w) + "px";                                               // Centraliza horizontalmente.
+        tiro.style.top = (spawn_center_y - half_h) + "px";                                                // Centraliza verticalmente.
 
-            // Aplica a mesma rotação da nave ao projétil para que ele saia alinhado.
-            tiro.style.transform = `rotate(${anguloDarthVader}deg)`;
+        // Aplica a mesma rotação da nave ao projétil para que ele saia alinhado.
+        tiro.style.transform = `rotate(${anguloDarthVader}deg)`;
 
-            // Armazena os vetores de velocidade no projétil para a função de movimento.
-            tiro.setAttribute("data-vx", vx.toFixed(2));
-            tiro.setAttribute("data-vy", vy.toFixed(2));
+        // Armazena os vetores de velocidade no projétil para a função de movimento.
+        tiro.setAttribute("data-vx", vx.toFixed(2));
+        tiro.setAttribute("data-vy", vy.toFixed(2));
 
-            cenario.appendChild(tiro);
-        }                                                                     // Adiciona o projétil ao cenário.
+        cenario.appendChild(tiro);                                                                        // Adiciona o projétil ao cenário.
     });
     somCanhoesTieFighter();                                                                               // Toca o som de disparo (reutilizado).
 }
@@ -237,25 +234,53 @@ function moverProjeteisDarthVader() {
 
 // Função que executa a animação de derrota de Darth Vader.
 function derrotarDarthVader(darthVaderElement) {
-    clearInterval(iniciaMovimentacaoDarthVader);                                                          // Para o intervalo de movimento da nave.
-    clearInterval(iniciaProjeteisDarthVader);                                                             // Para o intervalo de criação de projéteis.
+    clearInterval(iniciaMovimentacaoDarthVader);                                                          // Para o intervalo que controla o movimento de Darth Vader.
+    clearInterval(iniciaProjeteisDarthVader);                                                             // Para o intervalo que cria os projéteis de Darth Vader.
 
-    let rotacao = 0;                                                                                      // Inicializa uma variável para controlar a rotação durante a animação de derrota.
-    const derrotaInterval = setInterval(() => {                                                           // Inicia um intervalo para a animação de derrota.
-        const vaderRect = darthVaderElement.getBoundingClientRect();                                      // Obtém as coordenadas e dimensões atuais da nave.
-        let newLeft = vaderRect.left + rotacaoXWing;                                                      // Define o movimento diagonal para a direita.
-        let newTop = vaderRect.top - 5;                                                                   // Define o movimento diagonal para cima.
-        rotacao += 30;                                                                                    // Incrementa o ângulo de rotação para um giro rápido.
+    // 1. Parâmetros da Animação de Derrota
+    const defeatDuration = 2000;                                                                          // Define a duração total da animação em milissegundos (2 segundos).
+    const frames = defeatDuration / (1000 / 60);                                                          // Calcula o número total de quadros da animação, assumindo 60 FPS.
+    let framesPassed = 0;                                                                                 // Inicializa um contador para os quadros que já se passaram na animação.
+    let currentRotation = 0;                                                                              // Define a rotação inicial da nave durante a animação de derrota.
 
-        darthVaderElement.style.left = newLeft + "px";                                                    // Aplica a nova posição horizontal.
-        darthVaderElement.style.top = newTop + "px";                                                      // Aplica a nova posição vertical.
-        darthVaderElement.style.transform = `rotate(${rotacao}deg)`;                                      // Aplica a rotação.
+    // 2. Posições e Velocidades
+    const vaderRect = darthVaderElement.getBoundingClientRect();                                          // Obtém as coordenadas e dimensões atuais da nave de Vader.
+    let currentLeft = vaderRect.left;                                                                     // Armazena a posição horizontal inicial da nave.
+    let currentTop = vaderRect.top;                                                                       // Armazena a posição vertical inicial da nave.
+    const rotationSpeed = 30;                                                                             // Define quantos graus a nave irá girar a cada quadro da animação.
 
-        // Remove quando sair da tela
-        if (newTop < -vaderRect.height || newLeft > larguraCenario) {                                     // Verifica se a nave saiu completamente da área visível.
-            clearInterval(derrotaInterval);                                                               // Para a animação de derrota.
-            darthVaderElement.remove();                                                                   // Remove o elemento da nave do HTML.
-            iniciandoBossEstrelaDaMorte();
+    // Calcula a direção do "empurrão" baseado na posição do X-Wing
+    const vaderCenterX = vaderRect.left + vaderRect.width / 2;                                            // Calcula a coordenada X do centro da nave de Vader.
+    const vaderCenterY = vaderRect.top + vaderRect.height / 2;                                            // Calcula a coordenada Y do centro da nave de Vader.
+    const xwingCenterX = posicaoHorizontal + larguraXWing / 2;                                            // Calcula a coordenada X do centro da nave do jogador (X-Wing).
+    const xwingCenterY = positionVertical + alturaXWing / 2;                                              // Calcula a coordenada Y do centro da nave do jogador.
+
+    const dx = vaderCenterX - xwingCenterX - 50;                                                          // Calcula o vetor de direção X (Vader - X-Wing), com um pequeno desvio.
+    const dy = vaderCenterY - xwingCenterY;                                                               // Calcula o vetor de direção Y (Vader - X-Wing).
+    const distancia = Math.sqrt(dx * dx + dy * dy) || 1;                                                  // Calcula a distância para normalizar o vetor (|| 1 evita divisão por zero).
+    const pushSpeed = 15;                                                                                 // Define a velocidade total do "empurrão" da nave.
+    const speedX = (dx / distancia) * pushSpeed;                                                          // Calcula a velocidade de movimento horizontal por quadro.
+    const speedY = (dy / distancia) * pushSpeed;                                                          // Calcula a velocidade de movimento vertical por quadro.
+
+    // 3. Iniciar a Animação
+    const defeatInterval = setInterval(() => {                                                            // Inicia um intervalo que executará a animação a cada quadro.
+        framesPassed++;                                                                                   // Incrementa o contador de quadros para rastrear o progresso da animação.
+
+        // Atualiza posição e rotação
+        currentLeft += speedX;                                                                            // Adiciona o deslocamento do quadro à posição horizontal da nave.
+        currentTop += speedY;                                                                             // Adiciona o deslocamento do quadro à posição vertical da nave.
+        currentRotation += rotationSpeed;                                                                 // Incrementa o ângulo de rotação para o efeito de giro.
+
+        // Aplica as novas posições e rotação
+        darthVaderElement.style.left = `${currentLeft}px`;                                                // Atualiza a propriedade 'left' do CSS do elemento da nave.
+        darthVaderElement.style.top = `${currentTop}px`;                                                  // Atualiza a propriedade 'top' do CSS do elemento da nave.
+        darthVaderElement.style.transform = `rotate(${currentRotation}deg)`;                              // Aplica a nova rotação ao elemento da nave.
+
+        // 4. Finalizar a animação
+        if (framesPassed >= frames) {                                                                     // Verifica se a animação completou todos os seus quadros.
+            clearInterval(defeatInterval);                                                                // Para o intervalo, finalizando a animação de derrota.
+            darthVaderElement.remove();                                                                   // Remove o elemento da nave de Darth Vader do HTML.
+            iniciandoBossEstrelaDaMorte();                                                                // Chama a função para iniciar a próxima fase do jogo.
         }
-    }, 50);                                                                                               // O intervalo da animação é executado a cada 20 milissegundos.
+    }, 1000 / 60);                                                                                        // Define a frequência do intervalo para aproximadamente 60 FPS.
 }

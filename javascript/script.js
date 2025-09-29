@@ -11,7 +11,7 @@ const btnEspecialAtaque = document.getElementById("ataque_especial");           
 const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
 const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
-
+const btnIniciar = document.getElementById("btn_Inicar");
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 const larguraCenario = cenario.offsetWidth;                                              // Pega a largura de todod o cenario
 const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
@@ -20,7 +20,7 @@ const alturaXWing = xwing.offsetHeight;                                         
 const larguraTieFighter = 100;                                                           // Pega a largura do Tie-Fighter
 const alturaTieFighter = 95.56;                                                          // Pega a altura do Tie-Fighter
 const velocidadeMaximaXWing = 15;                                                        // Define a velocidade máxima do X-Wing
-const velMaximaRotacaoXWing = 5;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
+const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;                                                      // Define a velocidade dos projeteis do X-Wing
 const velocidadeMaximaTieFighter = 12;                                                   // 12 - Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 700;                                                 // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
@@ -32,10 +32,12 @@ const anguloMaximo = 61;                                                        
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
 const velocidadeItemEspecial = 3;                                                        // Define a velocidade de decida dos itens especiais
-const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
+const vidaDarthVader = 60;                                                              // 660 Pontos de vida iniciais do Darth Vader
 const vidaEstrelaDaMorte = 1500;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 
-let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
+let velocidadeXWing = 15;                                                                 // 5 - Define a velocidade inicial do X-Wing 
+let velRotacaoXWing = 6;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
+
 let danoTiroXWing = 3;                                                                   // Define o dano dos tiros do X-Wing
 let velocidadeTieFighter = 1;                                                            // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                                        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
@@ -49,7 +51,6 @@ let tempoTotalSegundos = 0;                                                     
 let estaAtirando = false;                                                                // Flada para saber se o X-Wing está atirando ou não
 let countNavesDestruidas = 0;                                                            // Contador de naves destruídas
 let rotacaoXWing = 0;                                                                    // Variavel para controlar a rotação do X-Wing
-let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
 let giroHorario = false;                                                                 // Flag para controlar a rotação do X-Wing no sentido horário
 let giroAntiHorario = false;                                                             // Flag para controlar a rotação do X-Wing no sentido anti-horário
 let iniciarDarthVader = true;                                                            // Flag para iniciar a fase do Darth Vader
@@ -72,13 +73,15 @@ let backgroundPositionY = 0;                                                    
 let estaSendoPunido = false;                                                             // Flag para evitar múltiplos projéteis
 let countInimigosDestruidos = 0;                                                         // Contador de inimigos destruídos
 let okBatalhaDarthVader = false;                                                         // Flag para indicar a batalha do Darth Vader
-let okResistencePower = false;
-let okPowerUp = false;
-let okFullPower = false;
+let okResistencePower = false;                                                           // Flag para indicar que o pode de Resistencia está ativo
+let okPowerUp = false;                                                                   // Flag para indicar que o power-up está ativo
+let okFullPower = false;                                                                 // Flag para indicar que o Full-Power está ativo
+let soltarBoost = true;                                                                  // Flag para quando pode soltar o Boost
+let isBoosting = false;                                                                  // Flag para indicar que o boost está em andamento
+let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 
 // Variaveis para os intervalos do jogo
 let iniciaBossEstrelaDaMorteTimeout;
-let iniciaBossDarthVaderTimeout;
 let iniciaItensEspeciaisTimeout;
 let iniciaSurgimentoEstrelaDaMorteTimeout;
 let iniciaContagemTempoGameplay;
@@ -109,12 +112,13 @@ let iniciaMovimentacaoItensEspeciais;
 let iniciaSurgimentoEstrelaDaMorte;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
-document.getElementById("btn_Inicar").addEventListener("click", iniciarJogo);                      // Inicia o jogo clicando no botão
+btnIniciar.addEventListener("click", iniciarJogo);                      // Inicia o jogo clicando no botão
 let jogoIniciado = false;                                                                          // Flag para identificar a inicialização do jogo
 document.addEventListener("keydown", function (event) {                                            // Função para iniciar o jogo com apertar do Enter
     if (jogoIniciado == false) {                                                                   // Se o jogo não começou ainda     
         if (event.key === "Enter") {                                                               // Se a tecla apertada for o Enter
-            iniciarJogo();                                                                         // Inicia o jogo
+            btnIniciar.className = "botao-selecionado";                                            // Adiciona a classe botaobotao-selecionado
+            setTimeout(() => iniciarJogo(), 800);                                                  // Inicia o jogo
         }
     }
 });
@@ -128,8 +132,7 @@ function iniciarJogo() {
     xwing.style.bottom = "40vh";                                                                   // Inicia a posição do X-Wing abaixo da tela para a animação CSS de entrada do X-Wing
     trilhaSonora();                                                                                // Toca a trilha sonora do game
     iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
-    const iniciaGame = setTimeout(() => {                                                          // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
-        clearInterval(iniciaGame);                                                                 // Finaliza o intervalo para não ficar repetindo em loop
+    setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
         const vhToPx = window.innerHeight * 0.4;                                                   // Converte 40vh para pixels
         positionVertical = alturaCenario - vhToPx - alturaXWing;                                   // Calcula a posição vertical em pixels do X-Wing no final da animação
@@ -155,13 +158,6 @@ function iniciarJogo() {
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
         iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
 
-        iniciaItensEspeciaisTimeout = setTimeout(() => {
-            clearInterval(iniciaItensEspeciaisTimeout);                                            // Finaliza o intervalo para não ficar repetindo em loop
-            iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
-            iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
-            iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
-        }, 1 * 60 * 1000);                                                                         // Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
-
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
                 rotacaoXWing -= velRotacaoXWing;                                                   // Decrementa a rotação do X-Wing
@@ -170,10 +166,15 @@ function iniciarJogo() {
                 rotacaoXWing += velRotacaoXWing;                                                   // Incrementa a rotação do X-Wing
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                              // Aplica a rotação no X-Wing
             }
-        }, 100);                                                                                    // Repetição do loop a cada 20ms
-        
+        }, 100);                                                                                   // Repetição do loop a cada 20ms
+
+        iniciaItensEspeciaisTimeout = setTimeout(() => {
+            iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // 15000 - Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
+            iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
+            iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
+        }, 0 * 60 * 1000);                                                                         // 1 - Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
+
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
-            clearInterval(iniciaSurgimentoEstrelaDaMorteTimeout);                                  // Finaliza o intervalo para não ficar repetindo em loop
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
         }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
 
@@ -182,7 +183,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 5 * 60 * 1000);
+        }, 0 * 60 * 1000); // 5 minutos
 
     }, 3000); // Atraso de 3 segundos
 }
@@ -198,10 +199,11 @@ function gameOver() {
         document.removeEventListener("keydown", teclasControlePressionadas);                       // Remove os eventos de controle do X-Wing de keydown
         document.removeEventListener("keyup", teclasControleSoltas);                               // Remove os eventos de controle do X-Wing de keyup
         // Para todos os intervalos do jogo
-        clearInterval(iniciaContagemTempoGameplay);
         clearTimeout(iniciaBossEstrelaDaMorteTimeout);
         clearTimeout(iniciaItensEspeciaisTimeout);
+        clearTimeout(iniciaBossDarthVaderTimeout);
         clearTimeout(iniciaSurgimentoEstrelaDaMorteTimeout);
+        clearInterval(iniciaContagemTempoGameplay);
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);
         clearInterval(iniciaMovimentacaoXWing);
@@ -243,18 +245,16 @@ function gameOver() {
         const disparosPunicao = document.querySelectorAll(".projetil_punicao");         // Seleciona todos os disparos de Punição
         disparosPunicao.forEach(disparos => disparos.remove());                         // Percorre todos os projeteis de Punição e remove cada um deles
         // Depois de 5 segundos, tocar a risada do imperador
-        const atrasoSuspense = setTimeout(() => {                                       // Constroi um intervalo de 5s para finalizar os audios do jogo
-            clearInterval(atrasoSuspense);                                              // Finaliza o intervalo para não ficar repetindo em loop
+        setTimeout(() => {                                                              // Constroi um intervalo de 5s para finalizar os audios do jogo
             // Mostra a mensagem de fim de jogo
             const gameover = document.createElement("h1");                              // Constroi um objeto <h1>
-            gameover.innerHTML = "Game &nbsp; Over<br>O &nbsp; Imperio &nbsp; Venceu";     // Adiciona um texto ao objeto criado
+            gameover.innerHTML = "Game &nbsp; Over<br>O &nbsp; Imperio &nbsp; Venceu";  // Adiciona um texto ao objeto criado
             gameover.className = "gameover";                                            // Defice uma classe ao objeto para adicionar formatação
             cenario.appendChild(gameover);                                              // Adiciona o objeto criado ao cenario
             menu.style.display = "none";                                                // Esconde o menu do jogo
             const audio = new Audio('../audios/risada_palpatine.MP3');                  // Pega o audio da risada do Imperador Palpatine
             audio.play();                                                               // Toca o audio
-            const delaySurgirBotao = setTimeout(() => {                                 // Constroi um intervalo de 5s para finalizar a risada do Imperador Palpatine
-                clearInterval(delaySurgirBotao);                                        // Finaliza o intervalo para não ficar repetindo em loop 
+            setTimeout(() => {                                                          // Constroi um intervalo de 5s para finalizar a risada do Imperador Palpatine
                 const btnReiniciar = document.createElement("button");                  // Constroi um objeto <button>
                 btnReiniciar.id = "btnReiniciar";                                       // Define um id paro o botão
                 btnReiniciar.className = "botao";                                       // Defice uma classe ao objeto para adicionar formatação
@@ -264,9 +264,12 @@ function gameOver() {
                 btnReiniciar.addEventListener("click", reiniciarJogo);                  // Adiciona um evento de clique ao obejto para chamar a função de reiniciar o jogo
                 cenario.appendChild(btnReiniciar);                                      // Adiciona o objeto criado ao cenario                                                                      // Flag para identificar a inicialização do jogo
                 document.addEventListener("keydown", function (event) {                 // Função para reiniciar o jogo com apertar do Enter
-                    if (event.key === "Enter") reiniciarJogo();                         // Se apertou o Enter reinica o jogo
+                    if (event.key === "Enter") {                                        // Se apertou o Enter
+                        btnReiniciar.className = "botao-selecionado";                   // Adiciona a classe botaobotao-selecionado
+                        setTimeout(() => reiniciarJogo(), 800);                         // Reinica o jogo
+                    }
                 });
-                setTimeout(() => reiniciarJogo(), 10000);                                 // Agenda a reinicialização do jogo para daqui a 10s caso o usuario não aperte nada
+                setTimeout(() => reiniciarJogo(), 10000);                               // Agenda a reinicialização do jogo para daqui a 10s caso o usuario não aperte nada
             }, 5000);                                                                   // Atraso de 5 segundos da risada do Imperador
         }, 5000);                                                                       // Atraso de 5 segundos dos audios do jogo
         okGameOver = false;                                                             // Desabilita o Game Over

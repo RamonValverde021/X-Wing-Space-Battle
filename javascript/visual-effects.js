@@ -52,7 +52,7 @@ function mostrarToasty() {                                  // função para mos
     audio.play();                                           // Toca o audio
     setTimeout(() => {                                      // Depois de 1 segundo
         toast.classList.remove("show");                     // Remove a classe show para esconder o toast
-    }, 1000);                                               // visível por 1s
+    }, 1500);                                               // visível por 1s
 }
 
 // Atualizar o menu do jogo
