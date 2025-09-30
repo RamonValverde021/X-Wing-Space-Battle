@@ -146,23 +146,44 @@ function colisaoTieFighter() {
 
 // Função para criar os projeteis do Tie Fighter
 const construirProjeteisTieFighter = (tieFighter) => {
-    const posicaoLeftTiro = parseFloat(tieFighter.style.left);                             // Pega a posição horizontal atual do Tie Fighter
-    const posicaoTopTiro = parseFloat(tieFighter.style.top);                               // Pega a posição vertical atual do Tie Fighter
-    const centerX = posicaoLeftTiro + larguraTieFighter / 2;                               // Centro X do Tie Fighter
-    const centerY = posicaoTopTiro + alturaTieFighter / 2;                                 // Centro Y do Tie Fighter
-    // Cria dois elementos de disparo, um de cada lado do Tie Fighter
-    // projetil do lado esquerdo
-    const tiroEsquerdo = document.createElement("div");                                    // Cria um elemento div, que vai ser o projetil
-    tiroEsquerdo.className = "projetil_tie-fighter";                                       // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = centerX - 22 + "px";                                          // Define a posição horizontal do projetil esquerdo referente a posição central horizontal do Tie Fighter
-    tiroEsquerdo.style.top = centerY - 40 + "px";                                           // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
-    cenario.appendChild(tiroEsquerdo);                                                     // Adiciona o projetil ao cenario
-    // projetil do lado direito
-    const tiroDireito = document.createElement("div");                                     // Cria um elemento div, que vai ser o projetil
-    tiroDireito.className = "projetil_tie-fighter";                                        // Adiciona a classe do projetil para aplicar o estilo
-    tiroDireito.style.left = centerX - 12 + "px";                                          // Define a posição horizontal do projetil direito referente a posição central horizontal do Tie Fighter
-    tiroDireito.style.top = centerY - 40 + "px";                                            // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
-    cenario.appendChild(tiroDireito);                                                      // Adiciona o projetil ao cenario
+    const tieRect = tieFighter.getBoundingClientRect();
+    const centerX = tieRect.left + tieRect.width / 2;
+    const centerY = tieRect.top + tieRect.height / 2;
+
+    // Posições relativas dos canhões em relação ao centro da nave.
+    // lx: deslocamento horizontal, ly: deslocamento vertical.
+    const muzzles = [
+        // Cano esquerdo
+        {
+            lx: -larguraProjetilNaves * 2,
+            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)
+        },
+        // Cano direito 
+        {
+            lx: larguraProjetilNaves * 2,
+            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)
+        }  
+    ];
+   
+    // Metade das dimensões do projétil para centralizá-lo corretamente.
+    const half_w = larguraProjetilNaves / 2;
+    const half_h = alturaProjetilNaves / 2;
+
+    muzzles.forEach(muzzle => {
+        // Calcula a posição de spawn do projétil.
+        const spawnX = centerX + muzzle.lx;
+        const spawnY = centerY + muzzle.ly;
+
+        // Cria o elemento do projétil.
+        const tiro = document.createElement("div");
+        tiro.className = "projetil_tie-fighter";
+
+        // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn.
+        tiro.style.left = (spawnX - half_w) + "px";
+        tiro.style.top = (spawnY - half_h) + "px";
+
+        cenario.appendChild(tiro);
+    });
 }
 
 // Função para atirar

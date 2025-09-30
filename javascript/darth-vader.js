@@ -13,7 +13,7 @@ function bossDarthVader() {
     clearInterval(iniciaProjeteisTieFighter);                                                             // Para o intervalo que cria projéteis dos Tie Fighters.
     darthVaderDerrotado = false;                                                                          // Garante que a flag de derrota seja resetada para falso no início da batalha.
     audioTrilhaSonora.pause();                                                                            // Pausa a trilha sonora principal do jogo.
-    setTimeout(() =>  trilhaSonoraDarthVader(), 8000);                                                    // Inicia trilha sonora do Darth Vader.
+    setTimeout(() => trilhaSonoraDarthVader(), 8000);                                                    // Inicia trilha sonora do Darth Vader.
     setTimeout(() => {                                                                                    // Cria um temporizador para um atraso dramático antes da aparição do chefe.
         somVoandoDarthVader();                                                                            // Toca a primeira fala imediatamente.
         barraDeVidaDarthVader.style.display = "block";                                                    // Torna a barra de vida de Darth Vader visível na tela.
@@ -38,10 +38,10 @@ function bossDarthVader() {
                 clearInterval(entradaInterval);                                                           // Para a animação de entrada.
                 // Inicia a lógica de movimento e ataque após a entrada
                 okBatalhaDarthVader = true;                                                               // Atualiza a flag indicando que a batalha começou
-                iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
+                //iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
             }
         }, 20);                                                                                           // O intervalo de animação é executado a cada 20 milissegundos.
-        
+
         // Inicia os disparos
         somDarthVader(); // Toca a primeira fala imediatamente.
         iniciaFalasDarthVader = setInterval(somDarthVader, 10000); // Toca uma fala a cada 10 segundos.
@@ -117,7 +117,7 @@ function moverDarthVader() {
     const maxDistance = 300;                                                                              // Define a distância máxima que a nave tentará manter antes de se aproximar.
     const minDistance = 280;                                                                              // Define a distância mínima que a nave tentará manter antes de se afastar.
     const velocidadeVader = 2;                                                                            // Define a velocidade de movimento para frente/trás de Vader.
-    const velocidadeStrafe = 0.8;                                                                         // Define a velocidade do movimento lateral.
+    const velocidadeStrafe = 2;                                                                         // 0.8 - Define a velocidade do movimento lateral.
 
     let moveX = 0;                                                                                        // Inicializa a variável de movimento horizontal.
     let moveY = 0;                                                                                        // Inicializa a variável de movimento vertical.
@@ -176,16 +176,22 @@ function criarProjeteisDarthVader() {
     const speed = velocidadeProjetilDarthVader;                                                           // Define a velocidade dos projéteis.
     const vx = speed * Math.cos(theta);                                                                   // Calcula o componente de velocidade horizontal (X).
     const vy = speed * Math.sin(theta);                                                                   // Calcula o componente de velocidade vertical (Y).
-
-    // Posições locais dos canhões (esquerdo e direito) em relação ao centro da nave.
-    const muzzles = [
-        { lx: -5, ly: 50 },                                                                               // Posição do canhão esquerdo (20px para a esquerda, 15px para a frente).
-        { lx: 7, ly: 50 }                                                                                 // Posição do canhão direito (20px para a direita, 15px para a frente).
+    const muzzles = [                                                                                     // Posições relativas ao centro da nave, em pixels
+        // Posição do cano esquerdo
+        {
+            lx: -larguraProjetilNaves * 2,
+            ly: alturaProjetilNaves,
+        },
+        // Posição do cano direito                                                 
+        {
+            lx: larguraProjetilNaves * 2,
+            ly: alturaProjetilNaves
+        }
     ];
 
-    // Metade das dimensões do projétil para centralizar na criação.
-    const half_w = 3;                                                                                     // Metade da largura do projétil (6px / 2).
-    const half_h = 25;                                                                                    // Metade da altura do projétil (50px / 2).
+    // Metade das dimensões do projétil para centralizar
+    const half_w = larguraProjetilNaves / 2;                                                              // Metade da largura do projétil
+    const half_h = alturaProjetilNaves / 2;                                                               // Metade da altura do projétil
 
     muzzles.forEach(muzzle => {                                                                           // Itera sobre cada canhão para criar um projétil.
         // Calcula a posição de spawn do projétil, aplicando a rotação da nave.

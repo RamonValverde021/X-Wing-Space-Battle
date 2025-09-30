@@ -19,15 +19,13 @@ const larguraCenario = cenario.offsetWidth;                                     
 const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
-const larguraTieFighter = 100;                                                           // Pega a largura do Tie-Fighter
-const alturaTieFighter = 95.56;                                                          // Pega a altura do Tie-Fighter
 const velocidadeMaximaXWing = 15;                                                        // Define a velocidade máxima do X-Wing
 const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
 const velocidadeProjetilXWing = 50;                                                      // Define a velocidade dos projeteis do X-Wing
 const velocidadeMaximaTieFighter = 12;                                                   // 12 - Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 700;                                                 // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 const velocidadeProjetilTieFighter = 50;                                                 // Define a velocidade dos projeteis dos Tie Fighters
-const velocidadeProjetilDarthVader = 60;                                                 // Define a velocidade dos projeteis do Darth Vader
+const velocidadeProjetilDarthVader = 65;                                                 // 65 -Define a velocidade dos projeteis do Darth Vader
 const velocidadeProjetilDeathStar = 50;                                                  // Define a velocidade dos projeteis da Estrela da Morte
 const velocidadeProjetilPunicao = 50;                                                    // Define a velocidade dos projeteis de punição
 const anguloMaximo = 61;                                                                 // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
@@ -36,10 +34,15 @@ const tempoDePunicao = 8;                                                       
 const velocidadeItemEspecial = 3;                                                        // Define a velocidade de decida dos itens especiais
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
 const vidaEstrelaDaMorte = 1500;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
+const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
 
 // Variaveis Globais
 let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
 let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
+let alturaProjetilNaves;                                                                 // Altura dos projéteis, obtida do CSS.
+let larguraProjetilNaves;                                                                // Largura dos projéteis, obtida do CSS.
+let larguraTieFighter = 0;                                                               // Define a largura do Tie-Fighter
+let alturaTieFighter = 0;                                                                // Define a altura do Tie-Fighter
 let danoTiroXWing = 3;                                                                   // Define o dano dos tiros do X-Wing
 let velocidadeTieFighter = 1;                                                            // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                                        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
@@ -126,17 +129,19 @@ document.addEventListener("keydown", function (event) {                         
     }
 });
 
+
+/*
 // Define uma função assíncrona para poder usar 'await' para esperar por ações.
 async function lockOrientation() { 
     try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
         // Primeiro, tentamos entrar em tela cheia. É um requisito para o bloqueio de orientação na maioria dos navegadores.
         if (document.documentElement.requestFullscreen) {                                          // Verifica se o método padrão 'requestFullscreen' existe.
             await document.documentElement.requestFullscreen();                                    // Solicita o modo de tela cheia e espera a operação ser concluída.
-        } else if (document.documentElement.mozRequestFullScreen) {                                /* Firefox */ // Se não, verifica a versão para Firefox.
+        } else if (document.documentElement.mozRequestFullScreen) {                                // Firefox  // Se não, verifica a versão para Firefox.
             await document.documentElement.mozRequestFullScreen();                                 // Solicita tela cheia no Firefox e espera.
-        } else if (document.documentElement.webkitRequestFullscreen) {                             /* Chrome, Safari & Opera */ // Se não, verifica a versão para Chrome, Safari e Opera.
+        } else if (document.documentElement.webkitRequestFullscreen) {                             // Chrome, Safari & Opera  // Se não, verifica a versão para Chrome, Safari e Opera.
             await document.documentElement.webkitRequestFullscreen();                              // Solicita tela cheia nesses navegadores e espera.
-        } else if (document.documentElement.msRequestFullscreen) {                                 /* IE/Edge */ // Se não, verifica a versão para IE/Edge.
+        } else if (document.documentElement.msRequestFullscreen) {                                 // IE/Edge  // Se não, verifica a versão para IE/Edge.
             await document.documentElement.msRequestFullscreen();                                  // Solicita tela cheia no IE/Edge e espera.
         }
         // Depois de entrar em tela cheia com sucesso, bloqueamos a orientação.
@@ -145,6 +150,8 @@ async function lockOrientation() {
         console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
     }
 }
+*/
+
 
 function iniciarJogo() {
     console.log("Iniciando Jogo");
@@ -156,11 +163,22 @@ function iniciarJogo() {
     trilhaSonora();                                                                                // Toca a trilha sonora do game
     iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
 
+    // Obtém as dimensões dos projéteis diretamente das variáveis CSS (:root)
+    const rootStyles = getComputedStyle(document.documentElement);
+    // O método getPropertyValue retorna o valor como string (ex: " 4px ").
+    // Usamos trim() para remover espaços e parseInt() para extrair o número.
+    larguraProjetilNaves = parseInt(rootStyles.getPropertyValue('--projetil-width').trim());
+    alturaProjetilNaves = parseInt(rootStyles.getPropertyValue('--projetil-height').trim());
+    alturaTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-height').trim());
+    larguraTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-width').trim());
+
+
+/*
     // Tenta bloquear a orientação para paisagem
     if (window.screen && screen.orientation && screen.orientation.lock) {
         lockOrientation();
     }
-
+*/
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
         const vhToPx = window.innerHeight * 0.4;                                                   // Converte 40vh para pixels
@@ -185,7 +203,7 @@ function iniciarJogo() {
         iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inica em loop a função de detecção de colisão da Estrela da Morte
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
-        iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
+        //iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
 
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
@@ -212,7 +230,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 5 * 60 * 1000); // 5 minutos
+        }, 0 * 60 * 1000); // 5 minutos
 
     }, 3000); // Atraso de 3 segundos
 }

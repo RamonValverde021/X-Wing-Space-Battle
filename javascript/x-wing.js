@@ -41,8 +41,16 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
 
     // Posições locais dos canos de tiro (esquerdo e direito, ligeiramente à frente)
     const muzzles = [                                                          // Posições relativas ao centro da nave, em pixels
-        { lx: -32, ly: -5 },                                                   // Posição do cano esquerdo
-        { lx: 32, ly: -5 }                                                     // Posição do cano direito
+         // Posição do cano esquerdo
+        {
+            lx: -larguraProjetilNaves * 8 ,
+            ly: alturaProjetilNaves / (alturaProjetilNaves / 5)
+        }, 
+        // Posição do cano direito                                                 
+        {
+            lx: larguraProjetilNaves * 8 ,
+            ly: alturaProjetilNaves / (alturaProjetilNaves / 5)
+        }                                                     
     ];
 
     // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
@@ -51,8 +59,8 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
     const vy = speed * -Math.cos(theta);                                       // Componente Y da velocidade do projétil
 
     // Metade das dimensões do projétil para centralizar
-    const half_w = 2;                                                          // Metade da largura do projétil
-    const half_h = 25;                                                         // Metade da altura do projétil
+    const half_w = larguraProjetilNaves / 2;                                   // Metade da largura do projétil
+    const half_h = alturaProjetilNaves / 2;                                    // Metade da altura do projétil
 
     muzzles.forEach(muzzle => { // Para cada cano de tiro
         // Posição de spawn rotacionada (matriz de rotação)
@@ -107,8 +115,8 @@ function moverProjeteisXWing() {
             let top = parseFloat(disparo.style.top);                                     // Converte de string para float
 
             // Calcula centro atual
-            const half_w = 2;                                                            // Metade da largura do projétil
-            const half_h = 25;                                                           // Metade da altura do projétil
+            const half_w = larguraProjetilNaves / 2;                                     // Metade da largura do projétil
+            const half_h = alturaProjetilNaves / 2;                                      // Metade da altura do projétil
             let center_x = left + half_w;                                                // Centro X do projétil
             let center_y = top + half_h;                                                 // Centro Y do projétil
 
@@ -516,7 +524,7 @@ function giroReversoXWing() {
     if (isDoingManeuver || isBoosting) return;                                           // Impede a manobra se outra já estiver em andamento.
     isDoingManeuver = true;                                                              // Ativa a flag para bloquear outras ações.
     const targetRotation = rotacaoXWing + 180;                                           // Define o alvo da rotação.
-    const rotationStep = 10;                                                             // Quantos graus girar a cada quadro da animação.
+    const rotationStep = 20;                                                             // Quantos graus girar a cada quadro da animação.
     const maneuverInterval = setInterval(() => {
         if (Math.abs(targetRotation - rotacaoXWing) <= rotationStep) {                   // Verifica se a rotação atual está próxima do alvo.
             rotacaoXWing = targetRotation;                                               // Ajusta para o valor final exato.

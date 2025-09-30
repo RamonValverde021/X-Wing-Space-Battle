@@ -12,6 +12,34 @@
     font-family: fontPixelArt;
 }
 
+/* Variáveis Globais de Estilo (Custom Properties) */
+:root {
+    /* Dimensões dos Projéteis */
+    --projetil-width: 4px;
+    --projetil-height: 50px;
+    --projetil-death-star-width: 10px;
+    --projetil-death-star-height: 150px;
+    --projetil-punicao-width: 12px;
+    --projetil-punicao-height: 150px;
+    --projetil-torpedo-width: 2px;
+    --projetil-torpedo-height: 80px;
+
+    /* Dimensões das Naves */
+    --x-wing-width: 70px;
+    --x-wing-height: 92px;
+
+    --tie-fighter-width: 70px;
+    --tie-fighter-height: 67px;
+
+    --darth-vader-width: 70px;
+    --darth-vader-height: 57px;
+
+    /* Elementos Visuais */ 
+    /* Altura e largura sempre um pouco maior que a altura do X-Wing */
+    --explosao-width: 100px; 
+    --explosao-height: 100px;
+}
+
 body#index {
     background-image: url('../images/Intro_X-Wing_Space_Battle.png');
     background-color: black;
@@ -226,8 +254,8 @@ div#cenario {
 
 /* Formatação X-Wing */
 .x-wing_standard {
-    height: 92px;
-    width: 70px;
+    height: var(--x-wing-height);
+    width: var(--x-wing-width);
     background-image: url('../images/x-wing/x-wing_1.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -241,8 +269,8 @@ div#cenario {
 }
 
 .x-wing_resistence-power {
-    height: 92px;
-    width: 70px;
+    height: var(--x-wing-height);
+    width: var(--x-wing-width);
     background-image: url('../images/x-wing/x-wing_1-2.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -255,8 +283,8 @@ div#cenario {
 .tie_fighter {
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
-    height: 67px;
-    width: 70px;
+    height: var(--darth-vader-height);
+    width: var(--darth-vader-width);
     background-image: url('../images/tie_fighter/tie_fighter_1.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -268,8 +296,8 @@ div#cenario {
 .darth_vader {
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
-    height: 57px;
-    width: 70px;
+    height: var(--darth-vader-height);
+    width: var(--darth-vader-width);
     background-image: url('../images/tie_fighter/vader_fighter.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -280,8 +308,8 @@ div#cenario {
 /* Formatação projeteis X-Wing */
 .projetil_x-wing {
     position: absolute;
-    width: 4px;
-    height: 50px;
+    width: var(--projetil-width);
+    height: var(--projetil-height);
     background-color: red;
     transform-origin: center;
     z-index: 10;
@@ -290,8 +318,8 @@ div#cenario {
 .torpedo_x-wing {
     /* torpedo_x-wing */
     position: absolute;
-    width: 2px;
-    height: 80px;
+    height: var(--projetil-torpedo-height);
+    width: var(--projetil-torpedo-width);
     background-color: white;
     border: solid 3px rgb(255, 0, 255);
     transform-origin: center;
@@ -301,8 +329,8 @@ div#cenario {
 /* Formatação projeteis Tie Fighter */
 .projetil_tie-fighter {
     position: absolute;
-    width: 4px;
-    height: 50px;
+    width: var(--projetil-width);
+    height: var(--projetil-height);
     background-color: rgb(0, 175, 0);
     transform-origin: center;
     z-index: 10;
@@ -311,8 +339,8 @@ div#cenario {
 /* Formatação projeteis Darth Vader */
 .projetil_darth-vader {
     position: absolute;
-    width: 4px;
-    height: 50px;
+    width: var(--projetil-width);
+    height: var(--projetil-height);
     background-color: rgb(0, 175, 0);
     transform-origin: center;
     z-index: 10;
@@ -323,16 +351,18 @@ div#cenario {
     position: absolute;
     width: 10px;
     height: 150px;
+    width: var(--projetil-death-star-width);
+    height: var(--projetil-death-star-height);
     background-color: lime;
     transform-origin: center;
     z-index: 10;
 }
 
-/* Formatação projeteis Death Star */
+/* Formatação projeteis de Punição */
 .projetil_punicao {
     position: absolute;
-    width: 12px;
-    height: 150px;
+    width: var(--projetil-punicao-width);
+    height: var(--projetil-punicao-height);
     background-color: lime;
     transform-origin: center;
     z-index: 10;
@@ -371,8 +401,8 @@ div#cenario {
 /* Formatação explosão dos TIE Fighters */
 .explosao {
     position: absolute;
-    height: 100px;
-    width: 100px;
+    height: var(--explosao-height);
+    width: var(--explosao-width);
     background-image: url('../images/explosion/explosion_1.gif');
     background-size: cover;
     background-repeat: no-repeat;

@@ -41,7 +41,7 @@ const teclasControleClicadas = (tecla) => {
             boostXWing();                                               // Chama a função de Boost do X-Wing
             if (okFullPower) return;                                    // Se o Full-Power não estiver ativado
             soltarBoost = false;                                        // Atualiza a flag para desativar o Boost
-            setTimeout(() => soltarBoost = true, 5000);                 // Reativa o boost após 5s
+            setTimeout(() => soltarBoost = true, recargaBoost);                 // Reativa o boost após 5s
         }
     } else if (tecla.key === "s" || tecla.key === "S") {                // Se a tecla apertada for "s" ou "S"
         giroReversoXWing();                                             // Chama a função de giro reverso do X-Wing
@@ -125,7 +125,7 @@ window.addEventListener("gamepadconnected", (e) => {
                     boostXWing();                                                                          // Chama a função de Boost do X-Wing
                     if (okFullPower) return;                                                               // Se o Full-Power não estiver ativado
                     soltarBoost = false;                                                                   // Atualiza a flag para desativar o Boost
-                    setTimeout(() => soltarBoost = true, 5000);                                            // Reativa o boost após 5s
+                    setTimeout(() => soltarBoost = true, recargaBoost);                                            // Reativa o boost após 5s
                 }
                 // Ataque especial (Botão Y) - corresponde à tecla 'F'
                 if (index === 3 && habilitarAtaqueEspecial) {                                              // Se o botão Y (índice 3) foi clicado e o ataque especial está habilitado.

@@ -219,3 +219,26 @@ window.addEventListener("gamepaddisconnected", (e) => {                         
     console.log("Controle desconectado:", e.gamepad);                                                       // Exibe uma mensagem no console informando que o controle foi desconectado.
     // Opcional: Aqui posso cancelar o loop de animação usando `cancelAnimationFrame(animationFrameId)`.
 });
+
+
+
+// Função para criar os projeteis do Tie Fighter
+const construirProjeteisTieFighter = (tieFighter) => {
+    const posicaoLeftTiro = parseFloat(tieFighter.style.left);                             // Pega a posição horizontal atual do Tie Fighter
+    const posicaoTopTiro = parseFloat(tieFighter.style.top);                               // Pega a posição vertical atual do Tie Fighter
+    const centerX = posicaoLeftTiro + larguraTieFighter / 2;                               // Centro X do Tie Fighter
+    const centerY = posicaoTopTiro + alturaTieFighter / 2;                                 // Centro Y do Tie Fighter
+    // Cria dois elementos de disparo, um de cada lado do Tie Fighter
+    // projetil do lado esquerdo
+    const tiroEsquerdo = document.createElement("div");                                    // Cria um elemento div, que vai ser o projetil
+    tiroEsquerdo.className = "projetil_tie-fighter";                                       // Adiciona a classe do projetil para aplicar o estilo
+    tiroEsquerdo.style.left = centerX - 22 + "px";                                          // Define a posição horizontal do projetil esquerdo referente a posição central horizontal do Tie Fighter
+    tiroEsquerdo.style.top = centerY - 40 + "px";                                           // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    cenario.appendChild(tiroEsquerdo);                                                     // Adiciona o projetil ao cenario
+    // projetil do lado direito
+    const tiroDireito = document.createElement("div");                                     // Cria um elemento div, que vai ser o projetil
+    tiroDireito.className = "projetil_tie-fighter";                                        // Adiciona a classe do projetil para aplicar o estilo
+    tiroDireito.style.left = centerX - 12 + "px";                                          // Define a posição horizontal do projetil direito referente a posição central horizontal do Tie Fighter
+    tiroDireito.style.top = centerY - 40 + "px";                                            // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
+    cenario.appendChild(tiroDireito);                                                      // Adiciona o projetil ao cenario
+}

@@ -12,10 +12,38 @@
     font-family: fontPixelArt;
 }
 
-
 /* --------------------------- CORREÇÃO DE RESPONSIVIDADE --------------------------- */
 
-@media(max-height: 435px) { /* 430 */
+@media(max-height: 435px) {
+    /* 430 */
+
+    :root {
+        /* Dimensões dos Projéteis */
+        --projetil-width: 2px;
+        --projetil-height: 25px;
+        --projetil-death-star-width: 5px;
+        --projetil-death-star-height: 75px;
+        --projetil-punicao-width: 6px;
+        --projetil-punicao-height: 75px;
+        --projetil-torpedo-width: 1px;
+        --projetil-torpedo-height: 40px;
+
+        /* Dimensões das Naves */
+        --x-wing-width: 35px;
+        --x-wing-height: 46px;
+
+        --tie-fighter-width: 35px;
+        --tie-fighter-height: 33px;
+
+        --darth-vader-width: 35px;
+        --darth-vader-height: 28px;
+
+        /* Elementos Visuais */
+        /* Altura e largura sempre um pouco maior que a altura do X-Wing */
+        --explosao-width: 50px;
+        --explosao-height: 50px;
+    }
+
 
     .painel_botoes {
         margin: 0 35%;
