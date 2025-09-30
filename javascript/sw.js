@@ -5,7 +5,7 @@ const arquivosParaCache = [
   "../index.html",
   "../html/game.html",
   "../html/manualControles.html",
-  "../javascript/manifest.json",
+  "../manifest.json",
 
   // CSS
   "../css/styles.css",

@@ -47,23 +47,23 @@ function bossDeathStar() {
     // Parar a criação de Tie Fighters e seus disparos
     clearInterval(iniciaNavesInimigas);                               // Interrompe a criação dos Tie-Fighters
     clearInterval(iniciaProjeteisTieFighter);                         // Interrompe a criação de projeteis dos Tie-Fighters
-    barraDeVidaEstrelaDaMorte.style.display = "block";                // Mostra a barra de vida da Estrela da Morte
     audioTrilhaSonora.pause();                                        // Interrompe a trilha sonora principal
     pontosVida = 100;                                                 // Recarrega avida para enfrentar a estrela da morte 
     atualizarMenu();                                                  // Atualiza o Menu de status do jogo
     setTimeout(() => {                                                // Cria um atraso antes da Estrela da Morte Aparecer
         velocidadeCenario = 200;
-        //trilhaSonoraEstrelaDaMorte();                                 // Inicia a trilha sonora da Estrela da Morte
+        //trilhaSonoraEstrelaDaMorte();                               // Inicia a trilha sonora da Estrela da Morte
         const deathstar = document.createElement("div");              // Cria um elemento div, que vai ser a Estrela da Morte
         deathstar.id = "estrela-da-morte";                            // Adiciona um id a Estrela da Morte
         deathstar.className = "deathstar";                            // Adiciona a classe da Estrela da Morte para aplicar o estilo
         deathstar.setAttribute("data-vida", vidaEstrelaDaMorte);      // Cria o atributo data-vida para armazenar a vida da Estrela da Morte
         cenario.insertAdjacentElement("afterbegin", deathstar);       // Adiciona a Estrela da Morte no início do cenario
         let posY = 100;                                               // Posição inicial 
-        let aumentoTamanho = 100; 
+        let aumentoTamanho = 100;
         let ajusteBorda = 50;
         deathstar.style.bottom = posY + "%";                          // Define a posição vertical inicial da Estrela da Morte
         iniciaMovimentacaoEstrelaDaMorte = setInterval(() => {        // Cria um intervalo para mover a Estrela da Morte
+            barraDeVidaEstrelaDaMorte.style.display = "block";        // Mostra a barra de vida da Estrela da Morte
             if (estrelaDestruida == false) {                          // Se a Estrela da Morte não foi destruída
                 posY -= 0.1;                                          // 0.1 Decrementa a velocidade (quanto maior o valor, mais rápido desce)
                 aumentoTamanho += 0.01;
@@ -71,7 +71,7 @@ function bossDeathStar() {
                 deathstar.style.bottom = posY + "%";                  // Atualiza a posição vertical da Estrela da Morte, movendo para baixo
                 deathstar.style.width = aumentoTamanho + "vw";
                 deathstar.style.height = aumentoTamanho + "vw";
-                 deathstar.style.borderRadius = ajusteBorda + "vw";
+                deathstar.style.borderRadius = ajusteBorda + "vw";
                 if (posY <= -110) {                                    // Se a metade da Estrela da Morte avançar o fundo da tela
                     audioTrilhaSonoraEstrelaDaMorte.pause();          // Interrompe a trilha sonora da Estrela da Morte
                     deathstar.style.bottom = "-110%";                  // Fixa a Estrela Da Morte onde ela parou

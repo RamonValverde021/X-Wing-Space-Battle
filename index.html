@@ -8,6 +8,7 @@
     <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
     <title>StarWars - X-Wing Space Battle</title>
     <link rel="icon" href="./images/icon-192.png">
+    <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <link rel="stylesheet" type="text/css" href="./css/phone.css">
     <style>
@@ -51,7 +52,7 @@
         // Inicia com o botão Iniciar selecionado
         btnIniciar.className = "botaoIndexSelecionado";
         btnControles.className = "botaoIndex";
-
+        let iniciouGame = true;
         btnIniciar.addEventListener("click", function () {
             // 1. Esconde os botões.
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
@@ -120,15 +121,18 @@
                             const btnControles = document.getElementById("btnManualControles");
                             const video = document.getElementById("introVideo");
                             if (btnIniciar.className === "botaoIndexSelecionado") {
-                                botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
-                                const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
-                                obiWanAudio.volume = 1.0;
-                                obiWanAudio.play();
-                                fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
-                                obiWanAudio.addEventListener("ended", () => {
-                                    video.style.display = "block";
-                                    video.play();
-                                });
+                                if (iniciouGame) {
+                                    iniciouGame = false;
+                                    botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+                                    const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
+                                    obiWanAudio.volume = 1.0;
+                                    obiWanAudio.play();
+                                    fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+                                    obiWanAudio.addEventListener("ended", () => {
+                                        video.style.display = "block";
+                                        video.play();
+                                    });
+                                }
                             } else if (btnControles.className === "botaoIndexSelecionado") {
                                 window.location.href = './html/manualControles.html';
                             }
