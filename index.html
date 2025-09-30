@@ -9,32 +9,64 @@
     <title>StarWars - X-Wing Space Battle</title>
     <link rel="icon" href="./images/icon-192.png">
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <style>
+        /* Div de sobreposição para o efeito de fade-to-black */
+        #fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            pointer-events: none;
+            /* Não bloqueia cliques quando invisível */
+            transition: opacity 5s ease-out;
+            /* Duração da transição de 4 segundos */
+            z-index: 20;
+            /* Fica acima de tudo, exceto o vídeo */
+        }
+    </style>
 </head>
 
 <body id="index">
+    <div id="fade-overlay"></div>
     <div id="botoes_Index" class="painel_botoes">
-        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp;&nbsp; ❱</Iniciar>
+        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp;&nbsp; ❱
+            </Iniciar>
         </button>
         <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Controles &nbsp;&nbsp;&nbsp; ❱</Iniciar>
         </button>
     </div>
 
-    <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle-2.mp4"></video>
+    <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle.mp4"></video>
     <script>
         const botoes = document.getElementById("botoes_Index");
         const btnIniciar = document.getElementById("playIntro");
         const btnControles = document.getElementById("btnManualControles");
         const video = document.getElementById("introVideo");
+        const fadeOverlay = document.getElementById("fade-overlay");
 
         // Inicia com o botão Iniciar selecionado
         btnIniciar.className = "botaoIndexSelecionado";
         btnControles.className = "botaoIndex";
 
-        btnIniciar.addEventListener("click", () => {
-            botoes.style.display = "none";      // esconde botão
-            video.style.display = "block";      // mostra vídeo
-            video.play();                       // começa vídeo
-        });
+        btnIniciar.addEventListener("click", function () {
+            // 1. Esconde os botões.
+            botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+
+            // 2. Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
+            const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
+            obiWanAudio.volume = 1.0;
+            obiWanAudio.play();
+            fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+
+            // 3. Quando o áudio (e o fade) terminarem, inicia o vídeo.
+            obiWanAudio.addEventListener("ended", () => {
+                video.style.display = "block";
+                video.play();
+            });
+        }, { once: true }); // Garante que o evento de clique seja acionado apenas uma vez
 
         btnControles.addEventListener("click", () => {
             botoes.style.display = "none";      // esconde botão
@@ -43,11 +75,13 @@
 
         btnIniciar.addEventListener("mouseover", () => {
             btnIniciar.className = "botaoIndexSelecionado";
+            btnIniciar.style.cursor = "pointer";
             if (btnControles.className === "botaoIndexSelecionado") btnControles.className = "botaoIndex";
         });
 
         btnControles.addEventListener("mouseover", () => {
             btnControles.className = "botaoIndexSelecionado";
+            btnControles.style.cursor = "pointer";
             if (btnIniciar.className === "botaoIndexSelecionado") btnIniciar.className = "botaoIndex";
         });
 
@@ -85,9 +119,15 @@
                             const btnControles = document.getElementById("btnManualControles");
                             const video = document.getElementById("introVideo");
                             if (btnIniciar.className === "botaoIndexSelecionado") {
-                                botoes.style.display = "none";   // esconde botão
-                                video.style.display = "block";   // mostra vídeo
-                                video.play();                    // começa vídeo
+                                botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+                                const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
+                                obiWanAudio.volume = 1.0;
+                                obiWanAudio.play();
+                                fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+                                obiWanAudio.addEventListener("ended", () => {
+                                    video.style.display = "block";
+                                    video.play();
+                                });
                             } else if (btnControles.className === "botaoIndexSelecionado") {
                                 window.location.href = './html/manualControles.html';
                             }

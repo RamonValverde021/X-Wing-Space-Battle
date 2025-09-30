@@ -456,7 +456,7 @@ div#cenario {
     display: none;
     position: absolute;
     text-align: center;
-    top: 0;
+    top: 50px;
     font-weight: bold;
     font-size: 150px;
     animation: blinkFB 1.5s linear infinite;

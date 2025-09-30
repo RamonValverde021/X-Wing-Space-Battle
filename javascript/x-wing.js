@@ -204,7 +204,7 @@ function colisaoXWing() {
         ) {
             disparo.remove();                                                            // Remove o projetil que acertou o X-Wing
             if (!okResistencePower) {                                                    // Se o poder da resistencia estiver habilitado
-                pontosVida -= 2;                                                         // Diminui 2 ponto para cada projetil que acertar o X-Wing
+                pontosVida -= 3;                                                         // Diminui 2 ponto para cada projetil que acertar o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se o pontos de vida cair para 20 pontos ou menos
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida
                     atualizarMenu();                                                     // Atualiza a vida no menu
@@ -413,13 +413,13 @@ function colisaoXWing() {
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
                 xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
                 if (audioTrilhaSonora.played) {
-                    audioTrilhaSonora.volume = 0.7;                                      // Reativa o volume da trilha sonora principal normalmente
+                    audioTrilhaSonora.volume = 0.2;                                      // Reativa o volume da trilha sonora principal normalmente
                 }
                 if (audioTrilhaSonoraDarthVader.played) {
-                    audioTrilhaSonoraDarthVader.volume = 0.7;                            // Reativa o volume da trilha sonora do Darth Vader
+                    audioTrilhaSonoraDarthVader.volume = 0.1;                            // Reativa o volume da trilha sonora do Darth Vader
                 }
                 if (audioTrilhaSonoraEstrelaDaMorte.played) {
-                    audioTrilhaSonoraEstrelaDaMorte.volume = 0.7;                        // Reativa o volume da trilha sonora da Estrela da Morte normalmente
+                    audioTrilhaSonoraEstrelaDaMorte.volume = 0.1;                        // Reativa o volume da trilha sonora da Estrela da Morte normalmente
                 }
             }, 17000);                                                                   // 17 segundos de duração total do poder, o mesmo tempo do audio
         }

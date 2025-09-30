@@ -48,7 +48,7 @@ function mostrarToasty() {                                  // função para mos
     const toast = document.getElementById("stormtropper");  // Pega o objeto que será o toast
     toast.classList.add("show");                            // Adiciona a classe show para exibir o toast
     const audio = new Audio('../audios/toasty_sound.mp3');  // Audio do Toasty
-    audio.volume = 1;                                       // Define o volume do audio
+    audio.volume = 0.4;                                       // Define o volume do audio
     audio.play();                                           // Toca o audio
     setTimeout(() => {                                      // Depois de 1 segundo
         toast.classList.remove("show");                     // Remove a classe show para esconder o toast

@@ -12,13 +12,14 @@ function bossDarthVader() {
     clearInterval(iniciaNavesInimigas);                                                                   // Para o intervalo que cria naves inimigas (Tie Fighters) normais.
     clearInterval(iniciaProjeteisTieFighter);                                                             // Para o intervalo que cria projéteis dos Tie Fighters.
     darthVaderDerrotado = false;                                                                          // Garante que a flag de derrota seja resetada para falso no início da batalha.
-    barraDeVidaDarthVader.style.display = "block";                                                        // Torna a barra de vida de Darth Vader visível na tela.
     audioTrilhaSonora.pause();                                                                            // Pausa a trilha sonora principal do jogo.
-    pontosVida += 50;                                                                                     // Adiciona 50 pontos à vida do jogador como bônus para a batalha.
-    if (pontosVida >= 100) pontosVida = 100;                                                               // Garante que a vida não ultrapasse 100.
-    atualizarMenu();                                                                                      // Chama a função para atualizar a exibição da vida e outros status no menu.
+    setTimeout(() =>  trilhaSonoraDarthVader(), 8000);                                                    // Inicia trilha sonora do Darth Vader.
     setTimeout(() => {                                                                                    // Cria um temporizador para um atraso dramático antes da aparição do chefe.
-        trilhaSonoraDarthVader();                                                                         // Inicia trilha sonora do Darth Vader.
+        somVoandoDarthVader();                                                                            // Toca a primeira fala imediatamente.
+        barraDeVidaDarthVader.style.display = "block";                                                    // Torna a barra de vida de Darth Vader visível na tela.
+        pontosVida += 50;                                                                                 // Adiciona 50 pontos à vida do jogador como bônus para a batalha.
+        if (pontosVida >= 100) pontosVida = 100;                                                          // Garante que a vida não ultrapasse 100.
+        atualizarMenu();                                                                                  // Chama a função para atualizar a exibição da vida e outros status no menu.
         const darthvader = document.createElement("div");                                                 // Cria um novo elemento <div> no HTML para representar a nave de Darth Vader.
         darthvader.id = "darthvader";                                                                     // Define o ID do elemento como "darthvader" para fácil acesso.
         darthvader.className = "darth_vader";                                                             // Aplica a classe CSS "darth_vader" para estilizar a nave.
@@ -40,10 +41,13 @@ function bossDarthVader() {
                 iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
             }
         }, 20);                                                                                           // O intervalo de animação é executado a cada 20 milissegundos.
+        
         // Inicia os disparos
+        somDarthVader(); // Toca a primeira fala imediatamente.
+        iniciaFalasDarthVader = setInterval(somDarthVader, 10000); // Toca uma fala a cada 10 segundos.
         iniciaProjeteisDarthVader = setInterval(criarProjeteisDarthVader, velocidadeDisparosDarthVader);  // Inicia o intervalo para criar projéteis.
         iniciaMovimentacaoProjeteisDarthVader = setInterval(moverProjeteisDarthVader, 50);                // Inicia o intervalo para mover os projéteis.
-    }, 2000);                                                                                             // O atraso antes da aparição do chefe é de 2000 milissegundos (2 segundos).
+    }, 13000);                                                                                             // O atraso antes da aparição do chefe é de 2000 milissegundos (2 segundos).
 }
 
 // Função que verifica a colisão dos tiros do jogador com Darth Vader.
@@ -236,6 +240,7 @@ function moverProjeteisDarthVader() {
 function derrotarDarthVader(darthVaderElement) {
     clearInterval(iniciaMovimentacaoDarthVader);                                                          // Para o intervalo que controla o movimento de Darth Vader.
     clearInterval(iniciaProjeteisDarthVader);                                                             // Para o intervalo que cria os projéteis de Darth Vader.
+    clearInterval(iniciaFalasDarthVader);                                                                 // Para o intervalo que toca as falas de Darth Vader.
 
     // 1. Parâmetros da Animação de Derrota
     const defeatDuration = 2000;                                                                          // Define a duração total da animação em milissegundos (2 segundos).
@@ -279,6 +284,7 @@ function derrotarDarthVader(darthVaderElement) {
         // 4. Finalizar a animação
         if (framesPassed >= frames) {                                                                     // Verifica se a animação completou todos os seus quadros.
             clearInterval(defeatInterval);                                                                // Para o intervalo, finalizando a animação de derrota.
+            audioVoandoDarthVader.pause();
             darthVaderElement.remove();                                                                   // Remove o elemento da nave de Darth Vader do HTML.
             iniciandoBossEstrelaDaMorte();                                                                // Chama a função para iniciar a próxima fase do jogo.
         }

@@ -114,7 +114,8 @@ function xwingSaindo() {
                         vitoria.style.opacity = 1;                             // Aplica o estilo de opacidade para fazer o fade-in
                     }, 100);                                                   // 100ms já é suficiente
                     cenario.appendChild(vitoria);                              // Adiciona a mensagem ao cenário
-                    somVitoria();                                              // Adicione se tiver um áudio
+                    somVitoria();                                              // Toca o som da vitória
+                    setTimeout(() => reiniciarJogo(), (2 * 60 * 1000) + 5000); // Agenda a reinicialização do jogo para daqui a 02:05
                 }, 5000);                                                      // Mostra a mensagem após 5 segundos
             }, 3000);                                                          // Ativa a explosão após 3 segundos
         }
@@ -131,17 +132,18 @@ function explosaoEstrelaDaMorte() {
     const disparosDeathStar = document.querySelectorAll(".projetil_death-star");  // Seleciona todos os projeteis da Estrela da Morte
     disparosDeathStar.forEach((disparos) => disparos.remove());                // Remove todos os projeteis da Estrela da Morte
     pontosScore += 10000;                                                      // Adiciona 10000 pontos ao score
-    const deathstarElement = document.getElementById("estrela-da-morte");      // Seleciona a Estrela da Morte
-    const deathstarRect = deathstarElement.getBoundingClientRect();            // Pega as coordenadas da Estrela da Morte
+    atualizarMenu();                                                           // Atualiza o menu do jogo
     audioTrilhaSonoraDarthVader.pause();                                       // Interrompe a trilha sonora do Darth Vader
     audioTrilhaSonoraEstrelaDaMorte.pause();                                   // Interrompe a trilha sonora da Estrela da Morte
     estrelaDestruida = true;                                                   // Marca que a Estrela-da-Morte foi destruída
+    const deathstarElement = document.getElementById("estrela-da-morte");      // Seleciona a Estrela da Morte
+    const deathstarRect = deathstarElement.getBoundingClientRect();            // Pega as coordenadas da Estrela da Morte
     const explosao = document.createElement("div");                            // Cria um elemento div, que vai ser a explosão da Estrela da Morte
     explosao.className = "explosao";                                           // Adiciona a classe da explosão para aplicar o estilo
     explosao.style.left = deathstarRect.left + "px";                           // Define a posição horizontal da explosão referente a posição da Estrela da Morte
     explosao.style.top = deathstarRect.top + "px";                             // Define a posição vertical da explosão referente a posição da Estrela da Morte
-    explosao.style.width = "100vw";                                            // Define a largura da explosão
-    explosao.style.height = "100vw";                                           // Define a altura da explosão
+    explosao.style.width = deathstarRect.width + "px";                         // Define a largura da explosão com o mesmo tamanho da Estrela da Morte.
+    explosao.style.height = deathstarRect.height + "px";                       // Define a altura da explosão com o mesmo tamanho da Estrela da Morte.
     deathstarElement.remove();                                                 // Remove a Estrela da Morte do cenário
     cenario.appendChild(explosao);                                             // Adiciona a explosão ao cenário
     somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte

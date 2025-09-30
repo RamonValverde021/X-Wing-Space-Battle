@@ -115,8 +115,8 @@ function colisaoTieFighter() {
                         velocidadeTieFighter = velocidadeMaximaTieFighter;                 // Limita a velocidade máxima dos Tie Fighters
                     }
                     if (quantidadeTieFighters >= quantidadeMaximaTieFighters) {            // Limita o tempo mínimo de criação dos Tie Fighters
-                        quantidadeTieFighters -= 50;                                      // Diminui o tempo de criação dos Tie Fighters
-                        if (iniciarBossDeathStar == true) {                                // Resolve um bug de criação de Tie-Fighters mesmo após a interrupção na icialização do Boss Estrela da Morte
+                        quantidadeTieFighters -= 50;                                       // Diminui o tempo de criação dos Tie Fighters
+                        if (iniciarDarthVader && iniciarBossDeathStar) {                   // Garante que os Tie-Fighters não sejam recriados se a fase do Darth Vader ou da Estrela da Morte tiver começado.
                             clearInterval(iniciaNavesInimigas);                            // Limpa o intervalo atual
                             iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);  // Reinicia o intervalo com o novo tempo  
                         }
