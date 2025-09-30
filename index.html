@@ -48,11 +48,12 @@
         const btnControles = document.getElementById("btnManualControles");
         const video = document.getElementById("introVideo");
         const fadeOverlay = document.getElementById("fade-overlay");
+        let iniciouGame = true;
 
         // Inicia com o botão Iniciar selecionado
         btnIniciar.className = "botaoIndexSelecionado";
         btnControles.className = "botaoIndex";
-        let iniciouGame = true;
+
         btnIniciar.addEventListener("click", function () {
             // 1. Esconde os botões.
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa

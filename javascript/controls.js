@@ -141,6 +141,7 @@ window.addEventListener("gamepadconnected", (e) => {
                 // Iniciar Jogo (Botão Start) - corresponde à tecla 'ENTER'
                 if (index === 9) {                                                                         // Se o botão Star (índice 9) foi clicado.
                     if (jogoIniciado == false) {                                                           // Se o jogo não começou ainda     
+                        jogoIniciado = true;                                                               // Atualiza flag para bloquear o Enter
                         btnIniciar.className = "botao-selecionado";                                        // Adiciona a classe botaobotao-selecionado
                         setTimeout(() => iniciarJogo(), 800);                                              // Inicia o jogo
                     }
