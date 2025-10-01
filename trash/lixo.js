@@ -242,3 +242,167 @@ const construirProjeteisTieFighter = (tieFighter) => {
     tiroDireito.style.top = centerY - 40 + "px";                                            // Define a posição vertical do projetil referente a posição central vertical do Tie Fighter
     cenario.appendChild(tiroDireito);                                                      // Adiciona o projetil ao cenario
 }
+
+
+
+
+// Controle do Jogo com Gamepad do Smartphone
+const gamepadLT = document.getElementById("gamepad-lt");
+const gamepadLB = document.getElementById("gamepad-lb");
+const gamepadUP = document.getElementById("gamepad-up");
+const gamepadLEFT = document.getElementById("gamepad-left");
+const gamepadRIGHT = document.getElementById("gamepad-right");
+const gamepadDOWN = document.getElementById("gamepad-down");
+const gamepadBACK = document.getElementById("gamepad-back");
+const gamepadSTART = document.getElementById("gamepad-start");
+const gamepadRT = document.getElementById("gamepad-rt");
+const gamepadRB = document.getElementById("gamepad-rb");
+const gamepadY = document.getElementById("gamepad-y");
+const gamepadX = document.getElementById("gamepad-x");
+const gamepadB = document.getElementById("gamepad-b");
+const gamepadA = document.getElementById("gamepad-a");
+
+function setupGamepadVirtual() {
+    // Função auxiliar para adicionar eventos de toque
+    const addTouchListeners = (element, actionStart, actionEnd) => {
+        element.addEventListener("touchstart", (e) => { e.preventDefault(); actionStart(); }, { passive: false });
+        element.addEventListener("touchend", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });
+        element.addEventListener("touchcancel", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });
+    };
+
+    // --- Ações de clique único (touchstart é suficiente) ---
+    gamepadLT.addEventListener("touchstart", (e) => { e.preventDefault(); giroReversoXWing(); });
+    gamepadX.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        if (soltarBoost) {
+            boostXWing();
+            if (okFullPower) return;
+            soltarBoost = false;
+            setTimeout(() => soltarBoost = true, recargaBoost);
+        }
+    });
+    gamepadY.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        if (habilitarAtaqueEspecial) {
+            habilitarAtaqueEspecial = false;
+            okGameOver = false;
+            btnEspecialAtaque.style.display = "none";
+            xwingEspecialAtaque();
+        }
+    });
+    gamepadBACK.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";
+    });
+    gamepadSTART.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        const btnReiniciar = document.getElementById("btnReiniciar");
+        if (!jogoIniciado) {
+            btnIniciar.className = "botao-selecionado";
+            setTimeout(() => iniciarJogo(), 300);
+        } else if (btnReiniciar) {
+            btnReiniciar.className = "botao-selecionado";
+            setTimeout(() => reiniciarJogo(), 300);
+        }
+    });
+
+    // --- Ações de manter pressionado ---
+    // Movimento
+    addTouchListeners(gamepadUP, () => direcaoVertical = -1, () => direcaoVertical = 0);
+    addTouchListeners(gamepadDOWN, () => direcaoVertical = 1, () => direcaoVertical = 0);
+    addTouchListeners(gamepadLEFT, () => direcaoHorizontal = -1, () => direcaoHorizontal = 0);
+    addTouchListeners(gamepadRIGHT, () => direcaoHorizontal = 1, () => direcaoHorizontal = 0);
+
+    // Rotação
+    addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false); // LB - Horário
+    addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false); // RB - Anti-horário
+
+    // Tiro
+    addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);
+    addTouchListeners(gamepadRT, () => estaAtirando = true, () => estaAtirando = false);
+
+    // Exibe o gamepad na tela
+    document.getElementById("gamepad-overlay").style.display = "flex";
+}
+
+
+
+
+
+
+
+
+
+
+// Controle do Jogo com Gamepad do Smartphone
+const gamepadLT = document.getElementById("gamepad-lt");
+const gamepadLB = document.getElementById("gamepad-lb");
+const gamepadUP = document.getElementById("gamepad-up");
+const gamepadLEFT = document.getElementById("gamepad-left");
+const gamepadRIGHT = document.getElementById("gamepad-right");
+const gamepadDOWN = document.getElementById("gamepad-down");
+const gamepadBACK = document.getElementById("gamepad-back");
+const gamepadSTART = document.getElementById("gamepad-start");
+const gamepadRT = document.getElementById("gamepad-rt");
+const gamepadRB = document.getElementById("gamepad-rb");
+const gamepadY = document.getElementById("gamepad-y");
+const gamepadX = document.getElementById("gamepad-x");
+const gamepadB = document.getElementById("gamepad-b");
+const gamepadA = document.getElementById("gamepad-a");
+
+function setupGamepadVirtual() {
+    gamepadLT.addEventListener("click", giroReversoXWing);
+    gamepadLB.addEventListener("keydown", () => { giroAntiHorario = true });
+    gamepadUP.addEventListener("keydown", () => { direcaoHorizontal = -1 });
+    gamepadLEFT.addEventListener("keydown", () => { direcaoVertical = -1 });
+    gamepadRIGHT.addEventListener("keydown", () => { direcaoHorizontal = 1 });
+    gamepadDOWN.addEventListener("keydown", () => { direcaoVertical = 1 });
+
+    gamepadBACK.addEventListener("click", () => {
+        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";  // Alterna a visibilidade do painel de estatísticas.
+    });
+
+    gamepadSTART.addEventListener("click", () => {
+        if (jogoIniciado == false) {                                         // Se o jogo não começou ainda     
+            jogoIniciado = true;                                             // Atualiza flag para bloquear o Enter
+            btnIniciar.className = "botao-selecionado";                      // Adiciona a classe botaobotao-selecionado
+            setTimeout(() => iniciarJogo(), 800);                            // Inicia o jogo
+        }
+        if (okGameOver == false) {                                           // Se o jogo terminou
+            btnReiniciar.className = "botao-selecionado";                    // Adiciona a classe botaobotao-selecionado
+            setTimeout(() => reiniciarJogo(), 800);                          // Reinica o jogo
+        }
+    });
+
+    gamepadRT.addEventListener("keydown", () => { estaAtirando = true });
+    gamepadRB.addEventListener("keydown", () => { giroHorario = true });
+
+    gamepadY.addEventListener("click", () => {
+        if (habilitarAtaqueEspecial) {                                       // Se o ataque especial estiver habilitado
+            habilitarAtaqueEspecial = false;                                 // Desabilita o ataque especial 
+            okGameOver = false;                                              // Desativa a execução do Game Over
+            btnEspecialAtaque.style.display = "none";                        // Oculta o sinal do botão de Ataque especial
+            xwingEspecialAtaque();                                           // Chama a função de ataque especial do X-Wing
+        }
+    });
+
+    gamepadX.addEventListener("click", () => {
+        if (soltarBoost == true) {                                           // Se o Boost estiver liberado
+            boostXWing();                                                    // Chama a função de Boost do X-Wing
+            if (okFullPower) return;                                         // Se o Full-Power não estiver ativado
+            soltarBoost = false;                                             // Atualiza a flag para desativar o Boost
+            setTimeout(() => soltarBoost = true, recargaBoost);              // Reativa o boost após 5s
+        }
+    });
+
+    gamepadA.addEventListener("keydown", () => { estaAtirando = true });
+    //gamepadB.addEventListener("keydown", () => { });
+
+    gamepadLB.addEventListener("keyup", () => { giroAntiHorario = false });
+    gamepadUP.addEventListener("keyup", () => { direcaoHorizontal = 0 });
+    gamepadLEFT.addEventListener("keyup", () => { direcaoVertical = 0 });
+    gamepadRIGHT.addEventListener("keyup", () => { direcaoHorizontal = 0 });
+    gamepadDOWN.addEventListener("keyup", () => { direcaoVertical = 0 });
+    gamepadRT.addEventListener("keyup", () => { estaAtirando = false });
+    gamepadRB.addEventListener("keyup", () => { giroHorario = false });
+}

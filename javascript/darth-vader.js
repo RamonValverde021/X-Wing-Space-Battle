@@ -38,7 +38,7 @@ function bossDarthVader() {
                 clearInterval(entradaInterval);                                                           // Para a animação de entrada.
                 // Inicia a lógica de movimento e ataque após a entrada
                 okBatalhaDarthVader = true;                                                               // Atualiza a flag indicando que a batalha começou
-                //iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
+                iniciaMovimentacaoDarthVader = setInterval(moverDarthVader, 10);                          // Inicia o intervalo para o movimento de perseguição da nave.
             }
         }, 20);                                                                                           // O intervalo de animação é executado a cada 20 milissegundos.
 

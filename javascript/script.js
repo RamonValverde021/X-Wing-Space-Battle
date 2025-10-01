@@ -86,7 +86,6 @@ let isBoosting = false;                                                         
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 
 // Variaveis para os intervalos do jogo
-let iniciaGamepadVirtual;
 let iniciaBossEstrelaDaMorteTimeout;
 let iniciaItensEspeciaisTimeout;
 let iniciaSurgimentoEstrelaDaMorteTimeout;
@@ -130,8 +129,6 @@ document.addEventListener("keydown", function (event) {                         
     }
 });
 
-
-/*
 // Define uma função assíncrona para poder usar 'await' para esperar por ações.
 async function lockOrientation() { 
     try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
@@ -151,8 +148,6 @@ async function lockOrientation() {
         console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
     }
 }
-*/
-
 
 function iniciarJogo() {
     console.log("Iniciando Jogo");
@@ -173,14 +168,12 @@ function iniciarJogo() {
     alturaTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-height').trim());
     larguraTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-width').trim());
 
-
-/*
     // Tenta bloquear a orientação para paisagem
     if (window.screen && screen.orientation && screen.orientation.lock) {
         lockOrientation();
     }
-*/
-        //setupGamepadVirtual();                                                                     // Configura os controles do gamepad virtual na tela
+
+    setupGamepadVirtual();                                                                     // Configura os controles do gamepad virtual na tela
 
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
@@ -192,7 +185,6 @@ function iniciarJogo() {
         document.addEventListener("keydown", teclasControlePressionadas);                          // Inica em loop a função que lê quando pressiona alguma tecla no teclado
         document.addEventListener("keyup", teclasControleSoltas);                                  // Inica em loop a função que lê quando soltar alguma tecla no teclado
         document.addEventListener("keypress", teclasControleClicadas);                             // Inica em loop a função que lê quando clicar alguma tecla no teclado
-        iniciaGamepadVirtual = setInterval(gamepadVirtual, 20);                                    // Inica em loop a função que lê os comandos do gamepad virtual
         iniciaContagemTempoGameplay = setInterval(contagemTempoGameplay, 1000);                    // Inica em loop a função de contagem do tempo de jogo                    
         iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                                     // Inica em loop a função de movimentação do X-Wing, repetição do loop a cada 20ms
         iniciaProjeteisXWing = setInterval(atirar, 150);                                           // Inica em loop a função para atirar com o X-Wing
@@ -207,7 +199,7 @@ function iniciarJogo() {
         iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inica em loop a função de detecção de colisão da Estrela da Morte
         iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
         iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
-        //iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
+        iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
 
         iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
@@ -234,7 +226,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 0 * 60 * 1000); // 5 minutos
+        }, 5 * 60 * 1000); // 5 minutos
 
     }, 3000); // Atraso de 3 segundos
 }
@@ -254,7 +246,6 @@ function gameOver() {
         clearTimeout(iniciaItensEspeciaisTimeout);
         clearTimeout(iniciaBossDarthVaderTimeout);
         clearTimeout(iniciaSurgimentoEstrelaDaMorteTimeout);
-        clearInterval(iniciaGamepadVirtual);
         clearInterval(iniciaContagemTempoGameplay);
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);

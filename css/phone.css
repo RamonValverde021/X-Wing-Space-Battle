@@ -45,7 +45,7 @@
     }
 
     #gamepad-overlay {
-        display: flex !important; /* Garante que o gamepad seja exibido em telas pequenas */
+        display: flex;
     }
 
     .painel_botoes {

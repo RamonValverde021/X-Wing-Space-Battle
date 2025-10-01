@@ -63,57 +63,57 @@ const teclasControleClicadas = (tecla) => {
 
 // Função que controla o jogo com um controle de X-Box
 window.addEventListener("gamepadconnected", (e) => {
-    console.log("Controle conectado:", e.gamepad);                    // Exibe no console que o controle foi conectado com sucesso.
+    console.log("Controle conectado:", e.gamepad);                       // Exibe no console que o controle foi conectado com sucesso.
 
     // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)
-    let prevButtons = [];                                             // Array para armazenar o estado dos botões do quadro anterior.
+    let prevButtons = [];                                                // Array para armazenar o estado dos botões do quadro anterior.
 
     // loop para ler as entradas do controle a cada frame
-    function update() {                                               // Inicia o loop de atualização que lê as entradas do controle a cada quadro.
-        const gp = navigator.getGamepads()[e.gamepad.index];          // Pega o estado atual do gamepad conectado.
-        if (!gp) {                                                    // Verifica se o gamepad foi desconectado.
+    function update() {                                                  // Inicia o loop de atualização que lê as entradas do controle a cada quadro.
+        const gp = navigator.getGamepads()[e.gamepad.index];             // Pega o estado atual do gamepad conectado.
+        if (!gp) {                                                       // Verifica se o gamepad foi desconectado.
             // Se o controle for desconectado, para a nave
-            direcaoHorizontal = 0;                                    // Para o movimento horizontal da nave.
-            direcaoVertical = 0;                                      // Para o movimento vertical da nave.
-            estaAtirando = false;                                     // Para o tiro da nave.
-            giroHorario = false;                                      // Para a rotação horária.
-            giroAntiHorario = false;                                  // Para a rotação anti-horária.
-            requestAnimationFrame(update);                            // Continua o loop de atualização no próximo quadro.
-            return;                                                   // Sai da função neste quadro, pois não há controle para ler.
+            direcaoHorizontal = 0;                                       // Para o movimento horizontal da nave.
+            direcaoVertical = 0;                                         // Para o movimento vertical da nave.
+            estaAtirando = false;                                        // Para o tiro da nave.
+            giroHorario = false;                                         // Para a rotação horária.
+            giroAntiHorario = false;                                     // Para a rotação anti-horária.
+            requestAnimationFrame(update);                               // Continua o loop de atualização no próximo quadro.
+            return;                                                      // Sai da função neste quadro, pois não há controle para ler.
         }
 
         // --- LÓGICA PARA AÇÕES CONTÍNUAS (MANTER PRESSIONADO) ---
         // 1. Movimentação (Analógico esquerdo tem prioridade sobre o D-Pad)
-        const deadzone = 0.2;                                         // Define uma "zona morta" para ignorar movimentos leves do analógico.
-        const EixoX = gp.axes[0];                                     // Pega o valor do eixo horizontal (X) do analógico esquerdo.
-        const EixoY = gp.axes[1];                                     // Pega o valor do eixo vertical (Y) do analógico esquerdo.
+        const deadzone = 0.2;                                            // Define uma "zona morta" para ignorar movimentos leves do analógico.
+        const EixoX = gp.axes[0];                                        // Pega o valor do eixo horizontal (X) do analógico esquerdo.
+        const EixoY = gp.axes[1];                                        // Pega o valor do eixo vertical (Y) do analógico esquerdo.
 
         // Movimento Horizontal: O valor do analógico (-1 a 1) permite velocidade variável.
-        if (Math.abs(EixoX) > deadzone) {                             // Verifica se o movimento no eixo X é maior que a zona morta.
-            direcaoHorizontal = EixoX;                                // Define a direção horizontal com base no valor do analógico.
-        } else if (gp.buttons[15].pressed) {                          // Se o analógico não estiver sendo usado, verifica o D-Pad para a direita.
-            direcaoHorizontal = 1;                                    // Define a direção horizontal para a direita.
-        } else if (gp.buttons[14].pressed) {                          // Verifica o D-Pad para a esquerda.
-            direcaoHorizontal = -1;                                   // Define a direção horizontal para a esquerda.
-        } else {                                                      // Se nenhum botão de movimento horizontal estiver pressionado.
-            direcaoHorizontal = 0;                                    // Para o movimento horizontal (simula o 'keyup').
+        if (Math.abs(EixoX) > deadzone) {                                // Verifica se o movimento no eixo X é maior que a zona morta.
+            direcaoHorizontal = EixoX;                                   // Define a direção horizontal com base no valor do analógico.
+        } else if (gp.buttons[15].pressed) {                             // Se o analógico não estiver sendo usado, verifica o D-Pad para a direita.
+            direcaoHorizontal = 1;                                       // Define a direção horizontal para a direita.
+        } else if (gp.buttons[14].pressed) {                             // Verifica o D-Pad para a esquerda.
+            direcaoHorizontal = -1;                                      // Define a direção horizontal para a esquerda.
+        } else {                                                         // Se nenhum botão de movimento horizontal estiver pressionado.
+            direcaoHorizontal = 0;                                       // Para o movimento horizontal (simula o 'keyup').
         }
 
         // Movimento Vertical
-        if (Math.abs(EixoY) > deadzone) {                             // Verifica se o movimento no eixo Y é maior que a zona morta.
-            direcaoVertical = EixoY;                                  // Define a direção vertical com base no valor do analógico.
-        } else if (gp.buttons[13].pressed) {                          // Se o analógico não estiver sendo usado, verifica o D-Pad para baixo.
-            direcaoVertical = 1;                                      // Define a direção vertical para baixo.
-        } else if (gp.buttons[12].pressed) {                          // Verifica o D-Pad para cima.
-            direcaoVertical = -1;                                     // Define a direção vertical para cima.
-        } else {                                                      // Se nenhum botão de movimento vertical estiver pressionado.
-            direcaoVertical = 0;                                      // Para o movimento vertical (simula o 'keyup').
+        if (Math.abs(EixoY) > deadzone) {                                // Verifica se o movimento no eixo Y é maior que a zona morta.
+            direcaoVertical = EixoY;                                     // Define a direção vertical com base no valor do analógico.
+        } else if (gp.buttons[13].pressed) {                             // Se o analógico não estiver sendo usado, verifica o D-Pad para baixo.
+            direcaoVertical = 1;                                         // Define a direção vertical para baixo.
+        } else if (gp.buttons[12].pressed) {                             // Verifica o D-Pad para cima.
+            direcaoVertical = -1;                                        // Define a direção vertical para cima.
+        } else {                                                         // Se nenhum botão de movimento vertical estiver pressionado.
+            direcaoVertical = 0;                                         // Para o movimento vertical (simula o 'keyup').
         }
 
         // 2. Ações de manter pressionado (atirar, girar)
-        estaAtirando = gp.buttons[0].pressed || gp.buttons[7].pressed;  // Define se está atirando se o botão A ou o gatilho direito (RT) estiverem pressionados.
-        giroHorario = gp.buttons[4].pressed;                            // Define a rotação horária se o botão esquerdo (LB) estiver pressionado.
-        giroAntiHorario = gp.buttons[5].pressed;                        // Define a rotação anti-horária se o botão direito (RB) estiver pressionado.
+        estaAtirando = gp.buttons[0].pressed || gp.buttons[7].pressed;   // Define se está atirando se o botão A ou o gatilho direito (RT) estiverem pressionados.
+        giroHorario = gp.buttons[4].pressed;                             // Define a rotação horária se o botão esquerdo (LB) estiver pressionado.
+        giroAntiHorario = gp.buttons[5].pressed;                         // Define a rotação anti-horária se o botão direito (RB) estiver pressionado.
 
         // --- LÓGICA PARA AÇÕES DE CLIQUE (UM TOQUE, como 'keypress') ---
         gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
@@ -208,59 +208,65 @@ const gamepadX = document.getElementById("gamepad-x");
 const gamepadB = document.getElementById("gamepad-b");
 const gamepadA = document.getElementById("gamepad-a");
 
-function gamepadVirtual() {
-    gamepadLT.addEventListener("click", giroReversoXWing);
-    gamepadLB.addEventListener("keydown", () => { giroAntiHorario = true });
-    gamepadUP.addEventListener("keydown", () => { direcaoHorizontal = -1 });
-    gamepadLEFT.addEventListener("keydown", () => { direcaoVertical = -1 });
-    gamepadRIGHT.addEventListener("keydown", () => { direcaoHorizontal = 1 });
-    gamepadDOWN.addEventListener("keydown", () => { direcaoVertical = 1 });
+function setupGamepadVirtual() {
+    // Função auxiliar para adicionar eventos de toque
+    const addTouchListeners = (element, actionStart, actionEnd) => {                                                // Define uma função reutilizável para adicionar listeners de toque (pressionar e soltar).
+        element.addEventListener("touchstart", (e) => { e.preventDefault(); actionStart(); }, { passive: false });  // Adiciona um listener para quando o dedo toca o botão, executando a ação inicial.
+        element.addEventListener("touchend", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });      // Adiciona um listener para quando o dedo é removido do botão, executando a ação final.
+        element.addEventListener("touchcancel", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });   // Adiciona um listener para o caso de o toque ser cancelado (ex: dedo desliza para fora), executando a ação final.
+    };
 
-    gamepadBACK.addEventListener("click", () => {
-        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";  // Alterna a visibilidade do painel de estatísticas.
-    });
-
-    gamepadSTART.addEventListener("click", () => {
-        if (jogoIniciado == false) {                                         // Se o jogo não começou ainda     
-            jogoIniciado = true;                                             // Atualiza flag para bloquear o Enter
-            btnIniciar.className = "botao-selecionado";                      // Adiciona a classe botaobotao-selecionado
-            setTimeout(() => iniciarJogo(), 800);                            // Inicia o jogo
-        }
-        if (okGameOver == false) {                                           // Se o jogo terminou
-            btnReiniciar.className = "botao-selecionado";                    // Adiciona a classe botaobotao-selecionado
-            setTimeout(() => reiniciarJogo(), 800);                          // Reinica o jogo
+    // --- Ações de clique único (touchstart é suficiente) ---
+    gamepadLT.addEventListener("touchstart", (e) => { e.preventDefault(); giroReversoXWing(); });                   // Configura o botão LT para executar a manobra de giro reverso com um toque.
+    gamepadX.addEventListener("touchstart", (e) => {                                                                // Configura o botão X para a função de boost.
+        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador ao tocar na tela.
+        if (soltarBoost) {                                                                                          // Verifica se o boost está disponível para uso.
+            boostXWing();                                                                                           // Chama a função que executa a mecânica de boost.
+            if (okFullPower) return;                                                                                // Se o modo "Full Power" estiver ativo, não inicia a recarga.
+            soltarBoost = false;                                                                                    // Desativa a possibilidade de usar o boost imediatamente.
+            setTimeout(() => soltarBoost = true, recargaBoost);                                                     // Agenda a reativação do boost após o tempo de recarga.
         }
     });
-
-    gamepadRT.addEventListener("keydown", () => { estaAtirando = true });
-    gamepadRB.addEventListener("keydown", () => { giroHorario = true });
-
-    gamepadY.addEventListener("click", () => {
-        if (habilitarAtaqueEspecial) {                                       // Se o ataque especial estiver habilitado
-            habilitarAtaqueEspecial = false;                                 // Desabilita o ataque especial 
-            okGameOver = false;                                              // Desativa a execução do Game Over
-            btnEspecialAtaque.style.display = "none";                        // Oculta o sinal do botão de Ataque especial
-            xwingEspecialAtaque();                                           // Chama a função de ataque especial do X-Wing
+    gamepadY.addEventListener("touchstart", (e) => {                                                                // Configura o botão Y para o ataque especial.
+        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
+        if (habilitarAtaqueEspecial) {                                                                              // Verifica se o ataque especial está habilitado.
+            habilitarAtaqueEspecial = false;                                                                        // Desabilita o ataque especial após o uso.
+            okGameOver = false;                                                                                     // Impede que a tela de "Game Over" seja acionada durante a animação de vitória.
+            btnEspecialAtaque.style.display = "none";                                                               // Oculta o indicador visual do ataque especial.
+            xwingEspecialAtaque();                                                                                  // Chama a função que inicia a sequência do ataque especial.
+        }
+    });
+    gamepadBACK.addEventListener("touchstart", (e) => {                                                             // Configura o botão BACK para alternar a visibilidade do painel de dados.
+        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
+        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";                       // Alterna a exibição do painel entre 'flex' (visível) e 'none' (oculto).
+    });
+    gamepadSTART.addEventListener("touchstart", (e) => {                                                            // Configura o botão START para iniciar ou reiniciar o jogo.
+        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
+        const btnReiniciar = document.getElementById("btnReiniciar");                                               // Procura pelo botão de reiniciar na tela.
+        if (!jogoIniciado) {                                                                                        // Se o jogo ainda não começou.
+            btnIniciar.className = "botao-selecionado";                                                             // Aplica um estilo visual de "selecionado" ao botão.
+            setTimeout(() => iniciarJogo(), 300);                                                                   // Inicia o jogo após um pequeno atraso.
+        } else if (btnReiniciar) {                                                                                  // Se o jogo já terminou e o botão de reiniciar existe.
+            btnReiniciar.className = "botao-selecionado";                                                           // Aplica o estilo de "selecionado" ao botão de reiniciar.
+            setTimeout(() => reiniciarJogo(), 300);                                                                 // Reinicia o jogo após um pequeno atraso.
         }
     });
 
-    gamepadX.addEventListener("click", () => {
-        if (soltarBoost == true) {                                           // Se o Boost estiver liberado
-            boostXWing();                                                    // Chama a função de Boost do X-Wing
-            if (okFullPower) return;                                         // Se o Full-Power não estiver ativado
-            soltarBoost = false;                                             // Atualiza a flag para desativar o Boost
-            setTimeout(() => soltarBoost = true, recargaBoost);              // Reativa o boost após 5s
-        }
-    });
+    // --- Ações de manter pressionado ---
+    // Movimento
+    addTouchListeners(gamepadUP, () => direcaoVertical = -1, () => direcaoVertical = 0);                           // Configura o botão para cima para mover a nave para cima enquanto pressionado.
+    addTouchListeners(gamepadDOWN, () => direcaoVertical = 1, () => direcaoVertical = 0);                          // Configura o botão para baixo para mover a nave para baixo enquanto pressionado.
+    addTouchListeners(gamepadLEFT, () => direcaoHorizontal = -1, () => direcaoHorizontal = 0);                     // Configura o botão para esquerda para mover a nave para a esquerda enquanto pressionado.
+    addTouchListeners(gamepadRIGHT, () => direcaoHorizontal = 1, () => direcaoHorizontal = 0);                     // Configura o botão para direita para mover a nave para a direita enquanto pressionado.
 
-    gamepadA.addEventListener("keydown", () => { estaAtirando = true });
-    //gamepadB.addEventListener("keydown", () => { });
+    // Rotação
+    addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);                             // Configura o botão LB para girar a nave no sentido horário enquanto pressionado.
+    addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false);                     // Configura o botão RB para girar a nave no sentido anti-horário enquanto pressionado.
 
-    gamepadLB.addEventListener("keyup", () => { giroAntiHorario = false });
-    gamepadUP.addEventListener("keyup", () => { direcaoHorizontal = 0 });
-    gamepadLEFT.addEventListener("keyup", () => { direcaoVertical = 0 });
-    gamepadRIGHT.addEventListener("keyup", () => { direcaoHorizontal = 0 });
-    gamepadDOWN.addEventListener("keyup", () => { direcaoVertical = 0 });
-    gamepadRT.addEventListener("keyup", () => { estaAtirando = false });
-    gamepadRB.addEventListener("keyup", () => { giroHorario = false });
+    // Tiro
+    addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);                            // Configura o botão A para atirar continuamente enquanto pressionado.
+    addTouchListeners(gamepadRT, () => estaAtirando = true, () => estaAtirando = false);                           // Configura o botão RT para também atirar continuamente enquanto pressionado.
+
+    // Exibe o gamepad na tela
+    //document.getElementById("gamepad-overlay").style.display = "flex";                                           // Torna o overlay do gamepad visível na tela.
 }
