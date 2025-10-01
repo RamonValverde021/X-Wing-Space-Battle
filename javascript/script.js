@@ -86,6 +86,7 @@ let isBoosting = false;                                                         
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 
 // Variaveis para os intervalos do jogo
+let iniciaGamepadVirtual;
 let iniciaBossEstrelaDaMorteTimeout;
 let iniciaItensEspeciaisTimeout;
 let iniciaSurgimentoEstrelaDaMorteTimeout;
@@ -179,6 +180,8 @@ function iniciarJogo() {
         lockOrientation();
     }
 */
+        //setupGamepadVirtual();                                                                     // Configura os controles do gamepad virtual na tela
+
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
         const vhToPx = window.innerHeight * 0.4;                                                   // Converte 40vh para pixels
@@ -189,6 +192,7 @@ function iniciarJogo() {
         document.addEventListener("keydown", teclasControlePressionadas);                          // Inica em loop a função que lê quando pressiona alguma tecla no teclado
         document.addEventListener("keyup", teclasControleSoltas);                                  // Inica em loop a função que lê quando soltar alguma tecla no teclado
         document.addEventListener("keypress", teclasControleClicadas);                             // Inica em loop a função que lê quando clicar alguma tecla no teclado
+        iniciaGamepadVirtual = setInterval(gamepadVirtual, 20);                                    // Inica em loop a função que lê os comandos do gamepad virtual
         iniciaContagemTempoGameplay = setInterval(contagemTempoGameplay, 1000);                    // Inica em loop a função de contagem do tempo de jogo                    
         iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                                     // Inica em loop a função de movimentação do X-Wing, repetição do loop a cada 20ms
         iniciaProjeteisXWing = setInterval(atirar, 150);                                           // Inica em loop a função para atirar com o X-Wing
@@ -250,6 +254,7 @@ function gameOver() {
         clearTimeout(iniciaItensEspeciaisTimeout);
         clearTimeout(iniciaBossDarthVaderTimeout);
         clearTimeout(iniciaSurgimentoEstrelaDaMorteTimeout);
+        clearInterval(iniciaGamepadVirtual);
         clearInterval(iniciaContagemTempoGameplay);
         clearInterval(iniciaProjeteisXWing);
         clearInterval(iniciaMovimentacaoCenario);

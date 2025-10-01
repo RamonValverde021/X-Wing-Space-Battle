@@ -20,43 +20,43 @@ const teclasControlePressionadas = (tecla) => {
 
 // Função para verifica se as teclas de controle do X-Wing estão soltas
 const teclasControleSoltas = (tecla) => {
-    if (tecla.key === "ArrowRight" || tecla.key === "ArrowLeft") {      // Se a tecla solta for a seta para direita ou esquerda
-        direcaoHorizontal = 0;                                          // Interrompe o movimento horizontal do X-Wing
-    } else if (tecla.key === "ArrowDown" || tecla.key === "ArrowUp") {  // Se a tecla solta for a seta para baixo ou cima
-        direcaoVertical = 0;                                            // Interrompe o movimento vertical do X-Wing
-    } else if (tecla.key === " ") {                                     // Se a tecla solta for a barra de espaço
-        estaAtirando = false;                                           // Desativa a flag de atirar
-    } else if (tecla.key === "a" || tecla.key === "A") {                // Se a tecla solta for "a" ou "A"
-        giroHorario = false;                                            // Interrompe o giro no sentido horario do X-Wing
-    } else if (tecla.key === "d" || tecla.key === "D") {                // Se a tecla solta for "d" ou "D"
-        giroAntiHorario = false;                                        // Interrompe o giro no sentido antihorario do X-Wing
+    if (tecla.key === "ArrowRight" || tecla.key === "ArrowLeft") {       // Se a tecla solta for a seta para direita ou esquerda
+        direcaoHorizontal = 0;                                           // Interrompe o movimento horizontal do X-Wing
+    } else if (tecla.key === "ArrowDown" || tecla.key === "ArrowUp") {   // Se a tecla solta for a seta para baixo ou cima
+        direcaoVertical = 0;                                             // Interrompe o movimento vertical do X-Wing
+    } else if (tecla.key === " ") {                                      // Se a tecla solta for a barra de espaço
+        estaAtirando = false;                                            // Desativa a flag de atirar
+    } else if (tecla.key === "a" || tecla.key === "A") {                 // Se a tecla solta for "a" ou "A"
+        giroHorario = false;                                             // Interrompe o giro no sentido horario do X-Wing
+    } else if (tecla.key === "d" || tecla.key === "D") {                 // Se a tecla solta for "d" ou "D"
+        giroAntiHorario = false;                                         // Interrompe o giro no sentido antihorario do X-Wing
     }
 }
 
 // Função para verifica se as teclas de controle estão clicadas
 const teclasControleClicadas = (tecla) => {
-    //console.log(tecla.key);                                           // Exibe no console a tecla pressionada
-    if (tecla.key === "w" || tecla.key === "W") {                       // Se a tecla apertada for "w" ou "W"
-        if (soltarBoost == true) {                                      // Se o Boost estiver liberado
-            boostXWing();                                               // Chama a função de Boost do X-Wing
-            if (okFullPower) return;                                    // Se o Full-Power não estiver ativado
-            soltarBoost = false;                                        // Atualiza a flag para desativar o Boost
-            setTimeout(() => soltarBoost = true, recargaBoost);                 // Reativa o boost após 5s
+    //console.log(tecla.key);                                            // Exibe no console a tecla pressionada
+    if (tecla.key === "w" || tecla.key === "W") {                        // Se a tecla apertada for "w" ou "W"
+        if (soltarBoost == true) {                                       // Se o Boost estiver liberado
+            boostXWing();                                                // Chama a função de Boost do X-Wing
+            if (okFullPower) return;                                     // Se o Full-Power não estiver ativado
+            soltarBoost = false;                                         // Atualiza a flag para desativar o Boost
+            setTimeout(() => soltarBoost = true, recargaBoost);          // Reativa o boost após 5s
         }
-    } else if (tecla.key === "s" || tecla.key === "S") {                // Se a tecla apertada for "s" ou "S"
-        giroReversoXWing();                                             // Chama a função de giro reverso do X-Wing
-    } else if (tecla.key === "p" || tecla.key === "P") {                // Se a tecla apertada for "p" ou "P"
-        if (painelDados.style.display === "none") {                     // Se o painel de estatística do jogo estiver oculto
-            painelDados.style.display = "flex";                         // Mostra o painel de estatística do jogo
-        } else {                                                        // Se o painel de estatística do jogo estiver visivel
-            painelDados.style.display = "none";                         // Oculta o painel de estatística do jogo
+    } else if (tecla.key === "s" || tecla.key === "S") {                 // Se a tecla apertada for "s" ou "S"
+        giroReversoXWing();                                              // Chama a função de giro reverso do X-Wing
+    } else if (tecla.key === "p" || tecla.key === "P") {                 // Se a tecla apertada for "p" ou "P"
+        if (painelDados.style.display === "none") {                      // Se o painel de estatística do jogo estiver oculto
+            painelDados.style.display = "flex";                          // Mostra o painel de estatística do jogo
+        } else {                                                         // Se o painel de estatística do jogo estiver visivel
+            painelDados.style.display = "none";                          // Oculta o painel de estatística do jogo
         }
-    } else if (tecla.key === "f" || tecla.key === "F") {                // Se a tecla apertada for o "Enter"
-        if (habilitarAtaqueEspecial) {                                  // Se o ataque especial estiver habilitado
-            habilitarAtaqueEspecial = false;                            // Desabilita o ataque especial 
-            okGameOver = false;                                         // Desativa a execução do Game Over
-            btnEspecialAtaque.style.display = "none";                   // Oculta o sinal do botão de Ataque especial
-            xwingEspecialAtaque();                                      // Chama a função de ataque especial do X-Wing
+    } else if (tecla.key === "f" || tecla.key === "F") {                 // Se a tecla apertada for o "Enter"
+        if (habilitarAtaqueEspecial) {                                   // Se o ataque especial estiver habilitado
+            habilitarAtaqueEspecial = false;                             // Desabilita o ataque especial 
+            okGameOver = false;                                          // Desativa a execução do Game Over
+            btnEspecialAtaque.style.display = "none";                    // Oculta o sinal do botão de Ataque especial
+            xwingEspecialAtaque();                                       // Chama a função de ataque especial do X-Wing
         }
     }
 }
@@ -191,3 +191,76 @@ Botões (Buttons):
 15: D-Pad Direita
 direcaoHorizontal = gp.axes[0]; para mover a nave!
 */
+
+// Controle do Jogo com Gamepad do Smartphone
+const gamepadLT = document.getElementById("gamepad-lt");
+const gamepadLB = document.getElementById("gamepad-lb");
+const gamepadUP = document.getElementById("gamepad-up");
+const gamepadLEFT = document.getElementById("gamepad-left");
+const gamepadRIGHT = document.getElementById("gamepad-right");
+const gamepadDOWN = document.getElementById("gamepad-down");
+const gamepadBACK = document.getElementById("gamepad-back");
+const gamepadSTART = document.getElementById("gamepad-start");
+const gamepadRT = document.getElementById("gamepad-rt");
+const gamepadRB = document.getElementById("gamepad-rb");
+const gamepadY = document.getElementById("gamepad-y");
+const gamepadX = document.getElementById("gamepad-x");
+const gamepadB = document.getElementById("gamepad-b");
+const gamepadA = document.getElementById("gamepad-a");
+
+function gamepadVirtual() {
+    gamepadLT.addEventListener("click", giroReversoXWing);
+    gamepadLB.addEventListener("keydown", () => { giroAntiHorario = true });
+    gamepadUP.addEventListener("keydown", () => { direcaoHorizontal = -1 });
+    gamepadLEFT.addEventListener("keydown", () => { direcaoVertical = -1 });
+    gamepadRIGHT.addEventListener("keydown", () => { direcaoHorizontal = 1 });
+    gamepadDOWN.addEventListener("keydown", () => { direcaoVertical = 1 });
+
+    gamepadBACK.addEventListener("click", () => {
+        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";  // Alterna a visibilidade do painel de estatísticas.
+    });
+
+    gamepadSTART.addEventListener("click", () => {
+        if (jogoIniciado == false) {                                         // Se o jogo não começou ainda     
+            jogoIniciado = true;                                             // Atualiza flag para bloquear o Enter
+            btnIniciar.className = "botao-selecionado";                      // Adiciona a classe botaobotao-selecionado
+            setTimeout(() => iniciarJogo(), 800);                            // Inicia o jogo
+        }
+        if (okGameOver == false) {                                           // Se o jogo terminou
+            btnReiniciar.className = "botao-selecionado";                    // Adiciona a classe botaobotao-selecionado
+            setTimeout(() => reiniciarJogo(), 800);                          // Reinica o jogo
+        }
+    });
+
+    gamepadRT.addEventListener("keydown", () => { estaAtirando = true });
+    gamepadRB.addEventListener("keydown", () => { giroHorario = true });
+
+    gamepadY.addEventListener("click", () => {
+        if (habilitarAtaqueEspecial) {                                       // Se o ataque especial estiver habilitado
+            habilitarAtaqueEspecial = false;                                 // Desabilita o ataque especial 
+            okGameOver = false;                                              // Desativa a execução do Game Over
+            btnEspecialAtaque.style.display = "none";                        // Oculta o sinal do botão de Ataque especial
+            xwingEspecialAtaque();                                           // Chama a função de ataque especial do X-Wing
+        }
+    });
+
+    gamepadX.addEventListener("click", () => {
+        if (soltarBoost == true) {                                           // Se o Boost estiver liberado
+            boostXWing();                                                    // Chama a função de Boost do X-Wing
+            if (okFullPower) return;                                         // Se o Full-Power não estiver ativado
+            soltarBoost = false;                                             // Atualiza a flag para desativar o Boost
+            setTimeout(() => soltarBoost = true, recargaBoost);              // Reativa o boost após 5s
+        }
+    });
+
+    gamepadA.addEventListener("keydown", () => { estaAtirando = true });
+    //gamepadB.addEventListener("keydown", () => { });
+
+    gamepadLB.addEventListener("keyup", () => { giroAntiHorario = false });
+    gamepadUP.addEventListener("keyup", () => { direcaoHorizontal = 0 });
+    gamepadLEFT.addEventListener("keyup", () => { direcaoVertical = 0 });
+    gamepadRIGHT.addEventListener("keyup", () => { direcaoHorizontal = 0 });
+    gamepadDOWN.addEventListener("keyup", () => { direcaoVertical = 0 });
+    gamepadRT.addEventListener("keyup", () => { estaAtirando = false });
+    gamepadRB.addEventListener("keyup", () => { giroHorario = false });
+}

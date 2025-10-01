@@ -44,6 +44,9 @@
         --explosao-height: 50px;
     }
 
+    #gamepad-overlay {
+        display: flex !important; /* Garante que o gamepad seja exibido em telas pequenas */
+    }
 
     .painel_botoes {
         margin: 0 35%;
