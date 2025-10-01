@@ -10,6 +10,7 @@
    <link rel="icon" href="../images/icon-192.png">
    <link rel="stylesheet" type="text/css" href="../css/styles.css">
    <link rel="stylesheet" type="text/css" href="../css/phone.css">
+   <link rel="stylesheet" type="text/css" href="../css/gamepad-smartphone.css">
    <script language="JavaScript" src="../javascript/script.js" defer></script>
    <script language="JavaScript" src="../javascript/x-wing.js" defer></script>
    <script language="JavaScript" src="../javascript/tie-fighter.js" defer></script>
@@ -18,15 +19,15 @@
    <script language="JavaScript" src="../javascript/visual-effects.js" defer></script>
    <script language="JavaScript" src="../javascript/sounds-effects.js" defer></script>
    <script language="JavaScript" src="../javascript/controls.js" defer></script>
-   <script language="JavaScript" src="../javascript/victory.js" defer></script> 
+   <script language="JavaScript" src="../javascript/victory.js" defer></script>
    <script language="JavaScript" src="../javascript/specials-itens.js" defer></script>
 </head>
 
 <body>
    <div id="fade-overlay"></div>
-    <div id="rotate-device-overlay" style="display: none;">
-        <span>Por favor, gire seu dispositivo para o modo paisagem.</span>
-    </div>
+   <div id="rotate-device-overlay" style="display: none;">
+      <span>Por favor, gire seu dispositivo para o modo paisagem.</span>
+   </div>
    <div id="cenario" class="estrelasRepetidas">
       <div id="menu" class="menu fade-in">
          <section id="menu_1" class="section_menu">
@@ -69,6 +70,45 @@
       <div id="stormtropper" class="toasty"></div>
       <div id="x-wing" class="x-wing_standard"></div>
       <button type="button" id="btn_Inicar" class="botao">COMECAR</button>
+   </div>
+
+   <!-- Gamepad para smarthphone -->
+   <div id="gamepad-overlay">
+      <!-- Lado Esquerdo -->
+      <div class="gamepad-section left">
+         <div class="shoulder-buttons">
+            <button class="gamepad-button" id="gamepad-lt">LT</button>
+            <button class="gamepad-button" id="gamepad-lb">LB</button>
+         </div>
+         <div class="d-pad">
+            <button class="gamepad-button d-pad-up" id="gamepad-up">▲</button>
+            <button class="gamepad-button d-pad-left" id="gamepad-left">◀</button>
+            <button class="gamepad-button d-pad-right" id="gamepad-right">▶</button>
+            <button class="gamepad-button d-pad-down" id="gamepad-down">▼</button>
+         </div>
+      </div>
+
+      <!-- Centro -->
+      <div class="gamepad-section center">
+         <div class="system-buttons">
+            <button class="gamepad-button system" id="gamepad-back">Back</button>
+            <button class="gamepad-button system" id="gamepad-start">Start</button>
+         </div>
+      </div>
+
+      <!-- Lado Direito -->
+      <div class="gamepad-section right">
+         <div class="shoulder-buttons">
+            <button class="gamepad-button" id="gamepad-rb">RB</button>
+            <button class="gamepad-button" id="gamepad-rt">RT</button>
+         </div>
+         <div class="action-buttons">
+            <button class="gamepad-button action-y" id="gamepad-y">Y</button>
+            <button class="gamepad-button action-x" id="gamepad-x">X</button>
+            <button class="gamepad-button action-b" id="gamepad-b">B</button>
+            <button class="gamepad-button action-a" id="gamepad-a">A</button>
+         </div>
+      </div>
    </div>
 </body>
 

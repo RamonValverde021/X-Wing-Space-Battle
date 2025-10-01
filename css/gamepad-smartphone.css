@@ -1,0 +1,159 @@
+@charset "UTF-8";
+/*
+body {
+    background-color: #111;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    /* Simula uma tela de jogo *//*
+    background-image: linear-gradient(45deg, #303030 25%, transparent 25%),
+        linear-gradient(-45deg, #303030 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #303030 75%),
+        linear-gradient(-45deg, transparent 75%, #303030 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+*/
+/* --- Estrutura Principal do Gamepad --- */
+#gamepad-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    /* O overlay em si não captura eventos, apenas os botões */
+    pointer-events: none;
+    z-index: 100;
+}
+
+.gamepad-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* Os botões dentro das seções capturam eventos */
+    pointer-events: auto;
+}
+
+.gamepad-section.left {
+    align-items: flex-start;
+}
+
+.gamepad-section.right {
+    align-items: flex-end;
+}
+
+/* --- Estilo Geral dos Botões --- */
+.gamepad-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none; /* Impede a seleção de texto ao tocar */
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent; /* Remove o brilho azul no toque em mobile */
+}
+
+/* Feedback visual ao pressionar */
+.gamepad-button:active {
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: scale(0.95);
+}
+
+/* --- Lado Esquerdo: D-Pad e Ombros --- */
+.d-pad {
+    width: 150px;
+    height: 150px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 2px;
+}
+
+.d-pad .gamepad-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.d-pad-up { grid-area: 1 / 2 / 2 / 3; }
+.d-pad-left { grid-area: 2 / 1 / 3 / 2; }
+.d-pad-right { grid-area: 2 / 3 / 3 / 4; }
+.d-pad-down { grid-area: 3 / 2 / 4 / 3; }
+
+.shoulder-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.shoulder-buttons .gamepad-button {
+    width: 70px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+/* --- Centro: Botões de Sistema --- */
+.system-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px; /* Eleva um pouco os botões centrais */
+}
+
+.system-buttons .gamepad-button {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+/* --- Lado Direito: Botões de Ação e Ombros --- */
+.action-buttons {
+    width: 150px;
+    height: 150px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 2px;
+}
+
+.action-buttons .gamepad-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Botões de ação redondos */
+}
+
+.action-y {
+    grid-area: 1 / 2 / 2 / 3;
+    background-color: rgba(50, 180, 50, 0.4);
+    border-color: rgba(50, 180, 50, 0.8);
+}
+.action-y:active { background-color: rgba(50, 180, 50, 0.8); }
+
+.action-x {
+    grid-area: 2 / 1 / 3 / 2;
+    background-color: rgba(50, 100, 220, 0.4);
+    border-color: rgba(50, 100, 220, 0.8);
+}
+.action-x:active { background-color: rgba(50, 100, 220, 0.8); }
+
+.action-b {
+    grid-area: 2 / 3 / 3 / 4;
+    background-color: rgba(220, 50, 50, 0.4);
+    border-color: rgba(220, 50, 50, 0.8);
+}
+.action-b:active { background-color: rgba(220, 50, 50, 0.8); }
+
+.action-a {
+    grid-area: 3 / 2 / 4 / 3;
+    background-color: rgba(220, 180, 50, 0.4);
+    border-color: rgba(220, 180, 50, 0.8);
+}
+.action-a:active { background-color: rgba(220, 180, 50, 0.8); }
