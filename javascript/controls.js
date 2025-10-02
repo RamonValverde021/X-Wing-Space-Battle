@@ -193,14 +193,6 @@ direcaoHorizontal = gp.axes[0]; para mover a nave!
 */
 
 // Controle do Jogo com Gamepad do Smartphone
-const gamepadUP = document.getElementById("gamepad-up");
-const gamepadUP_LEFT = document.getElementById("gamepad-up-left");
-const gamepadUP_RIGHT = document.getElementById("gamepad-up-right");
-const gamepadLEFT = document.getElementById("gamepad-left");
-const gamepadRIGHT = document.getElementById("gamepad-right");
-const gamepadDOWN = document.getElementById("gamepad-down");
-const gamepadDOWN_LEFT = document.getElementById("gamepad-down-left");
-const gamepadDOWN_RIGHT = document.getElementById("gamepad-down-right");
 const gamepadLT = document.getElementById("gamepad-lt");
 const gamepadLB = document.getElementById("gamepad-lb");
 const gamepadRB = document.getElementById("gamepad-rb");
@@ -229,42 +221,7 @@ function setupGamepadVirtual() {
 
     // --- Ações de manter pressionado ---
     // Movimento
-    addTouchListeners(gamepadUP, () => direcaoVertical = -1, () => direcaoVertical = 0);                           // Configura o botão para cima para mover a nave para cima enquanto pressionado.
-    addTouchListeners(gamepadDOWN, () => direcaoVertical = 1, () => direcaoVertical = 0);                          // Configura o botão para baixo para mover a nave para baixo enquanto pressionado.
-    addTouchListeners(gamepadLEFT, () => direcaoHorizontal = -1, () => direcaoHorizontal = 0);                     // Configura o botão para esquerda para mover a nave para a esquerda enquanto pressionado.
-    addTouchListeners(gamepadRIGHT, () => direcaoHorizontal = 1, () => direcaoHorizontal = 0);                     // Configura o botão para direita para mover a nave para a direita enquanto pressionado.
 
-    addTouchListeners(gamepadUP_LEFT, () => {
-        direcaoVertical = -1;
-        direcaoHorizontal = -1;
-    }, () => {
-        direcaoVertical = 0;
-        direcaoHorizontal = 0;
-    });
-
-      addTouchListeners(gamepadUP_RIGHT, () => {
-        direcaoVertical = -1;
-        direcaoHorizontal = 1;
-    }, () => {
-        direcaoVertical = 0;
-        direcaoHorizontal = 0;
-    });
-
-    addTouchListeners(gamepadDOWN_LEFT, () => {
-        direcaoVertical = 1;
-        direcaoHorizontal = -1;
-    }, () => {
-        direcaoVertical = 0;
-        direcaoHorizontal = 0;
-    });
-
-    addTouchListeners(gamepadDOWN_RIGHT, () => {
-        direcaoVertical = 1;
-        direcaoHorizontal = 1;
-    }, () => {
-        direcaoVertical = 0;
-        direcaoHorizontal = 0;
-    });
 
     // Rotação
     addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);                             // Configura o botão LB para girar a nave no sentido horário enquanto pressionado.
@@ -276,3 +233,60 @@ function setupGamepadVirtual() {
     // Exibe o gamepad na tela
     //document.getElementById("gamepad-overlay").style.display = "flex";                                           // Torna o overlay do gamepad visível na tela.
 }
+
+// --- Logica do analogico
+const stick = document.getElementById('joystick-stick');
+const base = stick.parentElement;
+const container = base.parentElement;
+
+let isDragging = false;
+
+// Função para atualizar a posição do stick
+function moveStick(event) {
+    if (!isDragging) return;
+
+    // Pega as coordenadas do toque ou do mouse
+    const touch = event.touches ? event.touches[0] : event;
+    const containerRect = container.getBoundingClientRect();
+
+    // Calcula a posição relativa ao centro da base
+    let x = touch.clientX - (containerRect.left + containerRect.width / 2);
+    let y = touch.clientY - (containerRect.top + containerRect.height / 2);
+
+    const maxDistance = base.offsetWidth / 2;
+    const distance = Math.sqrt(x * x + y * y);
+
+    // Limita o movimento do stick para dentro da base
+    if (distance > maxDistance) {
+        x = (x / distance) * maxDistance;
+        y = (y / distance) * maxDistance;
+    }
+
+    stick.style.transform = `translate(${x}px, ${y}px)`;
+
+    // TODO: Aqui você pode adicionar a lógica para controlar a nave
+    // Ex: direcaoHorizontal = x / maxDistance;
+    //     direcaoVertical = y / maxDistance;
+}
+
+// Eventos de início do arrasto
+container.addEventListener('mousedown', () => { isDragging = true; });
+container.addEventListener('touchstart', (e) => { e.preventDefault(); isDragging = true; }, { passive: false });
+
+// Eventos de fim do arrasto
+window.addEventListener('mouseup', () => {
+    isDragging = false;
+    stick.style.transform = `translate(0, 0)`; // Reseta a posição
+    // TODO: Resetar o movimento da nave
+    // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
+});
+window.addEventListener('touchend', () => {
+    isDragging = false;
+    stick.style.transform = `translate(0, 0)`; // Reseta a posição
+    // TODO: Resetar o movimento da nave
+    // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
+});
+
+// Eventos de movimento
+window.addEventListener('mousemove', moveStick);
+window.addEventListener('touchmove', moveStick, { passive: false });

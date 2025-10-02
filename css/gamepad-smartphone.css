@@ -57,48 +57,37 @@
     transform: scale(0.95);
 }
 
-/* --- Lado Esquerdo: D-Pad e Ombros --- */
-#gamepad-border {
-    position: absolute;
-    visibility: hidden;
-    border-radius: 50%;
-    width: 154px;
-    height: 154px;
-}
-
-#gamepad-middle {
-    visibility: hidden;
-}
-
-.d-pad {
+/* --- Lado Esquerdo: Joystick e Ombros --- */
+.joystick-container {
+    /* Aumenta a área de toque sem aumentar o visual da base */
     width: 150px;
     height: 150px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.d-pad .gamepad-button {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
+.joystick-base {
+    width: 150px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.d-pad-up {
-    grid-area: 1 / 2 / 2 / 3;
-}
-
-.d-pad-left {
-    grid-area: 2 / 1 / 3 / 2;
-}
-
-.d-pad-right {
-    grid-area: 2 / 3 / 3 / 4;
-}
-
-.d-pad-down {
-    grid-area: 3 / 2 / 4 / 3;
+.joystick-stick {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    position: absolute;
+    transition: transform 0.1s ease-out; /* Animação suave ao soltar */
+    pointer-events: none; /* O stick não deve capturar eventos de mouse/toque */
 }
 
 .shoulder-buttons {
