@@ -168,38 +168,28 @@ window.addEventListener("gamepaddisconnected", (e) => {                         
 });
 
 /*
-Dica: Mapeamento do Controle Xbox
-Eixos (Axes):
-0: Analógico Esquerdo (Horizontal: -1 para esquerda, 1 para direita)
-1: Analógico Esquerdo (Vertical: -1 para cima, 1 para baixo)
-2: Analógico Direito (Horizontal)
-3: Analógico Direito (Vertical)
-Botões (Buttons):
-0: A
-1: B
-2: X
-3: Y
-4: LB (Left Bumper)
-5: RB (Right Bumper)
-6: LT (Left Trigger)
-7: RT (Right Trigger)
-8: View (Select)
-9: Menu (Start)
-12: D-Pad Cima
-13: D-Pad Baixo
-14: D-Pad Esquerda
-15: D-Pad Direita
-direcaoHorizontal = gp.axes[0]; para mover a nave!
 */
 
-// Controle do Jogo com Gamepad do Smartphone
-const gamepadLT = document.getElementById("gamepad-lt");
-const gamepadLB = document.getElementById("gamepad-lb");
-const gamepadRB = document.getElementById("gamepad-rb");
-const gamepadX = document.getElementById("gamepad-x");
-const gamepadA = document.getElementById("gamepad-a");
-
 function setupGamepadVirtual() {
+    // --- Lógica do Joystick Virtual ---
+    const stick = document.getElementById('joystick-stick');
+    const base = stick.parentElement;
+    const container = base.parentElement;
+
+    let isDragging = false;
+
+    // --- Seletores dos Botões Virtuais ---
+    const gamepadLT = document.getElementById("gamepad-lt");
+    const gamepadLB = document.getElementById("gamepad-lb");
+    const gamepadRB = document.getElementById("gamepad-rb");
+    const gamepadX = document.getElementById("gamepad-x");
+    const gamepadA = document.getElementById("gamepad-a");
+    // Botões que podem não existir no HTML atual
+    const gamepadY = document.getElementById("gamepad-y");
+    const gamepadBACK = document.getElementById("gamepad-back");
+    const gamepadSTART = document.getElementById("gamepad-start");
+    const gamepadRT = document.getElementById("gamepad-rt");
+
     // Função auxiliar para adicionar eventos de toque
     const addTouchListeners = (element, actionStart, actionEnd) => {                                                // Define uma função reutilizável para adicionar listeners de toque (pressionar e soltar).
         element.addEventListener("touchstart", (e) => { e.preventDefault(); actionStart(); }, { passive: false });  // Adiciona um listener para quando o dedo toca o botão, executando a ação inicial.
@@ -207,86 +197,111 @@ function setupGamepadVirtual() {
         element.addEventListener("touchcancel", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });   // Adiciona um listener para o caso de o toque ser cancelado (ex: dedo desliza para fora), executando a ação final.
     };
 
-    // --- Ações de clique único (touchstart é suficiente) ---
-    gamepadLT.addEventListener("touchstart", (e) => { e.preventDefault(); giroReversoXWing(); });                   // Configura o botão LT para executar a manobra de giro reverso com um toque.
-    gamepadX.addEventListener("touchstart", (e) => {                                                                // Configura o botão X para a função de boost.
-        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador ao tocar na tela.
-        if (soltarBoost) {                                                                                          // Verifica se o boost está disponível para uso.
-            boostXWing();                                                                                           // Chama a função que executa a mecânica de boost.
-            if (okFullPower) return;                                                                                // Se o modo "Full Power" estiver ativo, não inicia a recarga.
-            soltarBoost = false;                                                                                    // Desativa a possibilidade de usar o boost imediatamente.
-            setTimeout(() => soltarBoost = true, recargaBoost);                                                     // Agenda a reativação do boost após o tempo de recarga.
+    // Função para atualizar a posição do stick e a direção da nave
+    function moveStick(event) { // A variável isDragging não está definida aqui
+        if (!isDragging) return;
+
+        const touch = event.touches ? event.touches[0] : event;
+        const containerRect = container.getBoundingClientRect();
+
+        let x = touch.clientX - (containerRect.left + containerRect.width / 2);
+        let y = touch.clientY - (containerRect.top + containerRect.height / 2);
+
+        const maxDistance = base.offsetWidth / 2;
+        const distance = Math.sqrt(x * x + y * y);
+
+        if (distance > maxDistance) {
+            x = (x / distance) * maxDistance;
+            y = (y / distance) * maxDistance;
         }
-    });
 
-    // --- Ações de manter pressionado ---
-    // Movimento
+        stick.style.transform = `translate(${x}px, ${y}px)`;
 
-
-    // Rotação
-    addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);                             // Configura o botão LB para girar a nave no sentido horário enquanto pressionado.
-    addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false);                     // Configura o botão RB para girar a nave no sentido anti-horário enquanto pressionado.
-
-    // Tiro
-    addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);                            // Configura o botão A para atirar continuamente enquanto pressionado.
-
-    // Exibe o gamepad na tela
-    //document.getElementById("gamepad-overlay").style.display = "flex";                                           // Torna o overlay do gamepad visível na tela.
-}
-
-// --- Logica do analogico
-const stick = document.getElementById('joystick-stick');
-const base = stick.parentElement;
-const container = base.parentElement;
-
-let isDragging = false;
-
-// Função para atualizar a posição do stick
-function moveStick(event) {
-    if (!isDragging) return;
-
-    // Pega as coordenadas do toque ou do mouse
-    const touch = event.touches ? event.touches[0] : event;
-    const containerRect = container.getBoundingClientRect();
-
-    // Calcula a posição relativa ao centro da base
-    let x = touch.clientX - (containerRect.left + containerRect.width / 2);
-    let y = touch.clientY - (containerRect.top + containerRect.height / 2);
-
-    const maxDistance = base.offsetWidth / 2;
-    const distance = Math.sqrt(x * x + y * y);
-
-    // Limita o movimento do stick para dentro da base
-    if (distance > maxDistance) {
-        x = (x / distance) * maxDistance;
-        y = (y / distance) * maxDistance;
+        // Atribui os valores normalizados do joystick às variáveis de direção da nave
+        // O eixo Y do joystick (para baixo é positivo) corresponde ao direcaoVertical (para baixo é 1)
+        direcaoHorizontal = x / maxDistance; // Valores entre -1 (esquerda) e 1 (direita)
+        direcaoVertical = y / maxDistance;   // Valores entre -1 (cima) e 1 (baixo)
     }
 
-    stick.style.transform = `translate(${x}px, ${y}px)`;
+    // Eventos de início do arrasto do joystick
+    container.addEventListener('mousedown', () => { isDragging = true; });
+    container.addEventListener('touchstart', (e) => { e.preventDefault(); isDragging = true; }, { passive: false });
 
-    // TODO: Aqui você pode adicionar a lógica para controlar a nave
-    // Ex: direcaoHorizontal = x / maxDistance;
-    //     direcaoVertical = y / maxDistance;
+    // Eventos de fim do arrasto do joystick
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        stick.style.transform = `translate(0, 0)`; // Reseta a posição visual do stick
+        direcaoHorizontal = 0; // Reseta o movimento horizontal da nave
+        direcaoVertical = 0;   // Reseta o movimento vertical da nave
+    });
+    window.addEventListener('touchend', () => {
+        isDragging = false;
+        stick.style.transform = `translate(0, 0)`; // Reseta a posição visual do stick
+        direcaoHorizontal = 0; // Reseta o movimento horizontal da nave
+        direcaoVertical = 0;   // Reseta o movimento vertical da nave
+    });
+
+    // Eventos de movimento do joystick
+    window.addEventListener('mousemove', moveStick);
+    window.addEventListener('touchmove', moveStick, { passive: false });
+
+    // --- Ações de botões virtuais (touch-based) ---
+
+    // Ações de clique único
+    if (gamepadLT) gamepadLT.addEventListener("touchstart", (e) => { e.preventDefault(); giroReversoXWing(); });
+    if (gamepadX) gamepadX.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        if (soltarBoost) {
+            boostXWing();
+            if (okFullPower) return;
+            soltarBoost = false;
+            setTimeout(() => soltarBoost = true, recargaBoost);
+        }
+    });
+    if (gamepadY) gamepadY.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        if (habilitarAtaqueEspecial) {
+            habilitarAtaqueEspecial = false;
+            okGameOver = false;
+            btnEspecialAtaque.style.display = "none";
+            xwingEspecialAtaque();
+        }
+    });
+    if (gamepadBACK) gamepadBACK.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";
+    });
+    if (gamepadSTART) gamepadSTART.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        const btnReiniciar = document.getElementById("btnReiniciar");
+        if (btnReiniciar) { // Check if restart button exists (game over state)
+            btnReiniciar.className = "botao-selecionado";
+            setTimeout(() => reiniciarJogo(), 300);
+        }
+        // Note: The logic for starting the game from the main menu via gamepadSTART
+        // should be handled in index.html, not here in in-game controls.
+    });
+
+    // Ações de manter pressionado (usando a função auxiliar addTouchListeners)
+    // Rotação
+    if (gamepadLB) {
+        addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false); // LB - Horário
+    }
+    if (gamepadRB) {
+        addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false); // RB - Anti-horário
+    }
+
+    // Tiro
+    if (gamepadA) {
+        addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);
+    }
+    if (gamepadRT) {
+        addTouchListeners(gamepadRT, () => estaAtirando = true, () => estaAtirando = false); // RT for shooting as well
+    }
+
+    // Exibe o gamepad na tela (assumindo que 'gamepad-overlay' existe em game.html)
+    const gamepadOverlay = document.getElementById("gamepad-overlay");
+    if (gamepadOverlay) {
+        gamepadOverlay.style.display = "flex";
+    }
 }
-
-// Eventos de início do arrasto
-container.addEventListener('mousedown', () => { isDragging = true; });
-container.addEventListener('touchstart', (e) => { e.preventDefault(); isDragging = true; }, { passive: false });
-
-// Eventos de fim do arrasto
-window.addEventListener('mouseup', () => {
-    isDragging = false;
-    stick.style.transform = `translate(0, 0)`; // Reseta a posição
-    // TODO: Resetar o movimento da nave
-    // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
-});
-window.addEventListener('touchend', () => {
-    isDragging = false;
-    stick.style.transform = `translate(0, 0)`; // Reseta a posição
-    // TODO: Resetar o movimento da nave
-    // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
-});
-
-// Eventos de movimento
-window.addEventListener('mousemove', moveStick);
-window.addEventListener('touchmove', moveStick, { passive: false });
