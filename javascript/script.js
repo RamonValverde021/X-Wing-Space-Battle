@@ -128,9 +128,9 @@ document.addEventListener("keydown", function (event) {                         
         }
     }
 });
-
+/*
 // Define uma função assíncrona para poder usar 'await' para esperar por ações.
-async function lockOrientation() { 
+async function lockOrientation() {
     try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
         // Primeiro, tentamos entrar em tela cheia. É um requisito para o bloqueio de orientação na maioria dos navegadores.
         if (document.documentElement.requestFullscreen) {                                          // Verifica se o método padrão 'requestFullscreen' existe.
@@ -148,7 +148,7 @@ async function lockOrientation() {
         console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
     }
 }
-
+*/
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
@@ -168,12 +168,9 @@ function iniciarJogo() {
     alturaTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-height').trim());
     larguraTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-width').trim());
 
-    // Tenta bloquear a orientação para paisagem
-    if (window.screen && screen.orientation && screen.orientation.lock) {
-        lockOrientation();
-    }
 
-    setupGamepadVirtual();                                                                     // Configura os controles do gamepad virtual na tela
+    //if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
+    setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
 
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
@@ -216,7 +213,7 @@ function iniciarJogo() {
             iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
         }, 1 * 60 * 1000);                                                                         // 1 - Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
-        
+
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
         }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)

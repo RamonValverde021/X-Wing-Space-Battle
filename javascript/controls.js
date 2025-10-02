@@ -193,19 +193,18 @@ direcaoHorizontal = gp.axes[0]; para mover a nave!
 */
 
 // Controle do Jogo com Gamepad do Smartphone
-const gamepadLT = document.getElementById("gamepad-lt");
-const gamepadLB = document.getElementById("gamepad-lb");
 const gamepadUP = document.getElementById("gamepad-up");
+const gamepadUP_LEFT = document.getElementById("gamepad-up-left");
+const gamepadUP_RIGHT = document.getElementById("gamepad-up-right");
 const gamepadLEFT = document.getElementById("gamepad-left");
 const gamepadRIGHT = document.getElementById("gamepad-right");
 const gamepadDOWN = document.getElementById("gamepad-down");
-const gamepadBACK = document.getElementById("gamepad-back");
-const gamepadSTART = document.getElementById("gamepad-start");
-const gamepadRT = document.getElementById("gamepad-rt");
+const gamepadDOWN_LEFT = document.getElementById("gamepad-down-left");
+const gamepadDOWN_RIGHT = document.getElementById("gamepad-down-right");
+const gamepadLT = document.getElementById("gamepad-lt");
+const gamepadLB = document.getElementById("gamepad-lb");
 const gamepadRB = document.getElementById("gamepad-rb");
-const gamepadY = document.getElementById("gamepad-y");
 const gamepadX = document.getElementById("gamepad-x");
-const gamepadB = document.getElementById("gamepad-b");
 const gamepadA = document.getElementById("gamepad-a");
 
 function setupGamepadVirtual() {
@@ -227,30 +226,6 @@ function setupGamepadVirtual() {
             setTimeout(() => soltarBoost = true, recargaBoost);                                                     // Agenda a reativação do boost após o tempo de recarga.
         }
     });
-    gamepadY.addEventListener("touchstart", (e) => {                                                                // Configura o botão Y para o ataque especial.
-        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
-        if (habilitarAtaqueEspecial) {                                                                              // Verifica se o ataque especial está habilitado.
-            habilitarAtaqueEspecial = false;                                                                        // Desabilita o ataque especial após o uso.
-            okGameOver = false;                                                                                     // Impede que a tela de "Game Over" seja acionada durante a animação de vitória.
-            btnEspecialAtaque.style.display = "none";                                                               // Oculta o indicador visual do ataque especial.
-            xwingEspecialAtaque();                                                                                  // Chama a função que inicia a sequência do ataque especial.
-        }
-    });
-    gamepadBACK.addEventListener("touchstart", (e) => {                                                             // Configura o botão BACK para alternar a visibilidade do painel de dados.
-        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
-        painelDados.style.display = (painelDados.style.display === "none") ? "flex" : "none";                       // Alterna a exibição do painel entre 'flex' (visível) e 'none' (oculto).
-    });
-    gamepadSTART.addEventListener("touchstart", (e) => {                                                            // Configura o botão START para iniciar ou reiniciar o jogo.
-        e.preventDefault();                                                                                         // Previne o comportamento padrão do navegador.
-        const btnReiniciar = document.getElementById("btnReiniciar");                                               // Procura pelo botão de reiniciar na tela.
-        if (!jogoIniciado) {                                                                                        // Se o jogo ainda não começou.
-            btnIniciar.className = "botao-selecionado";                                                             // Aplica um estilo visual de "selecionado" ao botão.
-            setTimeout(() => iniciarJogo(), 300);                                                                   // Inicia o jogo após um pequeno atraso.
-        } else if (btnReiniciar) {                                                                                  // Se o jogo já terminou e o botão de reiniciar existe.
-            btnReiniciar.className = "botao-selecionado";                                                           // Aplica o estilo de "selecionado" ao botão de reiniciar.
-            setTimeout(() => reiniciarJogo(), 300);                                                                 // Reinicia o jogo após um pequeno atraso.
-        }
-    });
 
     // --- Ações de manter pressionado ---
     // Movimento
@@ -259,13 +234,44 @@ function setupGamepadVirtual() {
     addTouchListeners(gamepadLEFT, () => direcaoHorizontal = -1, () => direcaoHorizontal = 0);                     // Configura o botão para esquerda para mover a nave para a esquerda enquanto pressionado.
     addTouchListeners(gamepadRIGHT, () => direcaoHorizontal = 1, () => direcaoHorizontal = 0);                     // Configura o botão para direita para mover a nave para a direita enquanto pressionado.
 
+    addTouchListeners(gamepadUP_LEFT, () => {
+        direcaoVertical = -1;
+        direcaoHorizontal = -1;
+    }, () => {
+        direcaoVertical = 0;
+        direcaoHorizontal = 0;
+    });
+
+      addTouchListeners(gamepadUP_RIGHT, () => {
+        direcaoVertical = -1;
+        direcaoHorizontal = 1;
+    }, () => {
+        direcaoVertical = 0;
+        direcaoHorizontal = 0;
+    });
+
+    addTouchListeners(gamepadDOWN_LEFT, () => {
+        direcaoVertical = 1;
+        direcaoHorizontal = -1;
+    }, () => {
+        direcaoVertical = 0;
+        direcaoHorizontal = 0;
+    });
+
+    addTouchListeners(gamepadDOWN_RIGHT, () => {
+        direcaoVertical = 1;
+        direcaoHorizontal = 1;
+    }, () => {
+        direcaoVertical = 0;
+        direcaoHorizontal = 0;
+    });
+
     // Rotação
     addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);                             // Configura o botão LB para girar a nave no sentido horário enquanto pressionado.
     addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false);                     // Configura o botão RB para girar a nave no sentido anti-horário enquanto pressionado.
 
     // Tiro
     addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);                            // Configura o botão A para atirar continuamente enquanto pressionado.
-    addTouchListeners(gamepadRT, () => estaAtirando = true, () => estaAtirando = false);                           // Configura o botão RT para também atirar continuamente enquanto pressionado.
 
     // Exibe o gamepad na tela
     //document.getElementById("gamepad-overlay").style.display = "flex";                                           // Torna o overlay do gamepad visível na tela.
