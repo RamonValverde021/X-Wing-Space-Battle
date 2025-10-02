@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+   <meta name="author" content="Ramon Valverde">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
+   <title>StarWars - X-Wing Space Battle</title>
+   <link rel="icon" href="../images/icon-192.png">
+   <link rel="stylesheet" type="text/css" href="../css/gamepad-2.css">
+</head>
+
+<body>
+
+   <div class="joystick-container">
+      <div class="joystick-base">
+         <div id="joystick-stick" class="joystick-stick"></div>
+      </div>
+   </div>
+
+   <script>
+      const stick = document.getElementById('joystick-stick');
+      const base = stick.parentElement;
+      const container = base.parentElement;
+
+      let isDragging = false;
+
+      // Função para atualizar a posição do stick
+      function moveStick(event) {
+         if (!isDragging) return;
+
+         // Pega as coordenadas do toque ou do mouse
+         const touch = event.touches ? event.touches[0] : event;
+         const containerRect = container.getBoundingClientRect();
+
+         // Calcula a posição relativa ao centro da base
+         let x = touch.clientX - (containerRect.left + containerRect.width / 2);
+         let y = touch.clientY - (containerRect.top + containerRect.height / 2);
+
+         const maxDistance = base.offsetWidth / 2;
+         const distance = Math.sqrt(x * x + y * y);
+
+         // Limita o movimento do stick para dentro da base
+         if (distance > maxDistance) {
+            x = (x / distance) * maxDistance;
+            y = (y / distance) * maxDistance;
+         }
+
+         stick.style.transform = `translate(${x}px, ${y}px)`;
+
+         // TODO: Aqui você pode adicionar a lógica para controlar a nave
+         // Ex: direcaoHorizontal = x / maxDistance;
+         //     direcaoVertical = y / maxDistance;
+      }
+
+      // Eventos de início do arrasto
+      container.addEventListener('mousedown', () => { isDragging = true; });
+      container.addEventListener('touchstart', (e) => { e.preventDefault(); isDragging = true; }, { passive: false });
+
+      // Eventos de fim do arrasto
+      window.addEventListener('mouseup', () => {
+         isDragging = false;
+         stick.style.transform = `translate(0, 0)`; // Reseta a posição
+         // TODO: Resetar o movimento da nave
+         // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
+      });
+      window.addEventListener('touchend', () => {
+         isDragging = false;
+         stick.style.transform = `translate(0, 0)`; // Reseta a posição
+         // TODO: Resetar o movimento da nave
+         // Ex: direcaoHorizontal = 0; direcaoVertical = 0;
+      });
+
+      // Eventos de movimento
+      window.addEventListener('mousemove', moveStick);
+      window.addEventListener('touchmove', moveStick, { passive: false });
+
+   </script>
+</body>
+
+</html>
