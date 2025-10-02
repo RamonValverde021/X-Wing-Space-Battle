@@ -15,23 +15,25 @@ const btnIniciar = document.getElementById("btn_Inicar");
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 // Variaveis constantes do jogo
+const alturaTela = window.innerHeight;                                                   // altura visível da tela
+const larguraTela = window.innerWidth;                                                   // largura visível da tela
 const larguraCenario = cenario.offsetWidth;                                              // Pega a largura de todod o cenario
 const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
-const velocidadeMaximaXWing = 15;                                                        // Define a velocidade máxima do X-Wing
-const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
-const velocidadeProjetilXWing = 50;                                                      // Define a velocidade dos projeteis do X-Wing
-const velocidadeMaximaTieFighter = 12;                                                   // 12 - Define a velocidade máxima dos Tie Fighters
+let velocidadeMaximaXWing = 15;                                                        // Define a velocidade máxima do X-Wing
+let velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
+let velocidadeProjetilXWing = 50;                                                      // Define a velocidade dos projeteis do X-Wing
+let velocidadeMaximaTieFighter = 12;                                                   // 12 - Define a velocidade máxima dos Tie Fighters
 const quantidadeMaximaTieFighters = 700;                                                 // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
-const velocidadeProjetilTieFighter = 50;                                                 // Define a velocidade dos projeteis dos Tie Fighters
-const velocidadeProjetilDarthVader = 65;                                                 // 65 -Define a velocidade dos projeteis do Darth Vader
-const velocidadeProjetilDeathStar = 50;                                                  // Define a velocidade dos projeteis da Estrela da Morte
-const velocidadeProjetilPunicao = 50;                                                    // Define a velocidade dos projeteis de punição
+let velocidadeProjetilTieFighter = 50;                                                 // Define a velocidade dos projeteis dos Tie Fighters
+let velocidadeProjetilDarthVader = 65;                                                 // 65 -Define a velocidade dos projeteis do Darth Vader
+let velocidadeProjetilDeathStar = 50;                                                  // Define a velocidade dos projeteis da Estrela da Morte
+let velocidadeProjetilPunicao = 50;                                                    // Define a velocidade dos projeteis de punição
 const anguloMaximo = 61;                                                                 // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
-const velocidadeItemEspecial = 3;                                                        // Define a velocidade de decida dos itens especiais
+let velocidadeItemEspecial = 3;                                                        // Define a velocidade de decida dos itens especiais
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
 const vidaEstrelaDaMorte = 1500;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
@@ -118,6 +120,29 @@ let iniciaMovimentacaoItensEspeciais;
 let iniciaSurgimentoEstrelaDaMorte;
 
 /*------------------------------- INCIANDO JOGO -------------------------------*/
+// Seu código JavaScript aqui será executado quando a página estiver totalmente carregada
+window.onload = function () {
+    responsividade(); // chama a função quando a página carrega
+};
+
+// Executa também se a tela for redimensionada
+window.addEventListener("resize", responsividade);
+
+function responsividade() {
+    if (alturaTela <= 435) {
+        velocidadeMaximaXWing = 7;
+        velMaximaRotacaoXWing = 3;
+        velocidadeProjetilXWing = 25;
+        velocidadeMaximaTieFighter = 6;
+        velocidadeProjetilTieFighter = 25;
+        velocidadeProjetilDarthVader = 32;
+        velocidadeProjetilDeathStar = 25;
+        velocidadeProjetilPunicao = 25;
+        velocidadeItemEspecial = 1;
+        velocidadeXWing = 2;
+    }
+}
+
 btnIniciar.addEventListener("click", iniciarJogo);                                                 // Inicia o jogo clicando no botão
 let jogoIniciado = false;                                                                          // Flag para identificar a inicialização do jogo
 document.addEventListener("keydown", function (event) {                                            // Função para iniciar o jogo com apertar do Enter

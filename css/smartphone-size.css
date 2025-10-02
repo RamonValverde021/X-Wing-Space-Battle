@@ -18,6 +18,7 @@
     /* 430 */
 
     :root {
+        /* Tudo aqui é dividido por 2 */
         /* Dimensões dos Projéteis */
         --projetil-width: 2px;
         --projetil-height: 25px;
@@ -42,6 +43,17 @@
         /* Altura e largura sempre um pouco maior que a altura do X-Wing */
         --explosao-width: 50px;
         --explosao-height: 50px;
+
+        --item-especial-width: 30px;
+        --item-especial-height: 30px;
+
+        --item-fullpower-width: 52px;
+        --item-fullpower-height: 30px;
+
+        --toasty-width: 125px;
+        --toasty-height: 132px;
+        --toasty-slide-in: 150px;
+        --toasty-slide-out: -200px;
     }
 
     #gamepad-overlay {

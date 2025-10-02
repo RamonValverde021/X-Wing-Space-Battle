@@ -38,6 +38,17 @@
     /* Altura e largura sempre um pouco maior que a altura do X-Wing */
     --explosao-width: 100px; 
     --explosao-height: 100px;
+
+    --item-especial-width: 60px;
+    --item-especial-height: 60px;
+
+    --item-fullpower-width: 104px;
+    --item-fullpower-height: 60px;
+
+    --toasty-width: 250px;
+    --toasty-height: 263px;
+    --toasty-slide-in: 150px;
+    --toasty-slide-out: -5px;
 }
 
 body#index {
@@ -461,15 +472,15 @@ div#cenario {
 
 .toasty {
     position: absolute;
-    height: 263px;
-    width: 250px;
+    height: var(--toasty-height);
+    width: var(--toasty-width);
     bottom: 0;
     right: 0px;
     background-image: url('../images/stormtropper.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    transform: translateX(250px);
+    transform: translateX(var(--toasty-slide-in));
     /* deslocado para baixo */
     transition: all 0.4s ease-out;
     pointer-events: none;
@@ -478,8 +489,8 @@ div#cenario {
 }
 
 .toasty.show {
-    transform: translateX(-5px);
-    /* sobe para posição final */
+    /* volta para posição final */
+    transform: translateX(var(--toasty-slide-out));
 }
 
 .use_a_forca {
@@ -512,8 +523,8 @@ div#cenario {
 
 .extra-life {
     position: absolute;
-    height: 60px;
-    width: 60px;
+    height: var(--item-especial-height);
+    width: var(--item-especial-width);
     background-image: url('../images/special/special-4.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -523,8 +534,8 @@ div#cenario {
 
 .resistence-power {
     position: absolute;
-    height: 60px;
-    width: 60px;
+    height: var(--item-especial-height);
+    width: var(--item-especial-width);
     background-image: url('../images/special/special-2.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -534,8 +545,8 @@ div#cenario {
 
 .power-up {
     position: absolute;
-    height: 60px;
-    width: 60px;
+    height: var(--item-especial-height);
+    width: var(--item-especial-width);
     background-image: url('../images/special/special-1.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -545,8 +556,8 @@ div#cenario {
 
 .full-power {
     position: absolute;
-    height: 60px;
-    width: 104px;
+    height: var(--item-fullpower-height);
+    width: var(--item-fullpower-width);
     background-image: url('../images/special/special-3.png');
     background-size: cover;
     background-repeat: no-repeat;
