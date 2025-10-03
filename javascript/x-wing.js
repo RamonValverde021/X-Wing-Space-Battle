@@ -41,16 +41,16 @@ const criarProjeteisXWing = (posicaoLeftTiro, posicaoTopTiro, angle_deg) => {  /
 
     // Posições locais dos canos de tiro (esquerdo e direito, ligeiramente à frente)
     const muzzles = [                                                          // Posições relativas ao centro da nave, em pixels
-         // Posição do cano esquerdo
+        // Posição do cano esquerdo
         {
-            lx: -larguraProjetilNaves * 8 ,
+            lx: -larguraProjetilNaves * 8,
             ly: alturaProjetilNaves / (alturaProjetilNaves / 5)
-        }, 
+        },
         // Posição do cano direito                                                 
         {
-            lx: larguraProjetilNaves * 8 ,
+            lx: larguraProjetilNaves * 8,
             ly: alturaProjetilNaves / (alturaProjetilNaves / 5)
-        }                                                     
+        }
     ];
 
     // Componentes de velocidade baseados no ângulo (direção: theta=0 aponta para cima)
@@ -481,6 +481,7 @@ function moverProjeteisPunicao() {
 function boostXWing() {
     if (isBoosting) return;                                                              // Se um boost já estiver em andamento, interrompe a função para evitar múltiplos boosts.
     isBoosting = true;                                                                   // Ativa a flag 'isBoosting' para suspender os controles normais do jogador.
+    timestampInicioParado = 0;                                                           // Reseta o timestamp para uma nova contagem
 
     // 1. Parâmetros do Boost
     const frames = boostDuration / (1000 / 60);                                          // Calcula o número total de "quadros" ou "passos" da animação, assumindo 60 FPS.
