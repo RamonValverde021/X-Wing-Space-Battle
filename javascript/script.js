@@ -85,7 +85,7 @@ let okBatalhaDarthVader = false;                                                
 let maxDistance = 300;                                                                   // Define a distância máxima que a nave tentará manter antes de se aproximar.
 let minDistance = 280;                                                                   // Define a distância mínima que a nave tentará manter antes de se afastar.
 let velocidadeVader = 2;                                                                 // Define a velocidade de movimento para frente/trás de Vader.
-let velocidadeStrafe = 2;                                                                // 0.8 - Define a velocidade do movimento lateral.
+let velocidadeStrafe = 3;                                                                // 0.8 - Define a velocidade do movimento lateral.
 let okResistencePower = false;                                                           // Flag para indicar que o pode de Resistencia está ativo
 let okPowerUp = false;                                                                   // Flag para indicar que o power-up está ativo
 let okFullPower = false;                                                                 // Flag para indicar que o Full-Power está ativo
@@ -96,6 +96,7 @@ let boostDuration = 250;                                                        
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 let onSmartphone = false;                                                                // Flag para indicar se está jogando em um smartphone
 let bottomBtnReiniciar = 100;                                                            // Espaçamento do bottom do botão de reiniciar 
+let tiroContinuo = false;                                                                // Flag para identificar disparos continuos
 
 // Variaveis para os intervalos do jogo
 let iniciaBossEstrelaDaMorteTimeout;
@@ -165,8 +166,8 @@ function responsividade() {
         bottomBtnReiniciar = 50;
         maxDistance = 150;
         minDistance = 140;
-        velocidadeVader = 21;
-        velocidadeStrafe = 1;
+        velocidadeVader = 1;
+        velocidadeStrafe = 1.2;
     } else {
         onSmartphone = false;
     }

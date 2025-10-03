@@ -297,44 +297,47 @@ function setupGamepadVirtual() {
 
     // Seção para configurar as ações dos botões virtuais.
 
-    // Ações de clique único // Configura botões que executam uma ação uma única vez por toque.
-    if (gamepadLT) gamepadLT.addEventListener("touchstart", () => { giroReversoXWing(); });  // Se o botão LT existir, configura-o para chamar a função de giro reverso ao ser tocado.
-    if (gamepadX) gamepadX.addEventListener("touchstart", () => {                                                // Se o botão X existir, configura sua ação de toque.
-        if (soltarBoost) {                                                                                        // Verifica se o boost está disponível.
-            boostXWing();                                                                                         // Ativa a função de boost.
-            if (okFullPower) return;                                                                              // Se o Full-Power estiver ativo, não entra em cooldown.
-            soltarBoost = false;                                                                                  // Desativa a possibilidade de usar o boost novamente.
-            setTimeout(() => soltarBoost = true, recargaBoost);                                                   // Agenda a reativação do boost após o tempo de recarga.
+    // Ações de clique único, configura botões que executam uma ação uma única vez por toque.
+    if (gamepadLT) gamepadLT.addEventListener("touchstart", () => { giroReversoXWing(); });              // Se o botão LT existir, configura-o para chamar a função de giro reverso ao ser tocado.
+    if (gamepadX) gamepadX.addEventListener("touchstart", () => {                                        // Se o botão X existir, configura sua ação de toque.
+        if (soltarBoost) {                                                                               // Verifica se o boost está disponível.
+            boostXWing();                                                                                // Ativa a função de boost.
+            if (okFullPower) return;                                                                     // Se o Full-Power estiver ativo, não entra em cooldown.
+            soltarBoost = false;                                                                         // Desativa a possibilidade de usar o boost novamente.
+            setTimeout(() => soltarBoost = true, recargaBoost);                                          // Agenda a reativação do boost após o tempo de recarga.
         }
     });
 
     // Ações de manter pressionado (usando a função auxiliar addTouchListeners, configura botões que precisam ser mantidos pressionados.
     // Configura os botões de rotação.
-    if (gamepadLB) {                                                                                              // Se o botão LB existir.
-        addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);                        // Configura para girar no sentido horário enquanto pressionado.
+    if (gamepadLB) {                                                                                     // Se o botão LB existir.
+        addTouchListeners(gamepadLB, () => giroHorario = true, () => giroHorario = false);               // Configura para girar no sentido horário enquanto pressionado.
     }
-    if (gamepadRB) {                                                                                              // Se o botão RB existir.
-        addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false);                // Configura para girar no sentido anti-horário enquanto pressionado.
+    if (gamepadRB) {                                                                                     // Se o botão RB existir.
+        addTouchListeners(gamepadRB, () => giroAntiHorario = true, () => giroAntiHorario = false);       // Configura para girar no sentido anti-horário enquanto pressionado.
     }
     // Configura os botões de tiro.
-    if (gamepadA) {                                                                                               // Se o botão A existir.
-        addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);                       // Configura para atirar enquanto pressionado.
+    if (gamepadA) {
+        // Configura o botão A para atirar enquanto pressionado, mas sem interferir no tiro contínuo.
+        addTouchListeners(gamepadA,
+            () => { estaAtirando = true; },                                                              // Ao pressionar, sempre ativa o tiro.
+            () => {
+                if (!tiroContinuo) {                                                                     // Ao soltar, só desativa o tiro se o modo contínuo NÃO estiver ativo.
+                    estaAtirando = false;
+                }
+            }
+        );
     }
 
-    let tiroContinuo = false;
-    addTouchListeners(gamepadA2, () => {
-        if (gamepadA2) {                                                                                              // Se o botão A existir.
-            if (tiroContinuo == false) {
-                tiroContinuo = true;
-                estaAtirando = true;
-                gamepadA2.classList.remove("action-a-2");
-                gamepadA2.classList.add("action-a-2-power");
-            } else {
-                tiroContinuo = false;
-                estaAtirando = false;
-                gamepadA2.classList.remove("action-a-2-power");
-                gamepadA2.classList.add("action-a-2");
-            }
+    // Usa um listener de 'touchstart' direto para o botão de toggle, pois 'addTouchListeners' não é adequado para isso.
+    if (gamepadA2) {
+        gamepadA2.addEventListener("touchstart", () => {
+            tiroContinuo = !tiroContinuo;                                                                // Alterna o estado do tiro contínuo (true/false).
+            estaAtirando = tiroContinuo;                                                                 // Sincroniza 'estaAtirando' com o novo estado de 'tiroContinuo'.
+            // Alterna a classe CSS para dar feedback visual ao jogador.
+            gamepadA2.classList.toggle("action-a-2-power", tiroContinuo);
+            gamepadA2.classList.toggle("action-a-2", !tiroContinuo);
         }
-    });
+        , { passive: true });
+    }
 }
