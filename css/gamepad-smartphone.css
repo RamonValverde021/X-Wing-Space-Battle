@@ -61,8 +61,8 @@
 /* --- Lado Esquerdo: Joystick e Ombros --- */
 .joystick-container {
     /* Aumenta a área de toque sem aumentar o visual da base */
-    width: 150px;
-    height: 150px;
+    width: 100px; /* 150 */
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -50,6 +50,8 @@
     --toasty-height: 263px;
     --toasty-slide-in: 270px;
     --toasty-slide-out: -5px;
+
+    --size-use-a-forca: 150px;
 }
 
 body#index {
@@ -500,7 +502,7 @@ div#cenario {
     text-align: center;
     top: 50px;
     font-weight: bold;
-    font-size: 150px;
+    font-size: var(--size-use-a-forca);
     animation: blinkFB 1.5s linear infinite;
     z-index: 10;
 }

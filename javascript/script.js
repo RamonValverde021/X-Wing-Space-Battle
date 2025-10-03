@@ -154,6 +154,12 @@ function responsividade() {
         folgaColisao = 15;
         boostDistance = 250;
         boostDuration = 250;
+
+        // Exibe o gamepad na tela (assumindo que 'gamepad-overlay' existe em game.html)          // Torna a interface do gamepad visível.
+        const gamepadOverlay = document.getElementById("gamepad-overlay");                        // Obtém o contêiner principal do gamepad virtual.
+        if (gamepadOverlay) {                                                                     // Se o contêiner existir.
+            gamepadOverlay.style.display = "flex";                                                // Altera seu estilo para 'flex' para que ele e seus filhos sejam exibidos.
+        }
     }
 }
 
@@ -167,27 +173,7 @@ document.addEventListener("keydown", function (event) {                         
         }
     }
 });
-/*
-// Define uma função assíncrona para poder usar 'await' para esperar por ações.
-async function lockOrientation() {
-    try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
-        // Primeiro, tentamos entrar em tela cheia. É um requisito para o bloqueio de orientação na maioria dos navegadores.
-        if (document.documentElement.requestFullscreen) {                                          // Verifica se o método padrão 'requestFullscreen' existe.
-            await document.documentElement.requestFullscreen();                                    // Solicita o modo de tela cheia e espera a operação ser concluída.
-        } else if (document.documentElement.mozRequestFullScreen) {                                // Firefox  // Se não, verifica a versão para Firefox.
-            await document.documentElement.mozRequestFullScreen();                                 // Solicita tela cheia no Firefox e espera.
-        } else if (document.documentElement.webkitRequestFullscreen) {                             // Chrome, Safari & Opera  // Se não, verifica a versão para Chrome, Safari e Opera.
-            await document.documentElement.webkitRequestFullscreen();                              // Solicita tela cheia nesses navegadores e espera.
-        } else if (document.documentElement.msRequestFullscreen) {                                 // IE/Edge  // Se não, verifica a versão para IE/Edge.
-            await document.documentElement.msRequestFullscreen();                                  // Solicita tela cheia no IE/Edge e espera.
-        }
-        // Depois de entrar em tela cheia com sucesso, bloqueamos a orientação.
-        await screen.orientation.lock('landscape');                                                // Tenta travar a orientação da tela no modo paisagem ('landscape') e espera.
-    } catch (error) {                                                                              // Se qualquer uma das solicitações ('await') falhar, o código dentro do 'catch' é executado.
-        console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
-    }
-}
-*/
+
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
@@ -198,7 +184,6 @@ function iniciarJogo() {
     trilhaSonora();                                                                                // Toca a trilha sonora do game
     setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
     iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
-    //if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
 
     // Obtém as dimensões dos projéteis diretamente das variáveis CSS (:root)
     const rootStyles = getComputedStyle(document.documentElement);
@@ -260,7 +245,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 5 * 60 * 1000); // 5 minutos
+        }, 5 * 60 * 1000); // 5 minutos  
 
     }, 3000); // Atraso de 3 segundos
 }
