@@ -137,7 +137,7 @@ window.addEventListener("resize", () => {
 
 // Função para corrigir a altura do cenário em dispositivos móveis
 function ajustarAlturaCenario() {
-    cenario.style.height = `${window.innerHeight}px`;
+    cenario.style.height = `${alturaTela}px`;
 }
 
 function responsividade() {
