@@ -11,7 +11,8 @@ const btnEspecialAtaque = document.getElementById("ataque_especial");           
 const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
 const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
-const btnIniciar = document.getElementById("btn_Inicar");
+const btnIniciar = document.getElementById("btn_Inicar");                                // Seleciona o botão "Iniciar Jogo".
+const gamepadOverlay = document.getElementById("gamepad-overlay");                       // Obtém o contêiner principal do gamepad virtual.
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 // Variaveis constantes do jogo
@@ -89,6 +90,7 @@ let isBoosting = false;                                                         
 let boostDistance = 500;                                                                 // Define a distância total que a nave percorrerá durante o boost, em pixels.
 let boostDuration = 250;                                                                 // Define a duração total do boost, em milissegundos.
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
+let onSmartphone = false;                                                                // Flag para indicar se está jogando em um smartphone
 
 // Variaveis para os intervalos do jogo
 let iniciaBossEstrelaDaMorteTimeout;
@@ -142,6 +144,7 @@ function ajustarAlturaCenario() {
 
 function responsividade() {
     if (alturaTela <= 435) {
+        onSmartphone = true;
         velocidadeMaximaXWing = 7;
         velocidadeProjetilXWing = 25;
         velocidadeMaximaTieFighter = 6;
@@ -154,12 +157,8 @@ function responsividade() {
         folgaColisao = 15;
         boostDistance = 250;
         boostDuration = 250;
-
-        // Exibe o gamepad na tela (assumindo que 'gamepad-overlay' existe em game.html)          // Torna a interface do gamepad visível.
-        const gamepadOverlay = document.getElementById("gamepad-overlay");                        // Obtém o contêiner principal do gamepad virtual.
-        if (gamepadOverlay) {                                                                     // Se o contêiner existir.
-            gamepadOverlay.style.display = "flex";                                                // Altera seu estilo para 'flex' para que ele e seus filhos sejam exibidos.
-        }
+    } else {
+        onSmartphone = false;
     }
 }
 
@@ -176,6 +175,9 @@ document.addEventListener("keydown", function (event) {                         
 
 function iniciarJogo() {
     console.log("Iniciando Jogo");
+    if (onSmartphone) {                                                                            // Se estiver jogando em um smartphone                                 
+        if (gamepadOverlay) gamepadOverlay.style.display = "flex";                                 // Se o gamepad existir. Altera seu estilo para 'flex' para que a interface do gamepad fique visível.
+    }
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
     somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando    
     botaoIniciar.style.display = "none";                                                           // Esconde o botão iniciar após clicar nele
@@ -254,6 +256,9 @@ function iniciarJogo() {
 /*------------------------------- FIM DE JOGO -------------------------------*/
 function gameOver() {
     if (okGameOver) {                                                                              // Se o Game Over estiver habilitado
+        if (onSmartphone) {                                                                        // Se estiver jogando em um smartphone                                 
+            if (gamepadOverlay) gamepadOverlay.style.display = "none";                             // Se o gamepad existir. Altera seu estilo para 'none' para que a interface do gamepad fique aculta.
+        }
         if (audioTrilhaSonora.played) audioTrilhaSonora.pause();                                   // Pausa a trilha sonora do jogo
         if (audioVoandoXWing.played) audioVoandoXWing.pause();                                     // Pausa o som do X-Wing voando
         if (audioTrilhaSonoraDarthVader.played) audioTrilhaSonoraDarthVader.pause();               // Pausa a trilha sonora do Darth Vader

@@ -2,13 +2,13 @@
 
 /* --- Estrutura Principal do Gamepad --- */
 #gamepad-overlay {
+    display: none;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 15px;
     box-sizing: border-box;
-    display: none;
     /* Escondido por padrão, ativado via @media query */
     justify-content: space-between;
     align-items: flex-end;
@@ -32,7 +32,6 @@
 
 .gamepad-section.right {
     align-items: flex-end;
-    margin: 0 50px 20px 50px;
 }
 
 /* --- Estilo Geral dos Botões --- */
@@ -61,20 +60,22 @@
 /* --- Lado Esquerdo: Joystick e Ombros --- */
 .joystick-container {
     /* Aumenta a área de toque sem aumentar o visual da base */
-    width: 150px; /* 150 */
+    width: 150px;
+    /* 150 */
     height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 20px 20px 20px;
 }
 
 .joystick-base {
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1); /*rgba(255, 255, 255, 0.1);*/
+    background-color: rgba(255, 255, 255, 0.1);
+    /*rgba(255, 255, 255, 0.1);*/
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.3); /*rgba(255, 255, 255, 0.3);*/
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    /*rgba(255, 255, 255, 0.3);*/
     position: relative;
     display: flex;
     justify-content: center;
@@ -98,18 +99,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
-    gap: 10px;
-}
-
-.shoulder-buttons.left {
-    width: 200px;
     justify-content: space-between;
-}
-
-.shoulder-buttons.right {
-    justify-content: flex-end;
-    margin-bottom: -10px;
+    width: 200px;
+    gap: 10px;
 }
 
 .shoulder-buttons .gamepad-button {
@@ -195,6 +187,16 @@
     width: 100px;
     height: 100px;
 }
+
+#gamepad-a-2 {
+    background-color: rgba(220, 180, 50, 0.4);
+    border-color: rgba(220, 180, 50, 0.8);
+    font-size: 25px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+}
+
 
 /*
 body {

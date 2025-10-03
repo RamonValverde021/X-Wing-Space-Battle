@@ -14,6 +14,9 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaProjeteisPunicao);                                // Interrompe a criação de disparos de punição
     clearInterval(iniciaCriarItensEspeciais);                             // Interrompe a criação de itens especiais
     clearInterval(iniciaCriarItemFullPower);                              // Interrompe a criação de itens full power
+    if (onSmartphone) {                                                   // Se estiver jogando em um smartphone                                 
+        if (gamepadOverlay) gamepadOverlay.style.display = "none";        // Se o gamepad existir. Altera seu estilo para 'none' para que a interface do gamepad fique aculta.
+    }
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0;                                                     // Define a variável de rotação do X-Wing para 0
