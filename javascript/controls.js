@@ -197,7 +197,6 @@ function setupGamepadVirtual() {
     const gamepadA = document.getElementById("gamepad-a");                                                 // Obtém o botão virtual A (Atirar).
     const gamepadA2 = document.getElementById("gamepad-a-2");                                              // Obtém o botão virtual A-2 (Atirar).
 
-
     // Função auxiliar reutilizável para adicionar eventos de toque (pressionar e soltar).
     const addTouchListeners = (element, actionStart, actionEnd) => {                                                // A função recebe o elemento e as ações de início e fim.
         element.addEventListener("touchstart", (e) => { e.preventDefault(); actionStart(); }, { passive: false });  // Adiciona um listener para quando o dedo toca o botão, executando a ação inicial.

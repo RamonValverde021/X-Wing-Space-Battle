@@ -15,7 +15,10 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaCriarItensEspeciais);                             // Interrompe a criação de itens especiais
     clearInterval(iniciaCriarItemFullPower);                              // Interrompe a criação de itens full power
     if (onSmartphone) {                                                   // Se estiver jogando em um smartphone                                 
-        if (gamepadOverlay) gamepadOverlay.style.display = "none";        // Se o gamepad existir. Altera seu estilo para 'none' para que a interface do gamepad fique aculta.
+        if (gamepadOverlay) {                                             // Se o gamepad existir. 
+            gamepadOverlay.style.display = "none";                        // Altera seu estilo para 'none' para que a interface do gamepad desligue.
+            gamepadOverlay.style.opacity = 0;                             // Altera seu estilo para 'hidden' para que a interface do gamepad fique invisivel.
+        }
     }
 
     // Define rotação para apontar para cima

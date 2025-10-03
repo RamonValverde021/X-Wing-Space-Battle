@@ -57,6 +57,9 @@
         --toasty-slide-out: -230px; /*200*/
 
         --size-use-a-forca: 80px;
+
+        --top-gameover: 15%;
+        --top-gamewin: 5%;
     }
 
     #gamepad-overlay {

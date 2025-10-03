@@ -52,6 +52,9 @@
     --toasty-slide-out: -5px;
 
     --size-use-a-forca: 150px;
+
+    --top-gameover: 25%;
+    --top-gamewin: 15%;
 }
 
 body#index {
@@ -391,7 +394,7 @@ div#cenario {
     font-weight: 500;
     font-size: 100px;
     background-color: rgba(0, 0, 0, 0.4);
-    top: 25%;
+    top: var(--top-gameover);
     text-align: center;
     z-index: 10;
 }
@@ -403,7 +406,7 @@ div#cenario {
     font-weight: normal;
     font-size: 65px;
     background-color: rgba(0, 0, 0, 0.4);
-    top: 15%;
+    top: var(--top-gamewin);
     text-align: center;
     opacity: 0;
     /* começa invisível */

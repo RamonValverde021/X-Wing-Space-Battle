@@ -91,6 +91,7 @@ let boostDistance = 500;                                                        
 let boostDuration = 250;                                                                 // Define a duração total do boost, em milissegundos.
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 let onSmartphone = false;                                                                // Flag para indicar se está jogando em um smartphone
+let bottomBtnReiniciar = 100;                                                            // Espaçamento do bottom do botão de reiniciar 
 
 // Variaveis para os intervalos do jogo
 let iniciaBossEstrelaDaMorteTimeout;
@@ -157,6 +158,7 @@ function responsividade() {
         folgaColisao = 15;
         boostDistance = 250;
         boostDuration = 250;
+        bottomBtnReiniciar = 50;
     } else {
         onSmartphone = false;
     }
@@ -176,7 +178,10 @@ document.addEventListener("keydown", function (event) {                         
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     if (onSmartphone) {                                                                            // Se estiver jogando em um smartphone                                 
-        if (gamepadOverlay) gamepadOverlay.style.display = "flex";                                 // Se o gamepad existir. Altera seu estilo para 'flex' para que a interface do gamepad fique visível.
+        if (gamepadOverlay) {                                                                      // Se o gamepad existir. 
+            gamepadOverlay.style.display = "flex";                                                 // Altera seu estilo para 'flex' para que a interface do gamepad fique funcional.
+            gamepadOverlay.style.opacity = 1;                                                      // Altera seu estilo para 'visible' para que a interface do gamepad fique visivel.
+        }
     }
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
     somAcelerandoXWing();                                                                          // Inicia o som do X-Wing acelerando    
@@ -257,7 +262,10 @@ function iniciarJogo() {
 function gameOver() {
     if (okGameOver) {                                                                              // Se o Game Over estiver habilitado
         if (onSmartphone) {                                                                        // Se estiver jogando em um smartphone                                 
-            if (gamepadOverlay) gamepadOverlay.style.display = "none";                             // Se o gamepad existir. Altera seu estilo para 'none' para que a interface do gamepad fique aculta.
+            if (gamepadOverlay) {                                                                  // Se o gamepad existir. 
+                gamepadOverlay.style.display = "none";                                             // Altera seu estilo para 'none' para que a interface do gamepad desligue.
+                gamepadOverlay.style.opacity = 0;                                                  // Altera seu estilo para 'hidden' para que a interface do gamepad fique invisivel.
+            }
         }
         if (audioTrilhaSonora.played) audioTrilhaSonora.pause();                                   // Pausa a trilha sonora do jogo
         if (audioVoandoXWing.played) audioVoandoXWing.pause();                                     // Pausa o som do X-Wing voando
@@ -328,7 +336,7 @@ function gameOver() {
                 btnReiniciar.id = "btnReiniciar";                                       // Define um id paro o botão
                 btnReiniciar.className = "botao";                                       // Defice uma classe ao objeto para adicionar formatação
                 btnReiniciar.style.position = "absolute";                               // Define a posição do objeto
-                btnReiniciar.style.bottom = "100px";                                    // Define a coordenada vertical do objeto
+                btnReiniciar.style.bottom = bottomBtnReiniciar + "px";                  // Define a coordenada vertical do objeto
                 btnReiniciar.innerText = "REINICIAR";                                   // Adiciona um texto ao objeto criado
                 btnReiniciar.addEventListener("click", reiniciarJogo);                  // Adiciona um evento de clique ao obejto para chamar a função de reiniciar o jogo
                 cenario.appendChild(btnReiniciar);                                      // Adiciona o objeto criado ao cenario                                                                      // Flag para identificar a inicialização do jogo
