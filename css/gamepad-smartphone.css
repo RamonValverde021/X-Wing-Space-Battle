@@ -29,16 +29,16 @@
     gap: 20px;
     /* Os botões dentro das seções capturam eventos */
     pointer-events: auto;
+    margin: 0 50px;
 }
 
 .gamepad-section.left {
     align-items: flex-start;
-    margin: -10px;
 }
 
 .gamepad-section.right {
     align-items: flex-end;
-    margin: 0 20px 20px 0;
+    margin-bottom: 20px;
 }
 
 /* --- Estilo Geral dos Botões --- */
@@ -48,7 +48,6 @@
     color: white;
     font-weight: bold;
     font-family: fontPixelArt;
-    font-size: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,12 +67,12 @@
 /* --- Lado Esquerdo: Joystick e Ombros --- */
 .joystick-container {
     /* Aumenta a área de toque sem aumentar o visual da base */
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;
+    padding: 0 20px;
 }
 
 .joystick-base {
@@ -95,28 +94,28 @@
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.6);
     position: absolute;
-    transition: transform 0.1s ease-out; /* Animação suave ao soltar */
-    pointer-events: none; /* O stick não deve capturar eventos de mouse/toque */
+    transition: transform 0.1s ease-out;
+    /* Animação suave ao soltar */
+    pointer-events: none;
+    /* O stick não deve capturar eventos de mouse/toque */
 }
 
 .shoulder-buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 190px;
+    width: 100%;
     gap: 10px;
 }
 
 .shoulder-buttons.left {
-    margin-left: 10px;
     justify-content: space-between;
 }
 
 .shoulder-buttons.right {
     justify-content: flex-end;
-    margin-right: -20px;
     margin-bottom: -30px;
-    padding-right: 20px;
+    padding-right: 10px;
 }
 
 .shoulder-buttons .gamepad-button {
@@ -170,6 +169,7 @@
     grid-area: 2 / 1 / 3 / 2;
     background-color: rgba(50, 100, 220, 0.4);
     border-color: rgba(50, 100, 220, 0.8);
+    font-size: 25px;
 }
 
 .action-x:active {
@@ -190,6 +190,7 @@
     grid-area: 3 / 2 / 4 / 3;
     background-color: rgba(220, 180, 50, 0.4);
     border-color: rgba(220, 180, 50, 0.8);
+    font-size: 25px;
 }
 
 .action-a:active {
@@ -197,8 +198,8 @@
 }
 
 #gamepad-a {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
 }
 
 /*
