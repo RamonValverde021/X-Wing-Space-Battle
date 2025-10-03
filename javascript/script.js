@@ -198,7 +198,7 @@ function iniciarJogo() {
     trilhaSonora();                                                                                // Toca a trilha sonora do game
     setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
     iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
-    if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
+    //if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
 
     // Obtém as dimensões dos projéteis diretamente das variáveis CSS (:root)
     const rootStyles = getComputedStyle(document.documentElement);
