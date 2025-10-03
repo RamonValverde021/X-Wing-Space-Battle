@@ -11,14 +11,14 @@ const btnEspecialAtaque = document.getElementById("ataque_especial");           
 const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
 const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
-const btnIniciar = document.getElementById("btn_Inicar");                                // Seleciona o botão "Iniciar Jogo"
+const btnIniciar = document.getElementById("btn_Inicar");
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 // Variaveis constantes do jogo
 const alturaTela = window.innerHeight;                                                   // altura visível da tela
 const larguraTela = window.innerWidth;                                                   // largura visível da tela
-const larguraCenario = cenario.offsetWidth;                                              // Pega a largura de todod o cenario
-const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
+const larguraCenario = cenario.style.width = larguraTela;                                // Pega a largura de todod o cenario
+const alturaCenario = cenario.style.height = alturaTela;                                 // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
 const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing

@@ -274,7 +274,7 @@ div#cenario {
     background-position: center;
     /* Precisa desse parametro para a movimentação do javascript funcionar */
     position: absolute;
-    bottom: -200px;
+    bottom: var(--x-wing-hidden);
     /* controla a animação */
     transition: bottom 1s ease-in-out;
     z-index: 10;
