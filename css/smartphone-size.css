@@ -53,7 +53,7 @@
         --toasty-width: 125px;
         --toasty-height: 132px;
         --toasty-slide-in: 150px;
-        --toasty-slide-out: -200px;
+        --toasty-slide-out: -230px; /*200*/
     }
 
     #gamepad-overlay {

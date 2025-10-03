@@ -125,11 +125,20 @@ let iniciaSurgimentoEstrelaDaMorte;
 /*------------------------------- INCIANDO JOGO -------------------------------*/
 // Seu código JavaScript aqui será executado quando a página estiver totalmente carregada
 window.onload = function () {
+    ajustarAlturaCenario(); // Garante que a altura do cenário seja ajustada na carga inicial.
     responsividade(); // chama a função quando a página carrega
 };
 
 // Executa também se a tela for redimensionada
-window.addEventListener("resize", responsividade);
+window.addEventListener("resize", () => {
+    ajustarAlturaCenario();
+    responsividade();
+});
+
+// Função para corrigir a altura do cenário em dispositivos móveis
+function ajustarAlturaCenario() {
+    cenario.style.height = `${window.innerHeight}px`;
+}
 
 function responsividade() {
     if (alturaTela <= 435) {
@@ -158,7 +167,7 @@ document.addEventListener("keydown", function (event) {                         
         }
     }
 });
-/*
+
 // Define uma função assíncrona para poder usar 'await' para esperar por ações.
 async function lockOrientation() {
     try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
@@ -178,7 +187,7 @@ async function lockOrientation() {
         console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
     }
 }
-*/
+
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
@@ -199,7 +208,7 @@ function iniciarJogo() {
     larguraTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-width').trim());
 
 
-    //if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
+    if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
     setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
 
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
