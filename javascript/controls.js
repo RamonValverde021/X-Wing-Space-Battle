@@ -199,9 +199,9 @@ function setupGamepadVirtual() {
 
     // Função auxiliar reutilizável para adicionar eventos de toque (pressionar e soltar).
     const addTouchListeners = (element, actionStart, actionEnd) => {                                                // A função recebe o elemento e as ações de início e fim.
-        element.addEventListener("touchstart", (e) => { e.preventDefault(); actionStart(); }, { passive: false });  // Adiciona um listener para quando o dedo toca o botão, executando a ação inicial.
-        element.addEventListener("touchend", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });      // Adiciona um listener para quando o dedo é removido do botão, executando a ação final.
-        element.addEventListener("touchcancel", (e) => { e.preventDefault(); actionEnd(); }, { passive: false });   // Adiciona um listener para o caso de o toque ser cancelado (ex: dedo desliza para fora), executando a ação final.
+        element.addEventListener("touchstart", () => { actionStart(); }, { passive: true });  // Adiciona um listener para quando o dedo toca o botão, executando a ação inicial.
+        element.addEventListener("touchend", () => { actionEnd(); }, { passive: true });      // Adiciona um listener para quando o dedo é removido do botão, executando a ação final.
+        element.addEventListener("touchcancel", () => { actionEnd(); }, { passive: true });   // Adiciona um listener para o caso de o toque ser cancelado (ex: dedo desliza para fora), executando a ação final.
     };
 
     // Função para atualizar a posição do stick e a direção da nave
@@ -298,9 +298,8 @@ function setupGamepadVirtual() {
     // Seção para configurar as ações dos botões virtuais.
 
     // Ações de clique único // Configura botões que executam uma ação uma única vez por toque.
-    if (gamepadLT) gamepadLT.addEventListener("touchstart", (e) => { e.preventDefault(); giroReversoXWing(); });  // Se o botão LT existir, configura-o para chamar a função de giro reverso ao ser tocado.
-    if (gamepadX) gamepadX.addEventListener("touchstart", (e) => {                                                // Se o botão X existir, configura sua ação de toque.
-        e.preventDefault();                                                                                       // Previne o comportamento padrão do navegador (como zoom).
+    if (gamepadLT) gamepadLT.addEventListener("touchstart", () => { giroReversoXWing(); });  // Se o botão LT existir, configura-o para chamar a função de giro reverso ao ser tocado.
+    if (gamepadX) gamepadX.addEventListener("touchstart", () => {                                                // Se o botão X existir, configura sua ação de toque.
         if (soltarBoost) {                                                                                        // Verifica se o boost está disponível.
             boostXWing();                                                                                         // Ativa a função de boost.
             if (okFullPower) return;                                                                              // Se o Full-Power estiver ativo, não entra em cooldown.
@@ -321,7 +320,21 @@ function setupGamepadVirtual() {
     if (gamepadA) {                                                                                               // Se o botão A existir.
         addTouchListeners(gamepadA, () => estaAtirando = true, () => estaAtirando = false);                       // Configura para atirar enquanto pressionado.
     }
-    if (gamepadA2) {                                                                                              // Se o botão A existir.
-        addTouchListeners(gamepadA2, () => estaAtirando = true, () => estaAtirando = false);                      // Configura para atirar enquanto pressionado.
-    }
+
+    let tiroContinuo = false;
+    addTouchListeners(gamepadA2, () => {
+        if (gamepadA2) {                                                                                              // Se o botão A existir.
+            if (tiroContinuo == false) {
+                tiroContinuo = true;
+                estaAtirando = true;
+                gamepadA2.classList.remove("action-a-2");
+                gamepadA2.classList.add("action-a-2-power");
+            } else {
+                tiroContinuo = false;
+                estaAtirando = false;
+                gamepadA2.classList.remove("action-a-2-power");
+                gamepadA2.classList.add("action-a-2");
+            }
+        }
+    });
 }

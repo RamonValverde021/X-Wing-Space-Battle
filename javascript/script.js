@@ -82,6 +82,10 @@ let backgroundPositionY = 0;                                                    
 let estaSendoPunido = false;                                                             // Flag para evitar múltiplos projéteis
 let countInimigosDestruidos = 0;                                                         // Contador de inimigos destruídos
 let okBatalhaDarthVader = false;                                                         // Flag para indicar a batalha do Darth Vader
+let maxDistance = 300;                                                                   // Define a distância máxima que a nave tentará manter antes de se aproximar.
+let minDistance = 280;                                                                   // Define a distância mínima que a nave tentará manter antes de se afastar.
+let velocidadeVader = 2;                                                                 // Define a velocidade de movimento para frente/trás de Vader.
+let velocidadeStrafe = 2;                                                                // 0.8 - Define a velocidade do movimento lateral.
 let okResistencePower = false;                                                           // Flag para indicar que o pode de Resistencia está ativo
 let okPowerUp = false;                                                                   // Flag para indicar que o power-up está ativo
 let okFullPower = false;                                                                 // Flag para indicar que o Full-Power está ativo
@@ -159,6 +163,10 @@ function responsividade() {
         boostDistance = 250;
         boostDuration = 250;
         bottomBtnReiniciar = 50;
+        maxDistance = 150;
+        minDistance = 140;
+        velocidadeVader = 21;
+        velocidadeStrafe = 1;
     } else {
         onSmartphone = false;
     }

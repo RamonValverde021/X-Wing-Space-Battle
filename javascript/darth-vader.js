@@ -113,11 +113,6 @@ function moverDarthVader() {
     // 2. Movimento de perseguição
     const distancia = Math.sqrt(dx * dx + dy * dy);                                                       // Calcula a distância euclidiana entre Vader e o jogador.
     // Definimos uma "zona de conforto" para evitar a oscilação (jitter).
-    // A nave tentará ficar a uma distância entre `maxDistance` e `minDistance`.
-    const maxDistance = 300;                                                                              // Define a distância máxima que a nave tentará manter antes de se aproximar.
-    const minDistance = 280;                                                                              // Define a distância mínima que a nave tentará manter antes de se afastar.
-    const velocidadeVader = 2;                                                                            // Define a velocidade de movimento para frente/trás de Vader.
-    const velocidadeStrafe = 2;                                                                         // 0.8 - Define a velocidade do movimento lateral.
 
     let moveX = 0;                                                                                        // Inicializa a variável de movimento horizontal.
     let moveY = 0;                                                                                        // Inicializa a variável de movimento vertical.
