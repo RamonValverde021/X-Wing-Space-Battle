@@ -23,7 +23,6 @@ const alturaCenario = cenario.style.height = alturaTela;                        
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
 const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
-const quantidadeMaximaTieFighters = 700;                                                 // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 const anguloMaximo = 61;                                                                 // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
@@ -49,6 +48,7 @@ let alturaTieFighter = 0;                                                       
 let danoTiroXWing = 3;                                                                   // Define o dano dos tiros do X-Wing
 let velocidadeTieFighter = 1;                                                            // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                                        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
+let quantidadeMaximaTieFighters = 700;                                                 // 700 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 let anguloAtaqueTieFighter = 0;                                                          // Recebe o angulo de ataque dos Tie Fighters (em graus)
 let anguloTieFighter = 0;                                                                // Variavel para controlar a rotação dos Tie Fighters
 let velocidadeDisparosTieFighter = 500;                                                  // Cadencia de disparo dos Tie Fighters (em milisegundos)
@@ -160,6 +160,7 @@ function responsividade() {
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
         velocidadeXWing = 3;
+        quantidadeMaximaTieFighters = 1000;
         folgaColisao = 15;
         boostDistance = 250;
         boostDuration = 250;

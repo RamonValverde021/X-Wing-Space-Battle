@@ -74,7 +74,16 @@ const arquivosParaCache = [
   "../audios/darth-vader-audio-3.mp3",
   "../audios/darth-vader-audio-4.mp3",
   "../audios/darth-vader-audio-5.mp3",
-  "../audios/darth-vader-audio-6.mp3"
+  "../audios/darth-vader-audio-6.mp3",
+  "../audios/shot_death_star-1.mp3",
+  "../audios/shot_death_star-2.mp3",
+  "../audios/shot_death_star-3.mp3",
+  "../audios/shot_death_star-4.mp3",
+  "../audios/special-item-1.mp3",
+  "../audios/special-item-2.mp3",
+  "../audios/special-item-3.mp3",
+  "../audios/star-wars-full-power.mp3",
+  "../audios/R2D2.mp3"
 ];
 
 self.addEventListener("install", (event) => {
