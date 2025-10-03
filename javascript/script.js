@@ -21,24 +21,24 @@ const larguraCenario = cenario.offsetWidth;                                     
 const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
-let velocidadeMaximaXWing = 15;                                                        // Define a velocidade máxima do X-Wing
-let velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
-let velocidadeProjetilXWing = 50;                                                      // Define a velocidade dos projeteis do X-Wing
-let velocidadeMaximaTieFighter = 12;                                                   // 12 - Define a velocidade máxima dos Tie Fighters
+const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
 const quantidadeMaximaTieFighters = 700;                                                 // 1000 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
-let velocidadeProjetilTieFighter = 50;                                                 // Define a velocidade dos projeteis dos Tie Fighters
-let velocidadeProjetilDarthVader = 65;                                                 // 65 -Define a velocidade dos projeteis do Darth Vader
-let velocidadeProjetilDeathStar = 50;                                                  // Define a velocidade dos projeteis da Estrela da Morte
-let velocidadeProjetilPunicao = 50;                                                    // Define a velocidade dos projeteis de punição
 const anguloMaximo = 61;                                                                 // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
-let velocidadeItemEspecial = 3;                                                        // Define a velocidade de decida dos itens especiais
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
 const vidaEstrelaDaMorte = 1500;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
 
 // Variaveis Globais
+let velocidadeMaximaXWing = 15;                                                          // Define a velocidade máxima do X-Wing
+let velocidadeProjetilXWing = 50;                                                        // Define a velocidade dos projeteis do X-Wing
+let velocidadeMaximaTieFighter = 12;                                                     // 12 - Define a velocidade máxima dos Tie Fighters
+let velocidadeProjetilTieFighter = 50;                                                   // Define a velocidade dos projeteis dos Tie Fighters
+let velocidadeProjetilDarthVader = 65;                                                   // 65 -Define a velocidade dos projeteis do Darth Vader
+let velocidadeProjetilDeathStar = 50;                                                    // Define a velocidade dos projeteis da Estrela da Morte
+let velocidadeProjetilPunicao = 50;                                                      // Define a velocidade dos projeteis de punição
+let velocidadeItemEspecial = 3;                                                          // Define a velocidade de decida dos itens especiais
 let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
 let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
 let alturaProjetilNaves;                                                                 // Altura dos projéteis, obtida do CSS.
@@ -131,7 +131,6 @@ window.addEventListener("resize", responsividade);
 function responsividade() {
     if (alturaTela <= 435) {
         velocidadeMaximaXWing = 7;
-        velMaximaRotacaoXWing = 3;
         velocidadeProjetilXWing = 25;
         velocidadeMaximaTieFighter = 6;
         velocidadeProjetilTieFighter = 25;
@@ -139,7 +138,7 @@ function responsividade() {
         velocidadeProjetilDeathStar = 25;
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
-        velocidadeXWing = 2;
+        velocidadeXWing = 3;
     }
 }
 
@@ -318,7 +317,7 @@ function gameOver() {
             gameover.className = "gameover";                                            // Defice uma classe ao objeto para adicionar formatação
             cenario.appendChild(gameover);                                              // Adiciona o objeto criado ao cenario
             menu.style.display = "none";                                                // Esconde o menu do jogo
-            const audio = new Audio('../audios/risada_palpatine.MP3');                  // Pega o audio da risada do Imperador Palpatine
+            const audio = new Audio('../audios/risada_palpatine.mp3');                  // Pega o audio da risada do Imperador Palpatine
             audio.volume = 0.8;
             audio.play();                                                               // Toca o audio
             setTimeout(() => {                                                          // Constroi um intervalo de 5s para finalizar a risada do Imperador Palpatine
