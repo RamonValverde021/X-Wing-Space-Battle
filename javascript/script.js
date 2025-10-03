@@ -144,7 +144,7 @@ function responsividade() {
         velocidadeXWing = 3;
         folgaColisao = 15;
         boostDistance = 250;
-        boostDuration = 125;
+        boostDuration = 250;
     }
 }
 
