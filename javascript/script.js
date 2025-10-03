@@ -11,7 +11,7 @@ const btnEspecialAtaque = document.getElementById("ataque_especial");           
 const barraDeVidaEstrelaDaMorte = document.getElementById("life_deathstar");             // Pega o elemento da barra de vida da Estrela da Morte
 const barraDeVidaDarthVader = document.getElementById("life_darth-vader");               // Pega o elemento da barra de vida do Darth Vader
 const painelDados = document.getElementById("dados-jogo");                               // Seleciona o painel que exibe as estatísticas de debug.
-const btnIniciar = document.getElementById("btn_Inicar");
+const btnIniciar = document.getElementById("btn_Inicar");                                // Seleciona o botão "Iniciar Jogo"
 
 /*------------------------------- VARIAVEIS GLOBAIS -------------------------------*/
 // Variaveis constantes do jogo

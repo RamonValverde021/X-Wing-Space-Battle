@@ -1,0 +1,16 @@
+/* --- Estrutura Principal do Gamepad --- */
+#gamepad-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /*padding: 15px;*/
+    box-sizing: border-box;
+    display: none;
+    /* Escondido por padrão, ativado via @media query */
+    justify-content: space-between;
+    align-items: flex-end;
+    /* O overlay em si não captura eventos, apenas os botões */
+    pointer-events: none;
+    z-index: 100;
+}

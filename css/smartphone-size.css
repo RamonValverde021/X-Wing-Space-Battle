@@ -32,6 +32,7 @@
         /* Dimensões das Naves */
         --x-wing-width: 35px;
         --x-wing-height: 46px;
+        --x-wing-hidden: -100px;
 
         --tie-fighter-width: 35px;
         --tie-fighter-height: 33px;
@@ -82,24 +83,4 @@
         padding: 2px 15px 5px 15px;
     }
 
-}
-
-/* Overlay para pedir ao usuário para girar a tela */
-@media screen and (orientation: portrait) {
-    #rotate-device-overlay {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #000;
-        color: #fff;
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        font-size: 24px;
-        font-family: 'fontPixelArt', sans-serif;
-    }
 }
