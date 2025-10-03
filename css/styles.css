@@ -225,6 +225,7 @@ div#cenario {
     align-items: center;
     /* Atributo necessario para que as naves inimigas consigam desaparecer até o final quando chegarem a fundo da tela sem extender a mesma */
     overflow: hidden;
+    border: 2px solid blue;
 }
 
 /* Formatação botão iniciar jogo */

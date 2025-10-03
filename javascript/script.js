@@ -167,7 +167,7 @@ document.addEventListener("keydown", function (event) {                         
         }
     }
 });
-
+/*
 // Define uma função assíncrona para poder usar 'await' para esperar por ações.
 async function lockOrientation() {
     try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
@@ -187,7 +187,7 @@ async function lockOrientation() {
         console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
     }
 }
-
+*/
 function iniciarJogo() {
     console.log("Iniciando Jogo");
     jogoIniciado = true;                                                                           // Atualiza flag para bloquear o Enter
@@ -196,7 +196,9 @@ function iniciarJogo() {
     menu.style.display = "flex";                                                                   // Mostra o menu do jogo 
     xwing.style.bottom = "40vh";                                                                   // Inicia a posição do X-Wing abaixo da tela para a animação CSS de entrada do X-Wing
     trilhaSonora();                                                                                // Toca a trilha sonora do game
+    setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
     iniciaMovimentacaoCenario = setInterval(moverCenario, 20);                                     // Atualiza a posição do cenario a cada 20ms
+    //if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
 
     // Obtém as dimensões dos projéteis diretamente das variáveis CSS (:root)
     const rootStyles = getComputedStyle(document.documentElement);
@@ -206,10 +208,6 @@ function iniciarJogo() {
     alturaProjetilNaves = parseInt(rootStyles.getPropertyValue('--projetil-height').trim());
     alturaTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-height').trim());
     larguraTieFighter = parseInt(rootStyles.getPropertyValue('--tie-fighter-width').trim());
-
-
-    if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
-    setupGamepadVirtual();                                                                         // Configura os controles do gamepad virtual na tela
 
     setTimeout(() => {                                                                             // Constroi um intervalo de 3s para finalizar a chegada do X-Wing
         // Converte bottom: 40vh para positionVertical (em pixels)
