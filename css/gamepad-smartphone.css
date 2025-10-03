@@ -164,16 +164,6 @@
     background-color: rgba(50, 100, 220, 0.8);
 }
 
-.action-b {
-    grid-area: 2 / 3 / 3 / 4;
-    background-color: rgba(220, 50, 50, 0.4);
-    border-color: rgba(220, 50, 50, 0.8);
-}
-
-.action-b:active {
-    background-color: rgba(220, 50, 50, 0.8);
-}
-
 .action-a {
     grid-area: 3 / 2 / 4 / 3;
     background-color: rgba(220, 180, 50, 0.4);
@@ -181,7 +171,7 @@
     font-size: 25px;
 }
 
-.action-a:active {
+.action-a:hover {
     background-color: rgba(220, 180, 50, 0.8);
 }
 
@@ -193,6 +183,12 @@
 #gamepad-a-2 {
     background-color: rgba(220, 180, 50, 0.4);
     border-color: rgba(220, 180, 50, 0.8);
+    font-size: 25px;
+}
+
+.gamepad-a-2-power {
+    background-color: rgba(220, 84, 50, 0.4);
+    border-color: rgba(220, 118, 50, 0.8);
     font-size: 25px;
 }
 
