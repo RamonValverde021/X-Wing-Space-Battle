@@ -17,8 +17,8 @@ const btnIniciar = document.getElementById("btn_Inicar");
 // Variaveis constantes do jogo
 const alturaTela = window.innerHeight;                                                   // altura visível da tela
 const larguraTela = window.innerWidth;                                                   // largura visível da tela
-const larguraCenario = cenario.offsetWidth;                                              // Pega a largura de todod o cenario
-const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
+const alturaCenario = alturaTela;                                                        // Pega a altura de todod o cenario 
+const larguraCenario = larguraTela;                                                      // Pega a largura de todod o cenario
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
 const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
