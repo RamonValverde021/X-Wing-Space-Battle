@@ -17,8 +17,8 @@ const btnIniciar = document.getElementById("btn_Inicar");
 // Variaveis constantes do jogo
 const alturaTela = window.innerHeight;                                                   // altura visível da tela
 const larguraTela = window.innerWidth;                                                   // largura visível da tela
-const alturaCenario = alturaTela;                                                        // Pega a altura de todod o cenario 
-const larguraCenario = larguraTela;                                                      // Pega a largura de todod o cenario
+const larguraCenario = cenario.offsetWidth;                                              // Pega a largura de todod o cenario
+const alturaCenario = cenario.offsetHeight;                                              // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
 const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
@@ -75,6 +75,7 @@ let positionVertical = alturaCenario - alturaXWing - 20;                        
 let direcaoHorizontal = 0;                                                               // Variavel para manipular a direção horizontal do X-Wing
 let direcaoVertical = 0;                                                                 // Variavel para manipular a direção vertical do X-Wing
 let tempoParado = 0;                                                                     // Tempo que a nave está parada (ms)
+let folgaColisao = 40;                                                                   // Folga para adentrar nos Tie Fighters para criar a colisão
 let timestampInicioParado = 0;                                                           // Timestamp de quando a nave parou para uma contagem precisa
 let backgroundPositionY = 0;                                                             // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                                             // Flag para evitar múltiplos projéteis
@@ -139,6 +140,7 @@ function responsividade() {
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
         velocidadeXWing = 3;
+        folgaColisao = 10;
     }
 }
 

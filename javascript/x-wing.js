@@ -150,7 +150,6 @@ function colisaoXWing() {
         const colisaoTieFighter = nave.getBoundingClientRect();                          // Pega as coordenadas do Tie-Fighter
         // Define uma "folga" para a colisão, tornando-a menos sensível.
         // Um valor maior exige que as naves se sobreponham mais para que a colisão seja registrada.
-        const folgaColisao = 50;                                                         // Folga em pixels
         if (                                                                             // Verifica se houve colisão entre o X-Wing e o Tie-Fighter
             colisaoXWing.left + folgaColisao < colisaoTieFighter.right &&                // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do Tie-Fighter
             colisaoXWing.right - folgaColisao > colisaoTieFighter.left &&                // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do Tie-Fighter
@@ -159,7 +158,7 @@ function colisaoXWing() {
         ) {
             explosaoNaves(nave);                                                         // Chama a função de explosão
             nave.remove();                                                               // Remove o Tie-Fighter que colidiu com o X-Wing
-            if (!okResistencePower) {                                                   // Se o poder da resistencia estiver habilitado
+            if (!okResistencePower) {                                                    // Se o poder da resistencia estiver habilitado
                 pontosVida -= 50;                                                        // Diminui 50 pontos para cada Tie-Fighter que colidir com o X-Wing
                 if (pontosVida <= 20 && pontosVida > 0) mostrarToasty();                 // Se os pontos de vida cair para 20 pontos ou menos, chama o Toasty
                 if (pontosVida > 0) {                                                    // Se ainda tiver pontos de vida

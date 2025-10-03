@@ -1,5 +1,5 @@
 /*------------------------------- EFEITOS SONOROS -------------------------------*/
-const audioTrilhaSonora = new Audio('../audios/soundtrack.mp3');  // Audio da trilha sonora principal do jogo
+const audioTrilhaSonora = new Audio('../audios/soundtrack-2.mp3');  // Audio da trilha sonora principal do jogo
 function trilhaSonora() {
     audioTrilhaSonora.volume = 0.2;
     audioTrilhaSonora.loop = true; // Configura para tocar ininterruptamente

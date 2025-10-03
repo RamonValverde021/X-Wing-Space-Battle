@@ -28,10 +28,12 @@
 
 .gamepad-section.left {
     align-items: flex-start;
+    margin: -10px;
 }
 
 .gamepad-section.right {
     align-items: flex-end;
+    margin: 0 50px 50px 0;
 }
 
 /* --- Estilo Geral dos Botões --- */
@@ -94,6 +96,7 @@
 .shoulder-buttons {
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 200px;
     gap: 10px;
 }
@@ -103,8 +106,10 @@
 }
 
 .shoulder-buttons.right {
-    justify-content: end;
-    margin-bottom: -50px;
+    justify-content: flex-end;
+    margin-right: -50px;
+    margin-bottom: -30px;
+    padding-right: 40px;
 }
 
 .shoulder-buttons .gamepad-button {
@@ -186,8 +191,8 @@
 }
 
 #gamepad-a {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
 }
 
 /*
