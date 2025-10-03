@@ -86,6 +86,8 @@ let okPowerUp = false;                                                          
 let okFullPower = false;                                                                 // Flag para indicar que o Full-Power está ativo
 let soltarBoost = true;                                                                  // Flag para quando pode soltar o Boost
 let isBoosting = false;                                                                  // Flag para indicar que o boost está em andamento
+let boostDistance = 500;                                                                 // Define a distância total que a nave percorrerá durante o boost, em pixels.
+let boostDuration = 250;                                                                 // Define a duração total do boost, em milissegundos.
 let isDoingManeuver = false;                                                             // Flag para indicar que uma manobra (como o giro 180) está em andamento
 
 // Variaveis para os intervalos do jogo
@@ -140,7 +142,9 @@ function responsividade() {
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
         velocidadeXWing = 3;
-        folgaColisao = 10;
+        folgaColisao = 15;
+        boostDistance = 250;
+        boostDuration = 125;
     }
 }
 

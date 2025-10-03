@@ -483,8 +483,6 @@ function boostXWing() {
     isBoosting = true;                                                                   // Ativa a flag 'isBoosting' para suspender os controles normais do jogador.
 
     // 1. Parâmetros do Boost
-    const boostDistance = 500;                                                           // Define a distância total que a nave percorrerá durante o boost, em pixels.
-    const boostDuration = 250;                                                           // Define a duração total do boost, em milissegundos.
     const frames = boostDuration / (1000 / 60);                                          // Calcula o número total de "quadros" ou "passos" da animação, assumindo 60 FPS.
     let framesPassed = 0;                                                                // Inicializa um contador para os quadros que já se passaram na animação.
 

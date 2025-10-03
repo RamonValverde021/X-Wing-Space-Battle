@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+@font-face {
+    font-family: 'fontPixelArt';
+    src: url("../font/ARCADECLASSIC.TTF");
+}
+
 /* --- Estrutura Principal do Gamepad --- */
 #gamepad-overlay {
     position: fixed;
@@ -33,17 +38,17 @@
 
 .gamepad-section.right {
     align-items: flex-end;
-    margin: 0 50px 50px 0;
+    margin: 0 20px 20px 0;
 }
 
 /* --- Estilo Geral dos Botões --- */
 .gamepad-button {
-    font-family:Arial;
     background-color: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.5);
     color: white;
     font-weight: bold;
-    font-size: 16px;
+    font-family: fontPixelArt;
+    font-size: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,11 +68,12 @@
 /* --- Lado Esquerdo: Joystick e Ombros --- */
 .joystick-container {
     /* Aumenta a área de toque sem aumentar o visual da base */
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px;
 }
 
 .joystick-base {
@@ -83,8 +89,8 @@
 }
 
 .joystick-stick {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.6);
@@ -97,19 +103,20 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 200px;
+    width: 190px;
     gap: 10px;
 }
 
 .shoulder-buttons.left {
+    margin-left: 10px;
     justify-content: space-between;
 }
 
 .shoulder-buttons.right {
     justify-content: flex-end;
-    margin-right: -50px;
+    margin-right: -20px;
     margin-bottom: -30px;
-    padding-right: 40px;
+    padding-right: 20px;
 }
 
 .shoulder-buttons .gamepad-button {
@@ -130,7 +137,6 @@
     width: 60px;
     height: 30px;
     border-radius: 15px;
-    font-size: 12px;
 }
 
 /* --- Lado Direito: Botões de Ação e Ombros --- */
@@ -191,8 +197,8 @@
 }
 
 #gamepad-a {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
 }
 
 /*
