@@ -5,7 +5,6 @@ function xwingEspecialAtaque() {
     document.removeEventListener("keydown", teclasControlePressionadas);  // Remove os eventos de controle do X-Wing de keydown
     document.removeEventListener("keyup", teclasControleSoltas);          // Remove os eventos de controle do X-Wing de keyup
     document.removeEventListener("keypress", teclasControleClicadas);     // Remove os eventos de controle do X-Wing de keypress
-    clearInterval(iniciaGamepadVirtual);                                  // Interrompe os controles do gamepad virtual
     clearInterval(iniciaProjeteisXWing);                                  // Interrompe a criação de projeteis do X-Wing
     clearInterval(iniciaMovimentacaoXWing);                               // Interrompe a movimentação do X-Wing
     clearInterval(iniciaNavesInimigas);                                   // Interrompe a criação dos Tie-Fighters
@@ -14,6 +13,8 @@ function xwingEspecialAtaque() {
     clearInterval(iniciaProjeteisPunicao);                                // Interrompe a criação de disparos de punição
     clearInterval(iniciaCriarItensEspeciais);                             // Interrompe a criação de itens especiais
     clearInterval(iniciaCriarItemFullPower);                              // Interrompe a criação de itens full power
+    tiroContinuo = false;
+    estaAtirando = false;
     if (onSmartphone) {                                                   // Se estiver jogando em um smartphone                                 
         if (gamepadOverlay) {                                             // Se o gamepad existir. 
             gamepadOverlay.style.display = "none";                        // Altera seu estilo para 'none' para que a interface do gamepad desligue.
