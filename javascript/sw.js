@@ -1,4 +1,4 @@
-const CACHE_NAME = "x-wing-battle-space-v1";
+const CACHE_NAME = "x-wing-space-battle-v1";
 const arquivosParaCache = [
   // Arquivos Principais
   "../",

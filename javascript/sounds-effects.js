@@ -168,7 +168,7 @@ function somDarthVader() {
 
     ultimoIndiceDarthVader = novoIndice; // Atualiza o último índice.
     const audio = new Audio(audios[novoIndice]);
-    audio.volume = 0.4;
+    audio.volume = 0.9;
     audio.currentTime = 0;
     audio.play()
 }

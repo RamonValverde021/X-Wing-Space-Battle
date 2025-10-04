@@ -168,7 +168,7 @@ function responsividade() {
         maxDistance = 150;
         minDistance = 140;
         velocidadeVader = 1;
-        velocidadeStrafe = 1.2;
+        velocidadeStrafe = 1;
     } else {
         onSmartphone = false;
     }
@@ -262,7 +262,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 5 * 60 * 1000); // 5 minutos  
+        }, 0 * 60 * 1000); // 5 minutos  
 
     }, 3000); // Atraso de 3 segundos
 }
