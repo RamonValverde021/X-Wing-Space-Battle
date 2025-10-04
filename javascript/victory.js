@@ -122,6 +122,12 @@ function xwingSaindo() {
                     }, 100);                                                   // 100ms já é suficiente
                     cenario.appendChild(vitoria);                              // Adiciona a mensagem ao cenário
                     somVitoria();                                              // Toca o som da vitória
+                    const btnFeedback = document.createElement("a");           // Constroi um objeto <a>
+                    btnFeedback.id = "btnFeedback";                            // Define um id paro o botão
+                    btnFeedback.className = "botaoFeedback";                   // Defice uma classe ao objeto para adicionar formatação
+                    btnFeedback.innerHTML = "❰ &nbsp;&nbsp; Deixe &nbsp; seu &nbsp; feedback &nbsp;&nbsp; ❱";  // Adiciona um texto ao objeto criado
+                    btnFeedback.href = "../html/feedback.html";                // Adiciona um link de direcionamento para o botão
+                    cenario.appendChild(btnFeedback);                          // Adiciona o objeto criado ao cenario                 
                     setTimeout(() => reiniciarJogo(), (2 * 60 * 1000) + 5000); // Agenda a reinicialização do jogo para daqui a 02:05
                 }, 5000);                                                      // Mostra a mensagem após 5 segundos
             }, 3000);                                                          // Ativa a explosão após 3 segundos

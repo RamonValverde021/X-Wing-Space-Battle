@@ -48,7 +48,7 @@ let alturaTieFighter = 0;                                                       
 let danoTiroXWing = 3;                                                                   // Define o dano dos tiros do X-Wing
 let velocidadeTieFighter = 1;                                                            // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                                        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
-let quantidadeMaximaTieFighters = 700;                                                 // 700 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
+let quantidadeMaximaTieFighters = 700;                                                   // 700 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
 let anguloAtaqueTieFighter = 0;                                                          // Recebe o angulo de ataque dos Tie Fighters (em graus)
 let anguloTieFighter = 0;                                                                // Variavel para controlar a rotação dos Tie Fighters
 let velocidadeDisparosTieFighter = 500;                                                  // Cadencia de disparo dos Tie Fighters (em milisegundos)
@@ -262,8 +262,7 @@ function iniciarJogo() {
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 0 * 60 * 1000); // 5 minutos  
-
+        }, 5 * 60 * 1000); // 5 minutos  
     }, 3000); // Atraso de 3 segundos
 }
 

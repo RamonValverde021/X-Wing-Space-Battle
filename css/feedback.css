@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'fontPixelArt';
+    src: url("../font/ARCADECLASSIC.TTF");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'fontPixelArt', sans-serif;
+}
+
+body#feedback {
+    background-image: url('../images/space/space_1.gif');
+    background-color: black;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    color: yellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.feedback-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 3px solid yellow;
+    border-radius: 15px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feedback-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-form h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.feedback-form label {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+    background-color: #222;
+    border: 2px solid yellow;
+    border-radius: 8px;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+    outline: none;
+    border-color: white;
+    box-shadow: 0 0 10px yellow;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 40px;
+    color: #444;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0 5px;
+    margin: 0;
+}
+
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: yellow;
+}
+
+.botao, .botaoVoltar {
+    font-weight: 500;
+    font-size: 28px;
+    color: yellow;
+    background-color: black;
+    border: 3px solid yellow;
+    border-radius: 15px;
+    padding: 8px 15px;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.botao:hover, .botaoVoltar:hover {
+    color: black;
+    background-color: yellow;
+    border-color: black;
+}

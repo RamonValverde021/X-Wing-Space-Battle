@@ -54,12 +54,13 @@
         --toasty-width: 125px;
         --toasty-height: 132px;
         --toasty-slide-in: 150px;
-        --toasty-slide-out: -230px; /*200*/
+        --toasty-slide-out: -230px;
+        /*200*/
 
         --size-use-a-forca: 80px;
 
         --top-gameover: 15%;
-        --top-gamewin: 5%;
+        --top-gamewin: 1%;
     }
 
     #gamepad-overlay {
@@ -73,19 +74,37 @@
     }
 
     .botaoIndex {
+        width: 210px;
         font-weight: 500;
         font-size: 20px;
+        text-decoration: none;
+        text-align: center;
         border: 2px solid yellow;
         border-radius: 10px;
-        padding: 2px 15px 5px 15px;
+        padding: 2px 0 5px 0;
     }
 
     .botaoIndexSelecionado {
+        width: 210px;
         font-weight: 500;
         font-size: 20px;
+        text-decoration: none;
+        text-align: center;
         border: 2px solid black;
         border-radius: 10px;
-        padding: 2px 15px 5px 15px;
+        padding: 2px 0 5px 0;
+    }
+
+    .gamewin {
+        font-size: 45px;
+        padding: 40px 30px 0 30px;
+        top: var(--top-gamewin);
+    }
+
+    .botaoFeedback {
+        bottom: 30px;
+        font-size: 20px;
+        border: 3px solid yellow;
     }
 
 }

@@ -57,11 +57,8 @@
         <span>Por favor, gire seu dispositivo para o modo paisagem.</span>
     </div>
     <div id="botoes_Index" class="painel_botoes">
-        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp;&nbsp; ❱
-            </Iniciar>
-        </button>
-        <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp;&nbsp; Controles &nbsp;&nbsp;&nbsp; ❱</Iniciar>
-        </button>
+        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
+        <a id="btnManualControles" class="botaoIndex" href="./html/manualControles.html">❰ &nbsp;&nbsp; Controles &nbsp;&nbsp; ❱</a>
     </div>
 
     <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle.mp4"></video>
@@ -93,11 +90,6 @@
                 video.play();
             });
         }, { once: true }); // Garante que o evento de clique seja acionado apenas uma vez
-
-        btnControles.addEventListener("click", () => {
-            botoes.style.display = "none";      // esconde botão
-            window.location.href = './html/manualControles.html';
-        });
 
         btnIniciar.addEventListener("mouseover", () => {
             btnIniciar.className = "botaoIndexSelecionado";
