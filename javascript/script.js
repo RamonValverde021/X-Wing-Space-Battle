@@ -40,7 +40,7 @@ let velocidadeProjetilDeathStar = 50;                                           
 let velocidadeProjetilPunicao = 50;                                                      // Define a velocidade dos projeteis de punição
 let velocidadeItemEspecial = 3;                                                          // Define a velocidade de decida dos itens especiais
 let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
-let velRotacaoXWing = 6;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
+let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
 let alturaProjetilNaves;                                                                 // Altura dos projéteis, obtida do CSS.
 let larguraProjetilNaves;                                                                // Largura dos projéteis, obtida do CSS.
 let larguraTieFighter = 0;                                                               // Define a largura do Tie-Fighter
@@ -159,7 +159,7 @@ function responsividade() {
         velocidadeProjetilDeathStar = 25;
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
-        velocidadeXWing = 7;
+        velocidadeXWing = 3;
         quantidadeMaximaTieFighters = 1000;
         folgaColisao = 15;
         boostDistance = 250;
@@ -251,18 +251,18 @@ function iniciarJogo() {
             iniciaCriarItensEspeciais = setInterval(criarItensEspeciais, 15000);                   // 15000 - Inica em loop a função de criação de itens especiais, cria itens a cada 15 segundos
             iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
-        }, 0 * 60 * 1000);                                                                         // 1 - Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
+        }, 1 * 60 * 1000);                                                                         // 1 - Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
 
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
-        }, 0 * 60 * 1000);                                                                       // 2.8 -Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
+        }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
 
         iniciaBossDarthVaderTimeout = setTimeout(() => {
             if (iniciarDarthVader) {                                                               // Verifica se o jogo ainda está rodando e se o boss não foi iniciado
                 iniciarDarthVader = false;                                                         // Desativa a flag para não iniciar novamente
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
-        }, 0 * 60 * 1000); // 5 minutos  
+        }, 5 * 60 * 1000); // 5 minutos  
     }, 3000); // Atraso de 3 segundos
 }
 
