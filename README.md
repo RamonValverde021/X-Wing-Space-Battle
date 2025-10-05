@@ -1,6 +1,6 @@
 # X-Wing: Space Battle
 
-![Capa do Jogo](https://raw.githubusercontent.com/Ramon-Valverde/X-Wing-Battle-Space/main/images/Intro_X-Wing_Space_Battle.png)
+![Capa do Jogo](https://raw.githubusercontent.com/Ramon-Valverde/X-Wing-Space-Battle/blob/main/images/Intro_X-Wing_Space_Battle.png)
 
 ### 🔗 [Clique aqui para jogar!](https://x-wing-battle-space.vercel.app/)
 
