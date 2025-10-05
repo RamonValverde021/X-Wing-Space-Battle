@@ -1,4 +1,4 @@
-# X-Wing: Space Battle
+# X-Wing Space Battle
 
 ![Capa do Jogo](images/Intro_X-Wing_Space_Battle.png)
 
@@ -53,3 +53,4 @@ Este projeto foi construído do zero, focando no uso de tecnologias web fundamen
 3.  Sobreviva o máximo que puder e destrua a Estrela da Morte para vencer!
 
 4.  Para uma lista detalhada dos comandos, acesse o menu **Controles** na tela inicial.
+
