@@ -14,10 +14,8 @@
     align-items: flex-end;
     /* O overlay em si não captura eventos, apenas os botões */
     pointer-events: none;
-
-/*
     opacity: 1;
-    transition: all 2s ease; */
+    transition: all 2s ease;
     z-index: 100;
 }
 
@@ -174,6 +172,18 @@
     background-color: rgba(220, 180, 50, 0.8);
 }
 
+.action-a-2 {
+    background-color: rgba(50, 50, 50, 0.4);
+    border-color: rgba(100, 100, 100, 0.8);
+    font-size: 25px;
+}
+
+.action-a-2-power {
+    background-color: rgba(255, 127, 0, 0.4);
+    border-color: rgba(255, 69, 0, 0.8);
+    font-size: 25px;
+}
+
 #gamepad-x {
     position: relative;
     top: 0;
@@ -188,14 +198,12 @@
     right: -40px;
 }
 
-.action-a-2 {
-    background-color: rgba(50, 50, 50, 0.4);
-    border-color: rgba(100, 100, 100, 0.8);
-    font-size: 25px;
+.btn_meia-volta {
+    height: 33px;
+    opacity: 0.8;
 }
 
-.action-a-2-power {
-    background-color: rgba(255, 127, 0, 0.4);
-    border-color: rgba(255, 69, 0, 0.8);
-    font-size: 25px;
+.btn_giros {
+    height: 15px;
+    opacity: 0.8;
 }
