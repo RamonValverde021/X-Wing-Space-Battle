@@ -162,8 +162,8 @@ function responsividade() {
         velocidadeXWing = 3;
         quantidadeMaximaTieFighters = 1000;
         folgaColisao = 15;
-        boostDistance = 250;
-        boostDuration = 250;
+        boostDistance = 400;
+        boostDuration = 200;
         bottomBtnReiniciar = 50;
         maxDistance = 150;
         minDistance = 140;

@@ -14,8 +14,8 @@
     align-items: flex-end;
     /* O overlay em si não captura eventos, apenas os botões */
     pointer-events: none;
-    opacity: 1;
-    transition: all 2s ease;
+    /*opacity: 1;
+    transition: all 2s ease;*/
     z-index: 100;
 }
 
@@ -186,24 +186,24 @@
 
 #gamepad-x {
     position: relative;
-    top: 0;
-    left: -20px;
+    top: 5px;
+    left: -40px;
 }
 
 #gamepad-a {
     position: relative;
-    width: 80px;
-    height: 80px;
-    bottom: 10px;
+    width: 90px;
+    height: 90px;
+    bottom: 15px;
     right: -40px;
 }
 
 .btn_meia-volta {
-    height: 33px;
-    opacity: 0.8;
+    height: 30px;
+    opacity: 0.5;
 }
 
 .btn_giros {
     height: 15px;
-    opacity: 0.8;
+    opacity: 0.5;
 }
