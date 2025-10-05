@@ -146,8 +146,12 @@ function xwingSaindo() {
                     btnFeedback.id = "btnFeedback";                            // Define um id paro o botão
                     btnFeedback.className = "botaoFeedback";                   // Defice uma classe ao objeto para adicionar formatação
                     btnFeedback.innerHTML = "❰ &nbsp;&nbsp; Deixe &nbsp; seu &nbsp; feedback &nbsp;&nbsp; ❱";  // Adiciona um texto ao objeto criado
-                    btnFeedback.href = "../html/feedback.html";                // Adiciona um link de direcionamento para o botão
-                    cenario.appendChild(btnFeedback);                          // Adiciona o objeto criado ao cenario                 
+                    btnFeedback.href = "../html/feedback.html";                // Adiciona um link de direcionamento para o botão  
+                    cenario.appendChild(btnFeedback);                          // Adiciona o botão criado ao cenario
+                    setTimeout(() => {
+                        btnFeedback.style.opacity = 1;                         // Aplica o estilo de opacidade para fazer o fade-in
+                    }, 10 * 1000);                                             // Espera 10 segunso para o botão surgir    
+
                     setTimeout(() => reiniciarJogo(), (2 * 60 * 1000) + 5000); // Agenda a reinicialização do jogo para daqui a 02:05
                 }, 5000);                                                      // Mostra a mensagem após 5 segundos
             }, 3000);                                                          // Ativa a explosão após 3 segundos
@@ -170,18 +174,20 @@ function explosaoEstrelaDaMorte() {
     audioTrilhaSonoraEstrelaDaMorte.pause();                                   // Interrompe a trilha sonora da Estrela da Morte
     estrelaDestruida = true;                                                   // Marca que a Estrela-da-Morte foi destruída
     const deathstarElement = document.getElementById("estrela-da-morte");      // Seleciona a Estrela da Morte
-    const deathstarRect = deathstarElement.getBoundingClientRect();            // Pega as coordenadas da Estrela da Morte
-    const explosao = document.createElement("div");                            // Cria um elemento div, que vai ser a explosão da Estrela da Morte
-    explosao.className = "explosao";                                           // Adiciona a classe da explosão para aplicar o estilo
-    explosao.style.left = deathstarRect.left + "px";                           // Define a posição horizontal da explosão referente a posição da Estrela da Morte
-    explosao.style.top = deathstarRect.top + "px";                             // Define a posição vertical da explosão referente a posição da Estrela da Morte
-    explosao.style.width = deathstarRect.width + "px";                         // Define a largura da explosão com o mesmo tamanho da Estrela da Morte.
-    explosao.style.height = deathstarRect.height + "px";                       // Define a altura da explosão com o mesmo tamanho da Estrela da Morte.
-    deathstarElement.remove();                                                 // Remove a Estrela da Morte do cenário
-    cenario.appendChild(explosao);                                             // Adiciona a explosão ao cenário
+    if (deathstarElement) {
+        const deathstarRect = deathstarElement.getBoundingClientRect();        // Pega as coordenadas da Estrela da Morte
+        const explosao = document.createElement("div");                        // Cria um elemento div, que vai ser a explosão da Estrela da Morte
+        explosao.className = "explosao";                                       // Adiciona a classe da explosão para aplicar o estilo
+        explosao.style.left = deathstarRect.left + "px";                       // Define a posição horizontal da explosão referente a posição da Estrela da Morte
+        explosao.style.top = deathstarRect.top + "px";                         // Define a posição vertical da explosão referente a posição da Estrela da Morte
+        explosao.style.width = deathstarRect.width + "px";                     // Define a largura da explosão com o mesmo tamanho da Estrela da Morte.
+        explosao.style.height = deathstarRect.height + "px";                   // Define a altura da explosão com o mesmo tamanho da Estrela da Morte.
+        cenario.appendChild(explosao);                                         // Adiciona a explosão ao cenário
+        deathstarElement.remove();                                             // Remove a Estrela da Morte do cenário
+        setTimeout(() => {                                                     // Delay para remover a explosão após o efeito
+            explosao.remove();                                                 // Remove a explosão do cenário
+        }, 5000);                                                              // Remove a explosão após 5 segundos
+    }
     somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte
     navigator.vibrate(5000); // Vibra por 5 segundos
-    setTimeout(() => {                                                         // Delay para remover a explosão após o efeito
-        explosao.remove();                                                     // Remove a explosão do cenário
-    }, 5000);                                                                  // Remove a explosão após 5 segundos
 }

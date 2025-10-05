@@ -601,6 +601,7 @@ div#cenario {
 
 .botaoFeedback {
     position: absolute;
+    opacity: 0;
     bottom: 0;
     margin-bottom: -10px;
     font-weight: 500;
