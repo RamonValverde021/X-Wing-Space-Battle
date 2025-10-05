@@ -3,7 +3,6 @@
 /* --- Estrutura Principal do Gamepad --- */
 #gamepad-overlay {
     display: none;
-    opacity: 0;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -15,7 +14,10 @@
     align-items: flex-end;
     /* O overlay em si não captura eventos, apenas os botões */
     pointer-events: none;
-    transition: all 2s ease;
+
+/*
+    opacity: 1;
+    transition: all 2s ease; */
     z-index: 100;
 }
 
@@ -68,6 +70,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 20px;
 }
 
 .joystick-base {
@@ -130,10 +133,6 @@
 .action-buttons {
     width: 150px;
     height: 150px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    gap: 2px;
 }
 
 .action-buttons .gamepad-button {
@@ -175,9 +174,18 @@
     background-color: rgba(220, 180, 50, 0.8);
 }
 
+#gamepad-x {
+    position: relative;
+    top: 0;
+    left: -20px;
+}
+
 #gamepad-a {
-    width: 100px;
-    height: 100px;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    bottom: 10px;
+    right: -40px;
 }
 
 .action-a-2 {

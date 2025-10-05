@@ -63,14 +63,16 @@ const teclasControleClicadas = (tecla) => {
 
 // F na tela clicavel
 const sinalAtaqueEspecial = document.getElementById("ataque_especial");
-sinalAtaqueEspecial.addEventListener("click", () => {
-    if (habilitarAtaqueEspecial) {                                   // Se o ataque especial estiver habilitado
-        habilitarAtaqueEspecial = false;                             // Desabilita o ataque especial 
-        okGameOver = false;                                          // Desativa a execução do Game Over
-        btnEspecialAtaque.style.display = "none";                    // Oculta o sinal do botão de Ataque especial
-        xwingEspecialAtaque();                                       // Chama a função de ataque especial do X-Wing
-    }
-});
+if (sinalAtaqueEspecial) {
+    sinalAtaqueEspecial.addEventListener("click", () => {
+        if (habilitarAtaqueEspecial) {                                   // Se o ataque especial estiver habilitado
+            habilitarAtaqueEspecial = false;                             // Desabilita o ataque especial 
+            okGameOver = false;                                          // Desativa a execução do Game Over
+            btnEspecialAtaque.style.display = "none";                    // Oculta o sinal do botão de Ataque especial
+            xwingEspecialAtaque();                                       // Chama a função de ataque especial do X-Wing
+        }
+    })
+}
 
 // Função que controla o jogo com um controle de X-Box
 window.addEventListener("gamepadconnected", (e) => {
@@ -337,7 +339,6 @@ function setupGamepadVirtual() {
             // Alterna a classe CSS para dar feedback visual ao jogador.
             gamepadA2.classList.toggle("action-a-2-power", tiroContinuo);
             gamepadA2.classList.toggle("action-a-2", !tiroContinuo);
-        }
-        , { passive: true });
+        }, { passive: true });
     }
 }
