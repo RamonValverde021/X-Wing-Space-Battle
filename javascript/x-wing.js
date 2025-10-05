@@ -281,12 +281,11 @@ function colisaoXWing() {
     vidaExtra.forEach((item) => {                                                        // Percorre todos os objetos da vida extra
         const colisaoXWing = xwing.getBoundingClientRect();                              // Pega as coordenadas do X-Wing    
         const colisaoItem = item.getBoundingClientRect();                                // Pega as coordenadas do item
-        const folgaColisao = 25;                                                         // Folga em pixels
         if (                                                                             // Verifica se houve colisão entre o X-Wing e o item
-            colisaoXWing.left + folgaColisao < colisaoItem.right &&                      // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
-            colisaoXWing.right - folgaColisao > colisaoItem.left &&                      // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
-            colisaoXWing.top + folgaColisao < colisaoItem.bottom &&                      // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
-            colisaoXWing.bottom - folgaColisao > colisaoItem.top                         // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
+            colisaoXWing.left + folgaColisaoItens < colisaoItem.right &&                 // Verifica se o lado esquerdo do X-Wing (com folga) é menor que o lado direito do item
+            colisaoXWing.right - folgaColisaoItens > colisaoItem.left &&                 // Verifica se o lado direito do X-Wing (com folga) é maior que o lado esquerdo do item
+            colisaoXWing.top + folgaColisaoItens < colisaoItem.bottom &&                 // Verifica se o topo do X-Wing (com folga) é menor que a parte de baixo do item
+            colisaoXWing.bottom - folgaColisaoItens > colisaoItem.top                    // Verifica se a parte de baixo do X-Wing (com folga) é maior que o topo do item
         ) {
             somItensEspeciais(1);                                                        // Toca o som do item especial de Vida Extra
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter

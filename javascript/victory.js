@@ -51,24 +51,43 @@ function xwingEspecialAtaque() {
 }
 
 function projetilEspecial() {
-    const posicaoLeftTiro = parseFloat(xwing.style.left);                 // Pega a posição horizontal atual do X-Wing
-    const posicaoTopTiro = parseFloat(xwing.style.top);                   // Pega a posição vertical atual do X-Wing
-    const centerX = posicaoLeftTiro + larguraXWing / 2;                   // Centro X do X-Wing
-    const centerY = posicaoTopTiro + alturaXWing / 2;                     // Centro Y do X-Wing
-    // Cria dois elementos de disparo, um de cada lado do X-Wing
-    // projetil do lado esquerdo
-    const tiroEsquerdo = document.createElement("div");                   // Cria um elemento div, que vai ser o projetil especial
-    tiroEsquerdo.className = "torpedo_x-wing";                            // Adiciona a classe do projetil para aplicar o estilo
-    tiroEsquerdo.style.left = centerX + 30 + "px";                        // Define a posição horizontal esquerda do projetil referente a posição central horizontal do X-Wing
-    tiroEsquerdo.style.top = centerY - 110 + "px";                        // Define a posição vertical do projetil referente a posição central vertical do X-Wing
-    cenario.appendChild(tiroEsquerdo);                                    // Adiciona o projetil ao cenario
-    // projetil do lado direito
-    const tiroDireito = document.createElement("div");                    // Cria um elemento div, que vai ser o projetil especial
-    tiroDireito.className = "torpedo_x-wing";                             // Adiciona a classe do projetil para aplicar o estilo
-    tiroDireito.style.left = centerX - 35 + "px";                         // Define a posição horizontal direita do projetil referente a posição central horizontal do X-Wing
-    tiroDireito.style.top = centerY - 110 + "px";                         // Define a posição vertical do projetil referente a posição central vertical do X-Wing
-    cenario.appendChild(tiroDireito);                                     // Adiciona o projetil ao cenario
-    somCanhoesXWingProtons();                                             // Chama o som do disparo de canhões de protons do X-Wing
+    const xwingRect = xwing.getBoundingClientRect();                      // Pega as coordenadas e dimensões atuais do X-Wing.
+    const centerX = xwingRect.left + xwingRect.width / 2;                 // Calcula a coordenada X do centro do X-Wing.
+    const centerY = xwingRect.top + xwingRect.height / 2;                 // Calcula a coordenada Y do centro do X-Wing.
+
+    const muzzles = [                                                     // Define as posições dos canhões de onde os torpedos sairão, em relação ao centro da nave.
+        // Posição do cano esquerdo
+        {
+            lx: -larguraProjetilNaves * 8,                                // Deslocamento horizontal (X) do canhão esquerdo.
+            ly: alturaProjetilNaves / (alturaProjetilNaves / 5)           // Deslocamento vertical (Y) do canhão esquerdo.
+        },
+        // Posição do cano direito                                                 
+        {
+            lx: larguraProjetilNaves * 8,                                 // Deslocamento horizontal (X) do canhão direito.
+            ly: alturaProjetilNaves / (alturaProjetilNaves / 5)           // Deslocamento vertical (Y) do canhão direito.
+        }
+    ];
+
+    // Metade das dimensões do projétil para centralizá-lo corretamente.
+    const half_w = larguraProjetilNaves / 2;                              // Calcula a metade da largura do projétil para ajustes de posição.
+    const half_h = alturaProjetilNaves / 2;                               // Calcula a metade da altura do projétil para ajustes de posição.
+
+    muzzles.forEach(muzzle => {                                           // Itera sobre cada canhão para criar e disparar um torpedo.
+        // Calcula a posição de spawn do projétil.
+        const spawnX = centerX + muzzle.lx;                               // Calcula a posição X inicial do torpedo, somando o centro da nave com o deslocamento do canhão.
+        const spawnY = centerY + muzzle.ly;                               // Calcula a posição Y inicial do torpedo, somando o centro da nave com o deslocamento do canhão.
+
+        // Cria o elemento do projétil.
+        const tiro = document.createElement("div");                       // Cria um novo elemento <div> para representar o torpedo.
+        tiro.className = "torpedo_x-wing";                                // Aplica a classe CSS "torpedo_x-wing" para estilizar o torpedo.
+
+        // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn.
+        tiro.style.left = (spawnX - half_w) + "px";                       // Define a posição horizontal do torpedo, ajustando para centralizá-lo.
+        tiro.style.top = (spawnY - half_h) + "px";                        // Define a posição vertical do torpedo, ajustando para centralizá-lo.
+
+        cenario.appendChild(tiro);                                        // Adiciona o torpedo criado ao cenário do jogo.
+        somCanhoesXWingProtons();                                         // Chama a função para tocar o som do disparo de torpedos de prótons.
+    });
 }
 
 function movimentarProjetilEspecial() {
@@ -80,7 +99,7 @@ function movimentarProjetilEspecial() {
             tiros[i].style.top = posicaoTopProjetil + "px";                // Atualiza a posição no cenário
             if (posicaoTopProjetil <= 50) {                                // Verifica se o projétil atingiu um pouco abixo do topo do cenário
                 tiros[i].remove();                                         // Remove o projétil (para de subir e some)
-                setTimeout(() => {             // Delay para ativar a sequência de vitória (como no original)
+                setTimeout(() => {                                         // Delay para ativar a sequência de vitória (como no original)
                     xwingSaindo();                                         // Chama a função que faz o X-Wing sair voando
                 }, 1000);                                                  // 1 segundo de delay
                 return;                                                    // Sai do loop para esse projétil (já foi processado)

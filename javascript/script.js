@@ -27,7 +27,7 @@ const anguloMaximo = 61;                                                        
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
-const vidaEstrelaDaMorte = 1500;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
+const vidaEstrelaDaMorte = 150;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
 
 // Variaveis Globais
@@ -77,6 +77,7 @@ let direcaoHorizontal = 0;                                                      
 let direcaoVertical = 0;                                                                 // Variavel para manipular a direção vertical do X-Wing
 let tempoParado = 0;                                                                     // Tempo que a nave está parada (ms)
 let folgaColisao = 40;                                                                   // Folga para adentrar nos Tie Fighters para criar a colisão
+let folgaColisaoItens = 25;                                                              // Folga para adentrar nos itens especiais para criar a colisão
 let timestampInicioParado = 0;                                                           // Timestamp de quando a nave parou para uma contagem precisa
 let backgroundPositionY = 0;                                                             // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                                             // Flag para evitar múltiplos projéteis
@@ -162,6 +163,7 @@ function responsividade() {
         velocidadeXWing = 3;
         quantidadeMaximaTieFighters = 850;
         folgaColisao = 15;
+        folgaColisaoItens = 8;
         boostDistance = 400;
         boostDuration = 200;
         bottomBtnReiniciar = 50;
@@ -252,7 +254,7 @@ function iniciarJogo() {
             iniciaCriarItemFullPower = setInterval(criarItemFullPower, 20);                        // Inica em loop a função de criação de itens full power
             iniciaMovimentacaoItensEspeciais = setInterval(moverItensEspeciais, 20);               // Inica em loop a função de movimentação dos itens especiais
         }, 1 * 60 * 1000);                                                                         // 1 - Agenda o início do intens especiais para daqui a 1 minuto (60.000 ms)
-
+/*
         iniciaSurgimentoEstrelaDaMorteTimeout = setTimeout(() => {
             iniciaSurgimentoEstrelaDaMorte = setInterval(surgimentoEstrelaDaMorte, 20);
         }, 2.8 * 60 * 1000);                                                                       // Agenda o início do boss para daqui a 2.8 minutos (2 minutos a menos que o incio da esttrela da morte)
@@ -263,6 +265,8 @@ function iniciarJogo() {
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
         }, 5 * 60 * 1000); // 5 minutos  
+        */
+       iniciandoBossEstrelaDaMorte();
     }, 3000); // Atraso de 3 segundos
 }
 
