@@ -160,7 +160,7 @@ function responsividade() {
         velocidadeProjetilPunicao = 25;
         velocidadeItemEspecial = 1;
         velocidadeXWing = 3;
-        quantidadeMaximaTieFighters = 1000;
+        quantidadeMaximaTieFighters = 850;
         folgaColisao = 15;
         boostDistance = 400;
         boostDuration = 200;
