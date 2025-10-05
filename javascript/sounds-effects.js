@@ -55,7 +55,7 @@ function somExplosaoNaves() {
     audio.volume = 0.35;
     audio.play();
     // Para vibrar por 200ms, pausar por 100ms, e vibrar por mais 300ms
-    navigator.vibrate([50, 50, 50]);
+    navigator.vibrate(50);
 }
 
 function somExplosaoEstrelaDaMorte() {
@@ -174,5 +174,6 @@ function somDarthVader() {
     audio.currentTime = 0;
     audio.play()
 }
+
 
 
