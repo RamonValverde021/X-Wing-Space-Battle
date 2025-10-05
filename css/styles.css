@@ -511,6 +511,12 @@ div#cenario {
     top: 50px;
     font-weight: bold;
     font-size: var(--size-use-a-forca);
+    text-align: center;
+    border: 5px solid blue;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    padding: 0;
     animation: blinkFB 1.5s linear infinite;
     z-index: 10;
 }
@@ -519,16 +525,33 @@ div#cenario {
     0% {
         color: white;
         text-shadow: 0px 0px 50px blue;
+        border: 5px solid white;
     }
 
     50% {
         color: rgb(0, 100, 200);
         text-shadow: 0px 0px 50px rgb(255, 255, 255);
+        border: 5px solid rgb(0, 100, 200);
     }
 
     100% {
         color: white;
         text-shadow: 0px 0px 50px blue;
+        border: 5px solid white;
+    }
+}
+
+@keyframes blinkBorder {
+    0% {
+        border: 5px solid white;
+    }
+
+    50% {
+        border: 5px solid rgb(0, 100, 200);
+    }
+
+    100% {
+        border: 5px solid white;
     }
 }
 

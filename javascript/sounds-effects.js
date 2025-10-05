@@ -52,8 +52,9 @@ function somVoandoXWing() {
 function somExplosaoNaves() {
     const audio = new Audio('../audios/tie-fighter_explosion.mp3');  // Audio de explosão das naves
     audio.currentTime = 0; // volta pro início
-    audio.volume = 0.1;
+    audio.volume = 0.35;
     audio.play();
+    navigator.vibrate(1800); // Vibra por 1.8 segundos
 }
 
 function somExplosaoEstrelaDaMorte() {

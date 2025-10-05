@@ -161,6 +161,7 @@ function explosaoEstrelaDaMorte() {
     deathstarElement.remove();                                                 // Remove a Estrela da Morte do cenário
     cenario.appendChild(explosao);                                             // Adiciona a explosão ao cenário
     somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte
+    navigator.vibrate(5000); // Vibra por 5 segundos
     setTimeout(() => {                                                         // Delay para remover a explosão após o efeito
         explosao.remove();                                                     // Remove a explosão do cenário
     }, 5000);                                                                  // Remove a explosão após 5 segundos
