@@ -1,6 +1,6 @@
 # X-Wing: Space Battle
 
-![Capa do Jogo](https://raw.githubusercontent.com/Ramon-Valverde/X-Wing-Space-Battle/blob/main/images/Intro_X-Wing_Space_Battle.png)
+![Capa do Jogo](images/Intro_X-Wing_Space_Battle.png)
 
 ### 🔗 [Clique aqui para jogar!](https://x-wing-battle-space.vercel.app/)
 
@@ -51,4 +51,5 @@ Este projeto foi construído do zero, focando no uso de tecnologias web fundamen
 1.  Acesse o **[link do jogo](https://x-wing-battle-space.vercel.app/)**.
 2.  Use o teclado, controle ou a tela do seu smartphone para pilotar a X-Wing.
 3.  Sobreviva o máximo que puder e destrua a Estrela da Morte para vencer!
+
 4.  Para uma lista detalhada dos comandos, acesse o menu **Controles** na tela inicial.
