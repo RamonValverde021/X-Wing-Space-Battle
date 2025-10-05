@@ -127,6 +127,7 @@ function colisaoEstrelaDaMorte() {
                     }
                 }
                 if (vidaAtualEstrelaDaMorte <= 0) {                        // Se a vida da Estrela da Morte for menor ou igual a 0
+                    barraDeVidaEstrelaDaMorte.style.display = "none";      // Esconde a barra de vida da Estrela da Morte
                     if (sinalObiWan) {                                     // Se o sinal do Obi-Wan estiver habilitado
                         sinalObiWan = false;                               // Desabilita o sinal do Obi-Wan para não ficar repetindo infinitamente
                         somSinalObiWan();                                  // Chama o sinal da voz do Obi-Wan

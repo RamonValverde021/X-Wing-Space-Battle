@@ -69,6 +69,7 @@ function colisaoDarthVader() {
                 disparo.remove();                                                                         // Remove o projétil que colidiu.
                 atualizarMenu();                                                                          // Chama a função para atualizar a barra de vida de Darth Vader e a pontuação.
                 if (vidaAtualDarthVader <= 0) {                                                           // Verifica se a vida de Darth Vader chegou a zero ou menos.
+                    barraDeVidaDarthVader.style.display = "none";                                         // Esconde a barra de vida de Darth Vader.
                     if (!darthVaderDerrotado) {
                         explosaoNaves(darthVaderElement);
                         derrotarDarthVader(darthVaderElement);                                            // Se ainda não foi marcado como derrotado, chama a função de derrota.
