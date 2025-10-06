@@ -5,7 +5,7 @@ const arquivosParaCache = [
   "../index.html",
   "../html/game.html",
   "../html/manualControles.html",
-  "../manifest.json",
+  "../manifest.json", // Certifique-se que este arquivo está na raiz do projeto
   "sw.js",
 
   // CSS
