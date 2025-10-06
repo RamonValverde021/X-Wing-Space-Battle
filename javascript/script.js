@@ -14,7 +14,7 @@ document.addEventListener("click", async () => {
         // Remove o listener depois da primeira tentativa
         document.removeEventListener("click", arguments.callee);
     } catch (err) {
-        console.warn("Não foi possível travar a orientação:", err);
+        console.wargn("Não foi possível travar a orientação:", err);
     }
 });
 
