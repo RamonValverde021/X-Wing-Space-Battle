@@ -514,8 +514,8 @@ div#cenario {
     text-align: center;
     border: 5px solid blue;
     border-radius: 50%;
-    height: 80px;
-    width: 80px;
+    height: var(--size-use-a-forca);
+    width: var(--size-use-a-forca);
     padding: 0;
     animation: blinkFB 1.5s linear infinite;
     z-index: 10;
