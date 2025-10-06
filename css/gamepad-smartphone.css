@@ -14,8 +14,8 @@
     align-items: flex-end;
     /* O overlay em si não captura eventos, apenas os botões */
     pointer-events: none;
-    /*opacity: 1;
-    transition: all 2s ease;*/
+    opacity: 1;
+    transition: all 2s ease;
     z-index: 100;
 }
 
