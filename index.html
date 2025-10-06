@@ -56,16 +56,26 @@
         btnControles.className = "botaoIndex";
 
         btnIniciar.addEventListener("click", function () {
-            // 1. Esconde os botões.
+            // Esconde os botões.
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
 
-            // 2. Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
+            // Tenta entrar em modo tela cheia e travar a orientação
+            // Isso é ideal para jogos em dispositivos móveis
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().then(() => {
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(err => console.log(err));
+                    }
+                }).catch(err => console.log(err));
+            }
+
+            // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
             const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
             obiWanAudio.volume = 1.0;
             obiWanAudio.play();
             fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
 
-            // 3. Quando o áudio (e o fade) terminarem, inicia o vídeo.
+            // Quando o áudio (e o fade) terminarem, inicia o vídeo.
             obiWanAudio.addEventListener("ended", () => {
                 video.style.display = "block";
                 video.play();
@@ -151,6 +161,36 @@
 
         window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
             console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
+        });
+
+        // --- Lógica para o prompt "Adicionar à Tela Inicial" ---
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installButton = document.getElementById('install-button');
+        const dismissButton = document.getElementById('dismiss-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Previne o banner de instalação padrão do Chrome
+            e.preventDefault();
+            // Guarda o evento para que possa ser acionado mais tarde.
+            deferredPrompt = e;
+            // Mostra nosso banner customizado
+            installBanner.style.display = 'block';
+        });
+
+        installButton.addEventListener('click', async () => {
+            // Esconde o nosso banner
+            installBanner.style.display = 'none';
+            // Mostra o prompt de instalação do navegador
+            deferredPrompt.prompt();
+            // Opcional: Espera o usuário responder ao prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            // Limpa o prompt para que ele possa ser coletado pelo garbage collector
+            deferredPrompt = null;
+        });
+
+        dismissButton.addEventListener('click', () => {
+            installBanner.style.display = 'none';
         });
 
     </script>
