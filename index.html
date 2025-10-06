@@ -11,6 +11,7 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" type="text/css" href="./css/styles.css">
     <link rel="stylesheet" type="text/css" href="./css/smartphone-size.css">
+    <script language="JavaScript" src="../javascript/script.js" defer></script>
     <style>
         /* Div de sobreposição para o efeito de fade-to-black */
         #fade-overlay {
@@ -162,39 +163,6 @@
         window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
             console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
         });
-
-
-
-
-
-
-
-        document.addEventListener("click", async () => {
-            try {
-                // Entra em tela cheia
-                if (document.documentElement.requestFullscreen) {
-                    await document.documentElement.requestFullscreen();
-                }
-
-                // Tenta travar orientação
-                if (screen.orientation && screen.orientation.lock) {
-                    await screen.orientation.lock("landscape");
-                    console.log("Tela travada em modo paisagem ✅");
-                }
-
-                // Remove o listener depois da primeira tentativa
-                document.removeEventListener("click", arguments.callee);
-            } catch (err) {
-                console.warn("Não foi possível travar a orientação:", err);
-            }
-        });
-
-        window.addEventListener("orientationchange", () => {
-            if (window.orientation === 0 || window.orientation === 180) {
-                alert("Por favor, gire o dispositivo para o modo paisagem 🔄");
-            }
-        });
-
     </script>
 </body>
 
