@@ -153,16 +153,6 @@
             console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
         });
 
-
-        const elemento = document.documentElement; // ou document.body
-        if (elemento.requestFullscreen) {
-            elemento.requestFullscreen();
-        } else if (elemento.webkitRequestFullscreen) { // Safari
-            elemento.webkitRequestFullscreen();
-        } else if (elemento.msRequestFullscreen) { // IE/Edge antigos
-            elemento.msRequestFullscreen();
-        }
-
     </script>
 </body>
 
