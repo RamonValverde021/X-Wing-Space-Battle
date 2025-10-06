@@ -142,12 +142,14 @@ function xwingSaindo() {
                     }, 100);                                                   // 100ms já é suficiente
                     cenario.appendChild(vitoria);                              // Adiciona a mensagem ao cenário
                     somVitoria();                                              // Toca o som da vitória
-                    const btnFeedback = document.createElement("a");           // Constroi um objeto <a>
+                    const btnFeedback = document.createElement("button");      // Constroi um objeto <a>
                     btnFeedback.id = "btnFeedback";                            // Define um id paro o botão
                     btnFeedback.className = "botaoFeedback";                   // Defice uma classe ao objeto para adicionar formatação
                     btnFeedback.innerHTML = "❰ &nbsp;&nbsp; Deixe &nbsp; seu &nbsp; feedback &nbsp;&nbsp; ❱";  // Adiciona um texto ao objeto criado
-                    btnFeedback.href = "../html/feedback.html";                // Adiciona um link de direcionamento para o botão  
                     cenario.appendChild(btnFeedback);                          // Adiciona o botão criado ao cenario
+                    btnFeedback.addEventListener("click", function () {
+                        window.parent.document.getElementById("tela_jogo").src = "./html/feedback.html";
+                    });
                     setTimeout(() => {
                         btnFeedback.style.opacity = 1;                         // Aplica o estilo de opacidade para fazer o fade-in
                     }, 10 * 1000);                                             // Espera 10 segunso para o botão surgir    

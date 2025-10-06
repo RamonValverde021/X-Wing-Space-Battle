@@ -20,13 +20,17 @@
             <span id="legenda_instrucoes" class="item_comando">Controle &nbsp; &nbsp; / &nbsp; &nbsp; Teclado &nbsp;
                 &nbsp; = &nbsp; &nbsp;
                 Funcao</span><br>
-            <span class="item_comando"><span id="arrow_up">⬆</span><span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+            <span class="item_comando"><span id="arrow_up">⬆</span><span class="item_legenda"> = &nbsp; &nbsp; Mover
+                    &nbsp; nave &nbsp; para &nbsp;
                     cima</span></span>
-            <span class="item_comando"><span id="arrow_down">⬇</span><span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+            <span class="item_comando"><span id="arrow_down">⬇</span><span class="item_legenda"> = &nbsp; &nbsp; Mover
+                    &nbsp; nave &nbsp; para &nbsp;
                     baixo</span></span>
-            <span class="item_comando"><span id="arrow_left">⬅</span><span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+            <span class="item_comando"><span id="arrow_left">⬅</span><span class="item_legenda"> = &nbsp; &nbsp; Mover
+                    &nbsp; nave &nbsp; para &nbsp;
                     esquerda</span></span>
-            <span class="item_comando"><span id="arrow_right">⮕</span><span class="item_legenda"> = &nbsp; &nbsp; Mover &nbsp; nave &nbsp; para &nbsp;
+            <span class="item_comando"><span id="arrow_right">⮕</span><span class="item_legenda"> = &nbsp; &nbsp; Mover
+                    &nbsp; nave &nbsp; para &nbsp;
                     direita</span></span>
             <span class="item_comando">LT / S<span class="item_legenda"> = &nbsp; &nbsp; Giro &nbsp;
                     Reverso</span></span>
@@ -48,14 +52,18 @@
             <span class="item_comando">BACK / P<span class="item_legenda"> = &nbsp; &nbsp; Abre &nbsp; o &nbsp; painel
                     &nbsp; de &nbsp; estatisticas</span></span>
         </section>
-        <a href="../index.html" class="botaoVoltar">❰ &nbsp;&nbsp; Voltar &nbsp;&nbsp; ❱</a>
+        <button id="btnManualVoltar" class="botaoVoltar">❰ &nbsp;&nbsp; Voltar &nbsp;&nbsp; ❱</button>
     </div>
 
     <script>
+        document.getElementById("btnManualVoltar").addEventListener("click", function () {
+            window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
+        });
+
         document.addEventListener("keydown", function (event) {               // Função para iniciar o jogo com apertar do Enter
             console.log(event.key);
             if (event.key === "Backspace") {                                  // Se a tecla apertada for o Enter
-                window.location.href = '../index.html';
+                window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
             }
         });
         // Script para ler entradas do controle de X-Box
@@ -74,7 +82,7 @@
                     const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
                     if (foiClicado) {
                         if (index === 1 || index === 3) {
-                            window.location.href = '../index.html';                                               // Se o botão View/Select (índice 8) foi clicado.
+                            window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";                                               // Se o botão View/Select (índice 8) foi clicado.
                         }
                     }
                 });

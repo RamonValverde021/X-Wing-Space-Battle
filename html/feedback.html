@@ -41,9 +41,15 @@
             <textarea id="message" name="Mensagem" rows="6" required></textarea>
 
             <button type="submit" class="botao">Enviar &nbsp; Feedback</button>
-            <a href="../index.html" class="botaoVoltar">❰ &nbsp;&nbsp; Voltar &nbsp;&nbsp; ❱</a>
+            <button id="btnFeedbackVoltar" class="botaoVoltar">❰ &nbsp;&nbsp; Voltar &nbsp;&nbsp; ❱</a>
         </form>
     </div>
+
+    <script>
+        document.getElementById("btnFeedbackVoltar").addEventListener("click", function () {
+            window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
+        });
+    </script>
 
 </body>
 
