@@ -35,11 +35,3 @@ function isPWA() {
 function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
-
-window.addEventListener("load", async () => {
-  try {
-    await document.documentElement.requestFullscreen();
-  } catch (err) {
-    console.warn("O navegador bloqueou o fullscreen automático:", err);
-  }
-});
