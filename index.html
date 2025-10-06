@@ -163,34 +163,36 @@
             console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
         });
 
-        // --- Lógica para o prompt "Adicionar à Tela Inicial" ---
-        let deferredPrompt;
-        const installBanner = document.getElementById('install-banner');
-        const installButton = document.getElementById('install-button');
-        const dismissButton = document.getElementById('dismiss-button');
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Previne o banner de instalação padrão do Chrome
-            e.preventDefault();
-            // Guarda o evento para que possa ser acionado mais tarde.
-            deferredPrompt = e;
-            // Mostra nosso banner customizado
-            installBanner.style.display = 'block';
+
+
+
+
+
+        document.addEventListener("click", async () => {
+            try {
+                // Entra em tela cheia
+                if (document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                }
+
+                // Tenta travar orientação
+                if (screen.orientation && screen.orientation.lock) {
+                    await screen.orientation.lock("landscape");
+                    console.log("Tela travada em modo paisagem ✅");
+                }
+
+                // Remove o listener depois da primeira tentativa
+                document.removeEventListener("click", arguments.callee);
+            } catch (err) {
+                console.warn("Não foi possível travar a orientação:", err);
+            }
         });
 
-        installButton.addEventListener('click', async () => {
-            // Esconde o nosso banner
-            installBanner.style.display = 'none';
-            // Mostra o prompt de instalação do navegador
-            deferredPrompt.prompt();
-            // Opcional: Espera o usuário responder ao prompt
-            const { outcome } = await deferredPrompt.userChoice;
-            // Limpa o prompt para que ele possa ser coletado pelo garbage collector
-            deferredPrompt = null;
-        });
-
-        dismissButton.addEventListener('click', () => {
-            installBanner.style.display = 'none';
+        window.addEventListener("orientationchange", () => {
+            if (window.orientation === 0 || window.orientation === 180) {
+                alert("Por favor, gire o dispositivo para o modo paisagem 🔄");
+            }
         });
 
     </script>
