@@ -17,7 +17,6 @@ window.onload = function () {
         //alert("Para melhor experiência, adicione este site à tela inicial!");
         // Tenta bloquear a orientação para paisagem
         if (confirm("Para melhor experiência, adicione este site à tela inicial!")) {
-            lockOrientation()
             if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
         }
 
