@@ -57,7 +57,7 @@
     --top-gamewin: 15%;
 }
 
-body#index {
+body#intro {
     background-image: url('../images/Intro_X-Wing_Space_Battle.png');
     background-color: black;
     background-size: contain;

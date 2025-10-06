@@ -13,9 +13,8 @@ window.onload = function () {
 
     if (isMobile() && !isPWA()) {
         console.log("Navegador móvel detectado 🌐");
-        // Aqui você pode pedir para o usuário instalar o PWA
-        alert("Para melhor experiência, adicione este site à tela inicial!");
-        // Tenta bloquear a orientação para paisagem
+        // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
+        window.addEventListener('touchstart', ativarModoImersivo, { once: true });
     } else if (isMobile() && isPWA()) {
         console.log("App PWA em execução 📲");
         // Aqui você pode travar orientação ou iniciar fullscreen
@@ -35,4 +34,18 @@ function isPWA() {
 
 function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+/**
+ * Tenta colocar o jogo em tela cheia e travar a orientação para paisagem.
+ * Ideal para ser chamado por uma interação do usuário em dispositivos móveis.
+ */
+function ativarModoImersivo() {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().then(() => {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => console.error("Falha ao travar a orientação:", err));
+            }
+        }).catch(err => console.error("Falha ao entrar em tela cheia:", err));
+    }
 }

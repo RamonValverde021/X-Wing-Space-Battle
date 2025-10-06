@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta name="author" content="Ramon Valverde">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
+    <title>StarWars - X-Wing Space Battle</title>
+    <link rel="icon" href="../images/icon-192.png">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../css/smartphone-size.css">
+    <script language="JavaScript" src="../javascript/script.js" defer></script>
+    <style>
+        /* Div de sobreposição para o efeito de fade-to-black */
+        #fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 0;
+            pointer-events: none;
+            /* Não bloqueia cliques quando invisível */
+            transition: opacity 5s ease-out;
+            /* Duração da transição de 4 segundos */
+            z-index: 20;
+            /* Fica acima de tudo, exceto o vídeo */
+        }
+    </style>
+</head>
+
+<body id="intro">
+    <div id="fade-overlay"></div>
+    <div id="rotate-device-overlay" style="display: none;">
+        <span>Por favor, gire seu dispositivo para o modo paisagem.</span>
+    </div>
+    <div id="botoes_Index" class="painel_botoes">
+        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
+        <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp; Controles
+            &nbsp;&nbsp; ❱</button>
+    </div>
+
+    <video id="introVideo" src="../images/Intro_X-Wing_Space_Battle.mp4"></video>
+    <script>
+        const botoes = document.getElementById("botoes_Index");
+        const btnIniciar = document.getElementById("playIntro");
+        const btnControles = document.getElementById("btnManualControles");
+        const video = document.getElementById("introVideo");
+        const fadeOverlay = document.getElementById("fade-overlay");
+        let iniciouGame = true;
+
+        // Inicia com o botão Iniciar selecionado
+        btnIniciar.className = "botaoIndexSelecionado";
+        btnControles.className = "botaoIndex";
+
+        btnIniciar.addEventListener("click", function () {
+            // Esconde os botões.
+            botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+
+            // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
+            const obiWanAudio = new Audio('../audios/forca_sempre_com_vc.mp3');
+            obiWanAudio.volume = 1.0;
+            obiWanAudio.play();
+            fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+
+            // Quando o áudio (e o fade) terminarem, inicia o vídeo.
+            obiWanAudio.addEventListener("ended", () => {
+                video.style.display = "block";
+                video.play();
+            });
+        }, { once: true }); // Garante que o evento de clique seja acionado apenas uma vez
+
+        btnControles.addEventListener("click", function () {
+            window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
+        });
+
+
+        btnIniciar.addEventListener("mouseover", () => {
+            btnIniciar.className = "botaoIndexSelecionado";
+            btnIniciar.style.cursor = "pointer";
+            if (btnControles.className === "botaoIndexSelecionado") btnControles.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseover", () => {
+            btnControles.className = "botaoIndexSelecionado";
+            btnControles.style.cursor = "pointer";
+            if (btnIniciar.className === "botaoIndexSelecionado") btnIniciar.className = "botaoIndex";
+        });
+
+        btnIniciar.addEventListener("mouseout", () => {
+            btnIniciar.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseout", () => {
+            btnControles.className = "botaoIndex";
+        });
+
+        // quando o vídeo terminar → redireciona para o jogo
+        video.addEventListener("ended", () => {
+            window.parent.document.getElementById("tela_jogo").src = "./html/game.html";  // troca para a página do game
+        });
+
+        // Script para ler entradas do controle de X-Box
+        window.addEventListener("gamepadconnected", (e) => {
+            // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)
+            let prevButtons = [];
+            // loop para ler as entradas do controle a cada frame
+            function update() {                                               // Inicia o loop de atualização que lê as entradas do controle a cada quadro.
+                const gp = navigator.getGamepads()[e.gamepad.index];          // Pega o estado atual do gamepad conectado.
+                if (!gp) {                                                    // Verifica se o gamepad foi desconectado.
+                    // Se o controle for desconectado, para a nave
+                    requestAnimationFrame(update);                            // Continua o loop de atualização no próximo quadro.
+                    return;                                                   // Sai da função neste quadro, pois não há controle para ler.
+                }
+                gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
+                    const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
+                    if (foiClicado) {
+                        if (index === 9 || index === 0) {        // Botão Start ou A
+                            const botoes = document.getElementById("botoes_Index");
+                            const btnIniciar = document.getElementById("playIntro");
+                            const btnControles = document.getElementById("btnManualControles");
+                            const video = document.getElementById("introVideo");
+                            if (btnIniciar.className === "botaoIndexSelecionado") {
+                                if (iniciouGame) {
+                                    iniciouGame = false;
+                                    botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+                                    const obiWanAudio = new Audio('../audios/forca_sempre_com_vc.mp3');
+                                    obiWanAudio.volume = 1.0;
+                                    obiWanAudio.play();
+                                    fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+                                    obiWanAudio.addEventListener("ended", () => {
+                                        video.style.display = "block";
+                                        video.play();
+                                    });
+                                }
+                            } else if (btnControles.className === "botaoIndexSelecionado") {
+                                 window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
+                            }
+                        } else if (index === 14) {               // Botão Seta Esquerda
+                            document.getElementById("playIntro").className = "botaoIndexSelecionado";
+                            document.getElementById("btnManualControles").className = "botaoIndex";
+                        } else if (index === 15) {               // Botão Seta Direita
+                            document.getElementById("playIntro").className = "botaoIndex";
+                            document.getElementById("btnManualControles").className = "botaoIndexSelecionado";
+                        }
+                    }
+                });
+                // Salva o estado atual dos botões para comparar no próximo frame
+                prevButtons = gp.buttons.map(b => ({ pressed: b.pressed, value: b.value }));  // Salva o estado atual de todos os botões para a próxima verificação.
+                requestAnimationFrame(update);                                                // Agenda a próxima execução da função 'update' para o próximo quadro de animação.
+            }
+            update();
+        });
+
+        window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
+            console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
+        });
+    </script>
+</body>
+
+</html>
