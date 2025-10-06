@@ -37,24 +37,5 @@ function isMobile() {
 }
 
 
-// Define uma função assíncrona para poder usar 'await' para esperar por ações.
-async function lockOrientation() {
-    try {                                                                                          // Inicia um bloco 'try' para capturar erros que possam ocorrer ao tentar entrar em tela cheia ou bloquear a orientação.
-        // Primeiro, tentamos entrar em tela cheia. É um requisito para o bloqueio de orientação na maioria dos navegadores.
-        if (document.documentElement.requestFullscreen) {                                          // Verifica se o método padrão 'requestFullscreen' existe.
-            await document.documentElement.requestFullscreen();                                    // Solicita o modo de tela cheia e espera a operação ser concluída.
-        } else if (document.documentElement.mozRequestFullScreen) {                                // Firefox  // Se não, verifica a versão para Firefox.
-            await document.documentElement.mozRequestFullScreen();                                 // Solicita tela cheia no Firefox e espera.
-        } else if (document.documentElement.webkitRequestFullscreen) {                             // Chrome, Safari & Opera  // Se não, verifica a versão para Chrome, Safari e Opera.
-            await document.documentElement.webkitRequestFullscreen();                              // Solicita tela cheia nesses navegadores e espera.
-        } else if (document.documentElement.msRequestFullscreen) {                                 // IE/Edge  // Se não, verifica a versão para IE/Edge.
-            await document.documentElement.msRequestFullscreen();                                  // Solicita tela cheia no IE/Edge e espera.
-        }
-        // Depois de entrar em tela cheia com sucesso, bloqueamos a orientação.
-        await screen.orientation.lock('landscape');                                                // Tenta travar a orientação da tela no modo paisagem ('landscape') e espera.
-    } catch (error) {                                                                              // Se qualquer uma das solicitações ('await') falhar, o código dentro do 'catch' é executado.
-        console.error("Não foi possível bloquear a orientação da tela:", error);                   // Exibe uma mensagem de erro no console do navegador.
-    }
-}
 
-if (window.screen && screen.orientation && screen.orientation.lock) lockOrientation();         // Tenta bloquear a orientação para paisagem
+
