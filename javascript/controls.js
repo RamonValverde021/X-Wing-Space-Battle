@@ -159,7 +159,11 @@ window.addEventListener("gamepadconnected", (e) => {
         }
 
         // 2. Ações de manter pressionado (atirar, girar)
-        estaAtirando = gp.buttons[0].pressed || gp.buttons[7].pressed;   // Define se está atirando se o botão A ou o gatilho direito (RT) estiverem pressionados.
+        if (tiroContinuo) {
+            estaAtirando = true;                                         // Se o tiro contínuo está ativo, mantenha o disparo.
+        } else {
+            estaAtirando = gp.buttons[0].pressed || gp.buttons[7].pressed; // Caso contrário, verifique os botões de tiro manual (A ou RT).
+        }
         giroHorario = gp.buttons[4].pressed;                             // Define a rotação horária se o botão esquerdo (LB) estiver pressionado.
         giroAntiHorario = gp.buttons[5].pressed;                         // Define a rotação anti-horária se o botão direito (RB) estiver pressionado.
 
@@ -167,13 +171,17 @@ window.addEventListener("gamepadconnected", (e) => {
         gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
             const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
             if (foiClicado) {                                                                              // Se o botão foi "clicado" (pressionado uma vez).
-                //console.log(index);                                                                      // Exibe no console o botão pressionado
+                //console.log(index);                                                                        // Exibe no console o botão pressionado
+                // Disparos continuos
+                if (index === 1) {
+                    tiroContinuo = !tiroContinuo;                                                          // Apenas alterna a flag. A lógica acima cuidará de 'estaAtirando'.
+                }
                 // Boost X-Wing
                 if (index === 2 && soltarBoost == true) {                                                  // Se o botão X (índice 2) foi clicado.
                     boostXWing();                                                                          // Chama a função de Boost do X-Wing
                     if (okFullPower) return;                                                               // Se o Full-Power não estiver ativado
                     soltarBoost = false;                                                                   // Atualiza a flag para desativar o Boost
-                    setTimeout(() => soltarBoost = true, recargaBoost);                                            // Reativa o boost após 5s
+                    setTimeout(() => soltarBoost = true, recargaBoost);                                    // Reativa o boost após 5s
                 }
                 // Ataque especial (Botão Y) - corresponde à tecla 'F'
                 if (index === 3 && habilitarAtaqueEspecial) {                                              // Se o botão Y (índice 3) foi clicado e o ataque especial está habilitado.
