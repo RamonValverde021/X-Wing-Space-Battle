@@ -38,7 +38,8 @@
     </div>
     <div id="botoes_Index" class="painel_botoes">
         <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
-        <a id="btnManualControles" class="botaoIndex" href="./html/manualControles.html">❰ &nbsp;&nbsp; Controles &nbsp;&nbsp; ❱</a>
+        <a id="btnManualControles" class="botaoIndex" href="./html/manualControles.html">❰ &nbsp;&nbsp; Controles
+            &nbsp;&nbsp; ❱</a>
     </div>
 
     <video id="introVideo" src="./images/Intro_X-Wing_Space_Battle.mp4"></video>
@@ -151,6 +152,16 @@
         window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
             console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
         });
+
+
+        const elemento = document.documentElement; // ou document.body
+        if (elemento.requestFullscreen) {
+            elemento.requestFullscreen();
+        } else if (elemento.webkitRequestFullscreen) { // Safari
+            elemento.webkitRequestFullscreen();
+        } else if (elemento.msRequestFullscreen) { // IE/Edge antigos
+            elemento.msRequestFullscreen();
+        }
 
     </script>
 </body>
