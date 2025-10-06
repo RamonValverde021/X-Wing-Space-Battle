@@ -27,7 +27,7 @@ const anguloMaximo = 61;                                                        
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
 const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
-const vidaEstrelaDaMorte = 1200;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
+const vidaEstrelaDaMorte = 1000;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
 
 // Variaveis Globais
@@ -370,3 +370,4 @@ function gameOver() {
 function reiniciarJogo() {
     location.reload();
 }
+
