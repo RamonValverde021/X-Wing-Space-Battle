@@ -15,6 +15,7 @@ window.onload = function () {
         console.log("Navegador móvel detectado 🌐");
         // Aqui você pode pedir para o usuário instalar o PWA
         alert("Para melhor experiência, adicione este site à tela inicial!");
+        // Tenta bloquear a orientação para paisagem
     } else if (isMobile() && isPWA()) {
         console.log("App PWA em execução 📲");
         // Aqui você pode travar orientação ou iniciar fullscreen
@@ -35,7 +36,3 @@ function isPWA() {
 function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
-
-
-
-
