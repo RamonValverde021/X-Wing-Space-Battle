@@ -1,4 +1,6 @@
-document.addEventListener("click", async () => {
+document.addEventListener('DOMContentLoaded', minhaAcaoAssincrona);
+
+async function minhaAcaoAssincrona() {
     try {
         // Entra em tela cheia
         if (document.documentElement.requestFullscreen) {
@@ -16,10 +18,5 @@ document.addEventListener("click", async () => {
     } catch (err) {
         console.warn("Não foi possível travar a orientação:", err);
     }
-});
+}
 
-window.addEventListener("orientationchange", () => {
-    if (window.orientation === 0 || window.orientation === 180) {
-        alert("Por favor, gire o dispositivo para o modo paisagem 🔄");
-    }
-});
