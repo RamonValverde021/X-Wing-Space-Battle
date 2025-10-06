@@ -59,17 +59,7 @@
         btnIniciar.addEventListener("click", function () {
             // Esconde os botões.
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
-
-            // Tenta entrar em modo tela cheia e travar a orientação
-            // Isso é ideal para jogos em dispositivos móveis
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().then(() => {
-                    if (screen.orientation && screen.orientation.lock) {
-                        screen.orientation.lock('landscape').catch(err => console.log(err));
-                    }
-                }).catch(err => console.log(err));
-            }
-
+            
             // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
             const obiWanAudio = new Audio('./audios/forca_sempre_com_vc.mp3');
             obiWanAudio.volume = 1.0;
