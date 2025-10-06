@@ -58,6 +58,13 @@ const teclasControleClicadas = (tecla) => {
             btnEspecialAtaque.style.display = "none";                    // Oculta o sinal do botão de Ataque especial
             xwingEspecialAtaque();                                       // Chama a função de ataque especial do X-Wing
         }
+    } else if (tecla.key === "b" || tecla.key === "B") {                 // Se a tecla apertada for o "Enter"
+        const gamepadB = document.getElementById("gamepad-b");
+        tiroContinuo = !tiroContinuo;                                    // Alterna o estado do tiro contínuo (true/false).
+        estaAtirando = tiroContinuo;                                     // Sincroniza 'estaAtirando' com o novo estado de 'tiroContinuo'.
+        // Alterna a classe CSS para dar feedback visual ao jogador.
+        gamepadB.classList.toggle("action-b-power", tiroContinuo);
+        gamepadB.classList.toggle("action-b", !tiroContinuo);
     }
 }
 
@@ -74,12 +81,40 @@ if (sinalAtaqueEspecial) {
     })
 }
 
+let controleConectado = null;                                            // Armazena a referência do controle conectado
+
+// Função para vibrar o controle
+function vibrarControleXBox(tipo, duration) {
+    // Verifica se o controle e o atuador de vibração existem
+    if (controleConectado && controleConectado.vibrationActuator) {
+        if (tipo === "naves" || tipo === "okControle") {
+            controleConectado.vibrationActuator.playEffect("dual-rumble", {
+                startDelay: 0,
+                duration: duration,                                      // Duração da vibração em milissegundos
+                weakMagnitude: 0.8,                                      // Intensidade da vibração leve
+                strongMagnitude: 0.8                                     // Intensidade da vibração forte
+            });
+        } else if (tipo === "explosaoEstrelaDaMorte") {
+            controleConectado.vibrationActuator.playEffect("dual-rumble", {
+                startDelay: 0,
+                duration: duration,                                      // Duração da vibração em milissegundos
+                weakMagnitude: 0,                                        // Intensidade da vibração leve
+                strongMagnitude: 1                                       // Intensidade da vibração forte
+            });
+        }
+    }
+}
+
 // Função que controla o jogo com um controle de X-Box
 window.addEventListener("gamepadconnected", (e) => {
     console.log("Controle conectado:", e.gamepad);                       // Exibe no console que o controle foi conectado com sucesso.
+    controleConectado = e.gamepad; // Armazena o objeto do gamepad
 
     // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)
     let prevButtons = [];                                                // Array para armazenar o estado dos botões do quadro anterior.
+
+    // Testa a vibração ao conectar
+    vibrarControleXBox("okControle", 500);
 
     // loop para ler as entradas do controle a cada frame
     function update() {                                                  // Inicia o loop de atualização que lê as entradas do controle a cada quadro.
@@ -180,7 +215,6 @@ window.addEventListener("gamepaddisconnected", (e) => {                         
     console.log("Controle desconectado:", e.gamepad);                                                      // Exibe no console que o controle foi desconectado.
 });
 
-
 // --- Lógica do Joystick Virtual --- 
 // Seção dedicada à funcionalidade do joystick na tela.
 function setupGamepadVirtual() {
@@ -197,7 +231,7 @@ function setupGamepadVirtual() {
     const gamepadRB = document.getElementById("gamepad-rb");                                               // Obtém o botão virtual RB (Girar Anti-horário).
     const gamepadX = document.getElementById("gamepad-x");                                                 // Obtém o botão virtual X (Boost).
     const gamepadA = document.getElementById("gamepad-a");                                                 // Obtém o botão virtual A (Atirar).
-    const gamepadA2 = document.getElementById("gamepad-a-2");                                              // Obtém o botão virtual A-2 (Atirar).
+    const gamepadB = document.getElementById("gamepad-b");                                              // Obtém o botão virtual A-2 (Atirar).
 
     // Função auxiliar reutilizável para adicionar eventos de toque (pressionar e soltar).
     const addTouchListeners = (element, actionStart, actionEnd) => {                                                // A função recebe o elemento e as ações de início e fim.
@@ -332,13 +366,13 @@ function setupGamepadVirtual() {
     }
 
     // Usa um listener de 'touchstart' direto para o botão de toggle, pois 'addTouchListeners' não é adequado para isso.
-    if (gamepadA2) {
-        gamepadA2.addEventListener("touchstart", () => {
+    if (gamepadB) {
+        gamepadB.addEventListener("touchstart", () => {
             tiroContinuo = !tiroContinuo;                                                                // Alterna o estado do tiro contínuo (true/false).
             estaAtirando = tiroContinuo;                                                                 // Sincroniza 'estaAtirando' com o novo estado de 'tiroContinuo'.
             // Alterna a classe CSS para dar feedback visual ao jogador.
-            gamepadA2.classList.toggle("action-a-2-power", tiroContinuo);
-            gamepadA2.classList.toggle("action-a-2", !tiroContinuo);
+            gamepadB.classList.toggle("action-b-power", tiroContinuo);
+            gamepadB.classList.toggle("action-b", !tiroContinuo);
         }, { passive: true });
     }
 }

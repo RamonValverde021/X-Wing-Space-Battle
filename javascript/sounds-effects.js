@@ -56,6 +56,7 @@ function somExplosaoNaves() {
     audio.play();
     // Para vibrar por 200ms
     navigator.vibrate(200);
+    vibrarControleXBox("naves", 300);
 }
 
 function somExplosaoEstrelaDaMorte() {

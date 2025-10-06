@@ -189,5 +189,6 @@ function explosaoEstrelaDaMorte() {
         }, 5000);                                                              // Remove a explosão após 5 segundos
     }
     somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte
-    navigator.vibrate(5000); // Vibra por 5 segundos
+    navigator.vibrate(5000);                                                   // Vibra o smartphone por 5 segundos
+    vibrarControleXBox("explosaoEstrelaDaMorte", 5000);                        // Vibra o controle de X-Box por 5 segundos
 }
