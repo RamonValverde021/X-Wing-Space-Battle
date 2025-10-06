@@ -265,7 +265,7 @@ function iniciarJogo() {
                 bossDarthVader();                                                                  // Chama a função para iniciar a fase da estrela da morte
             }
         }, 5 * 60 * 1000); // 5 minutos  
-        
+
     }, 3000); // Atraso de 3 segundos
 }
 
