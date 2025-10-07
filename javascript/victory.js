@@ -23,16 +23,16 @@ function xwingEspecialAtaque() {
     }
     xwing.className = "x-wing_standard";                                  // Volta para a classe original do X-Wing
     if (audioEspecialItens.played) {
-        audioEspecialItens.volume = 0;                                    // Muta o audio dos itens especiais
+        audioEspecialItens.pause;                                         // Finaliza o audio dos itens especiais
     }
     if (audioTrilhaSonora.played) {
-        audioTrilhaSonora.volume = 0;                                     // Muta a trilha sonora principal
+        audioTrilhaSonora.pause;                                          // Finaliza a trilha sonora principal
     }
     if (audioTrilhaSonoraDarthVader.played) {
-        audioTrilhaSonoraDarthVader.volume = 0;                           // Muta a trilha sonora do Darth Vader
+        audioTrilhaSonoraDarthVader.pause;                                // Finaliza a trilha sonora do Darth Vader
     }
     if (audioTrilhaSonoraEstrelaDaMorte.played) {
-        audioTrilhaSonoraEstrelaDaMorte.volume = 0;                       // Muta a trilha sonora da Estrela da Morte
+        audioTrilhaSonoraEstrelaDaMorte.pause;                            // Finaliza a trilha sonora da Estrela da Morte
     }
 
     // Define rotação para apontar para cima
@@ -168,7 +168,7 @@ function xwingSaindo() {
                     }, 10 * 1000);                                             // Espera 10 segunso para o botão surgir    
 
                     setTimeout(() => reiniciarJogo(), (2 * 60 * 1000) + 5000); // Agenda a reinicialização do jogo para daqui a 02:05
-                }, 5000);                                                      // Mostra a mensagem após 5 segundos
+                }, 10000);                                                     // Mostra a mensagem após 5 segundos
             }, 3000);                                                          // Ativa a explosão após 3 segundos
         }
     }, 20);                                                                    // Delay de 20 milissegundos a cada frame
@@ -199,11 +199,12 @@ function explosaoEstrelaDaMorte() {
         explosao.style.height = deathstarRect.height + "px";                   // Define a altura da explosão com o mesmo tamanho da Estrela da Morte.
         cenario.appendChild(explosao);                                         // Adiciona a explosão ao cenário
         deathstarElement.remove();                                             // Remove a Estrela da Morte do cenário
+        somExplosaoEstrelaDaMorte();                                           // Chama o som da explosão da Estrela da Morte
+        navigator.vibrate(6000);                                               // Vibra o smartphone por 5 segundos
+        vibrarControleXBox("explosaoEstrelaDaMorte", 6000);                    // Vibra o controle de X-Box por 5 segundos
         setTimeout(() => {                                                     // Delay para remover a explosão após o efeito
             explosao.remove();                                                 // Remove a explosão do cenário
-        }, 5000);                                                              // Remove a explosão após 5 segundos
+        }, 8000);                                                              // Remove a explosão após 5 segundos
     }
-    somExplosaoEstrelaDaMorte();                                               // Chama o som da explosão da Estrela da Morte
-    navigator.vibrate(5000);                                                   // Vibra o smartphone por 5 segundos
-    vibrarControleXBox("explosaoEstrelaDaMorte", 5000);                        // Vibra o controle de X-Box por 5 segundos
+
 }
