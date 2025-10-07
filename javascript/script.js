@@ -2,6 +2,7 @@ window.onload = function () {
 
     if (isPWA()) {
         console.log("Rodando como PWA ✅");
+        document.getElementById("intro").style.backgroundColor = "red";
     } else {
         console.log("Rodando no navegador 🌐");
     }
