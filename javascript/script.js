@@ -16,6 +16,8 @@ window.onload = function () {
         console.log("Navegador móvel detectado 🌐");
         // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
         //alert("Para melhor experiência, adicione este site à tela inicial!");
+        const dicaElement = document.getElementById("dica_modo");       // Obtém o elemento da dica.
+        if (dicaElement) dicaElement.style.display = "block";           // Mostra a dica.
         window.addEventListener('touchstart', () => {
             const leituraToque = setInterval(() => {
                 clearInterval(leituraToque);
@@ -50,7 +52,10 @@ function isMobile() {
  */
 function ativarModoImersivo() {
     if (document.documentElement.requestFullscreen) {                                                                   // Verifica se o navegador suporta a API de tela cheia.
-        document.documentElement.requestFullscreen().then(() => {                                                       // Solicita que o documento entre em modo de tela cheia e aguarda a promessa ser resolvida.
+        document.documentElement.requestFullscreen().then(() => {                                                       // Solicita que o documento entre em modo de tela cheia.
+            // Assim que a tela cheia for ativada com sucesso, esconde a dica.
+            const dicaElement = document.getElementById("dica_modo");                                                   // Obtém o elemento da dica.
+            if (dicaElement) dicaElement.style.display = "none";                                                        // Esconde a dica.
             if (screen.orientation && screen.orientation.lock) {                                                        // Após entrar em tela cheia, verifica se a API de orientação de tela e o método de trava são suportados.
                 screen.orientation.lock('landscape').catch(err => console.error("Falha ao travar a orientação:", err)); // Tenta travar a orientação da tela para paisagem e captura qualquer erro.
             }

@@ -29,12 +29,24 @@
             z-index: 20;
             /* Fica acima de tudo, exceto o vídeo */
         }
+
+        #dica_modo {
+            display: none;
+            position: absolute;
+            top: 20%;
+            text-align: center;
+            z-index: 30; 
+            color: yellow;
+            width: 90%;
+            margin: 0 5%;
+        }
     </style>
 </head>
 
 <body id="intro">
     <div id="fade-overlay"></div>
-    <h1>Toque na tela 2x vezes para ativar o modo imersivo.</h1>
+    
+    <h2 id="dica_modo">Toque &nbsp; na &nbsp; tela &nbsp; 2x &nbsp; vezes &nbsp; para &nbsp; ativar &nbsp; o &nbsp; modo &nbsp; imersivo.</h2>
 
     <div id="conteiner_barra_carregando" class="painel_carregando_jogo">
         <div id="barra_carregando" class="status_barra_carregando">
@@ -49,7 +61,6 @@
     </div>
 
     <video id="introVideo" src="../images/Intro_X-Wing_Space_Battle.mp4"></video>
-
     <script>
         // --- LÓGICA DE CARREGAMENTO DO SERVICE WORKER ---
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {                                          // Verifica se o navegador suporta Service Workers e se já há um ativo controlando a página.
