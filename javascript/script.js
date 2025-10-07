@@ -15,13 +15,11 @@ window.onload = function () {
         console.log("Navegador móvel detectado 🌐");
         // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
         alert("Para melhor experiência, adicione este site à tela inicial!");
-        window.parent.document.getElementById("botoes_Index").style.display = "none";
         window.addEventListener('touchstart', () => {
             const leituraToque = setInterval(() => {
                 clearInterval(leituraToque);
-                window.parent.document.getElementById("botoes_Index").style.display = "flex";
                 ativarModoImersivo();
-            }, 1);
+            }, 10);
         }), { once: true };
     } else if (isMobile() && isPWA()) {
         console.log("App PWA em execução 📲");
