@@ -67,6 +67,25 @@
         display: flex;
     }
 
+    .painel_carregando_jogo {
+        margin: 0 35%;
+        width: 50%;
+        bottom: 16.5%;
+    }
+
+    .status_barra_carregando {
+        width: 0%;
+        height: 27px;
+        border: 2px solid black;
+        border-radius: 10px;
+    }
+
+    #legenda_barra_carregando {
+        padding: 2px 10px 5px 10px;
+        font-weight: 500;
+        font-size: 20px;
+    }
+
     .painel_botoes {
         margin: 0 35%;
         width: 50%;
