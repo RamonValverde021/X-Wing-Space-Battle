@@ -1,4 +1,13 @@
 window.onload = function () {
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js') // O caminho deve ser absoluto a partir da raiz.
+                .then(() => console.log("Service Worker registrado com sucesso ✅"))
+                .catch(err => console.error("Erro ao registrar SW:", err));
+        });
+    }
+
     if (isPWA()) {
         console.log("Rodando como PWA ✅");
     } else {

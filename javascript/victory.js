@@ -154,7 +154,7 @@ function xwingSaindo() {
                     cenario.appendChild(btnFeedback);                          // Adiciona o botão criado ao cenario
                     btnFeedback.addEventListener("click", function () {
                         window.parent.document.getElementById("tela_jogo").src = "./html/feedback.html";
-                    });
+                    }, 1000);
                     setTimeout(() => {
                         btnFeedback.style.opacity = 1;                         // Aplica o estilo de opacidade para fazer o fade-in
                     }, 10 * 1000);                                             // Espera 10 segunso para o botão surgir    
