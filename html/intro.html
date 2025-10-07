@@ -34,9 +34,7 @@
 
 <body id="intro">
     <div id="fade-overlay"></div>
-    <div id="rotate-device-overlay" style="display: none;">
-        <span>Por favor, gire seu dispositivo para o modo paisagem.</span>
-    </div>
+
     <div id="botoes_Index" class="painel_botoes">
         <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
         <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp; Controles
@@ -44,6 +42,7 @@
     </div>
 
     <video id="introVideo" src="../images/Intro_X-Wing_Space_Battle.mp4"></video>
+
     <script>
         const botoes = document.getElementById("botoes_Index");
         const btnIniciar = document.getElementById("playIntro");
@@ -137,7 +136,7 @@
                                     });
                                 }
                             } else if (btnControles.className === "botaoIndexSelecionado") {
-                                 window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
+                                window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
                             }
                         } else if (index === 14) {               // Botão Seta Esquerda
                             document.getElementById("playIntro").className = "botaoIndexSelecionado";
