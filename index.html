@@ -11,12 +11,24 @@
     <link rel="manifest" href="./manifest.json">
     <!-- <script language="JavaScript" src="./javascript/script.js" defer></script> -->
     <style>
+        @font-face {
+            font-family: 'fontPixelArt';
+            src: url("./font/ARCADECLASSIC.TTF");
+        }
+
+        * {
+            /* Resetar modulos de espaçamentos*/
+            margin: 0px;
+            padding: 0px;
+            font-family: fontPixelArt;
+        }
+
         body,
         html {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: black;
+            background-color: #000000;
         }
 
         #tela_jogo {
