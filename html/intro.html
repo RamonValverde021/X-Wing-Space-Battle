@@ -83,29 +83,12 @@
         const fadeOverlay = document.getElementById("fade-overlay");
         let iniciouGame = true;
 
-        /**
-         * Tenta colocar o jogo em tela cheia e travar a orientação para paisagem.
-         * Ideal para ser chamado por uma interação do usuário em dispositivos móveis.
-         */
-        function ativarModoImersivo() {
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().then(() => {
-                    if (screen.orientation && screen.orientation.lock) {
-                        screen.orientation.lock('landscape').catch(err => console.error("Falha ao travar a orientação:", err));
-                    }
-                }).catch(err => console.error("Falha ao entrar em tela cheia:", err));
-            }
-        }
-
         // Inicia com o botão Iniciar selecionado
         btnIniciar.className = "botaoIndexSelecionado";
         btnControles.className = "botaoIndex";
 
         btnIniciar.addEventListener("click", function () {
             // Esconde os botões.
-            // Em dispositivos móveis, uma interação do usuário é necessária para entrar em tela cheia.
-            ativarModoImersivo();
-
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
 
             // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
