@@ -22,18 +22,10 @@ function xwingEspecialAtaque() {
         }
     }
     xwing.className = "x-wing_standard";                                  // Volta para a classe original do X-Wing
-    if (audioFullPower.played) {
-        audioFullPower.pause;                                         // Finaliza o audio dos itens especiais
-    }
-    if (audioTrilhaSonora.played) {
-        audioTrilhaSonora.pause;                                          // Finaliza a trilha sonora principal
-    }
-    if (audioTrilhaSonoraDarthVader.played) {
-        audioTrilhaSonoraDarthVader.pause;                                // Finaliza a trilha sonora do Darth Vader
-    }
-    if (audioTrilhaSonoraEstrelaDaMorte.played) {
-        audioTrilhaSonoraEstrelaDaMorte.pause;                            // Finaliza a trilha sonora da Estrela da Morte
-    }
+    audioFullPower.pause;                                                 // Finaliza o audio dos itens especiais
+    audioTrilhaSonora.pause;                                              // Finaliza a trilha sonora principal
+    audioTrilhaSonoraDarthVader.pause;                                    // Finaliza a trilha sonora do Darth Vader
+    audioTrilhaSonoraEstrelaDaMorte.pause;                                // Finaliza a trilha sonora da Estrela da Morte
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0;                                                     // Define a variável de rotação do X-Wing para 0
