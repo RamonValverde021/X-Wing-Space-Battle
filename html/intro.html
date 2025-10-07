@@ -104,6 +104,9 @@
 
         btnIniciar.addEventListener("click", function () {
             // Esconde os botões.
+            // AVISA a página principal para entrar em modo imersivo.
+            ativarModoImersivo();
+
             botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
 
             // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
