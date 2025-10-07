@@ -27,7 +27,7 @@ function criarItensEspeciais() {
 }
 
 // Item Full-Power
-let intervaloFullPower = 10000;                                                  // 10000 - Libera a criação do item de Full-Power a cada 10000 pontos
+let intervaloFullPower = 3000;                                                  // 10000 - Libera a criação do item de Full-Power a cada 10000 pontos
 let contagemAnterior = 0;                                                        // Variavel de atuaização de contagem
 function criarItemFullPower() {
     let contagemAtual = pontosScore;                                             // Pega a pontuação atual do jogador.

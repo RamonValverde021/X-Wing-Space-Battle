@@ -168,7 +168,7 @@ function xwingSaindo() {
                     }, 10 * 1000);                                             // Espera 10 segunso para o botão surgir    
 
                     setTimeout(() => reiniciarJogo(), (2 * 60 * 1000) + 5000); // Agenda a reinicialização do jogo para daqui a 02:05
-                }, 10000);                                                     // Mostra a mensagem após 5 segundos
+                }, 9000);                                                     // Mostra a mensagem após 5 segundos
             }, 3000);                                                          // Ativa a explosão após 3 segundos
         }
     }, 20);                                                                    // Delay de 20 milissegundos a cada frame
