@@ -88,6 +88,14 @@
             }
         });
 
+        // Ouve mensagens da página principal (index.html)
+        window.addEventListener('message', (event) => {
+            if (event.data === 'MOSTRAR_DICA_IMERSIVA') {
+                const dicaElement = document.getElementById("dica_modo");
+                if (dicaElement) dicaElement.style.display = "block";
+            }
+        });
+
         const botoes = document.getElementById("botoes_Index");
         const btnIniciar = document.getElementById("playIntro");
         const btnControles = document.getElementById("btnManualControles");
