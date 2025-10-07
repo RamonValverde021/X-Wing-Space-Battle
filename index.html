@@ -47,6 +47,17 @@
 
 <body id="index">
     <iframe id="tela_jogo" src="./html/intro.html"></iframe>
+    
+    <script>
+        // Registra o Service Worker para funcionalidade PWA e cache offline.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(() => console.log("Service Worker registrado com sucesso ✅"))
+                    .catch(err => console.error("Erro ao registrar SW:", err));
+            });
+        }
+    </script>
 </body>
 
 </html>
