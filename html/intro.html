@@ -67,7 +67,7 @@
             const { type, payload } = event.data;                                                                         // Desestrutura os dados da mensagem para obter o tipo e o conteúdo (payload).
             if (type === 'CACHE_PROGRESS') {                                                                              // Verifica se a mensagem é sobre o progresso do cache.
                 const percent = Math.round((payload.current / payload.total) * 100);                                      // Calcula a porcentagem de progresso do cacheamento.
-                document.getElementById("legenda_barra_carregando").innerText = `Carregando &nbsp; Dados: &nbsp; ${percent}%...`; // Atualiza o texto da barra de progresso
+                document.getElementById("legenda_barra_carregando").innerHTML = `Carregando &nbsp; Dados: &nbsp; ${percent}%...`; // Atualiza o texto da barra de progresso
                 document.getElementById("barra_carregando").style.width = `${percent}%`;                                  // Atualiza a largura da barra de progresso com a porcentagemCarregando... ${percent}%`;                             // Atualiza o texto do botão com a porcentagem.
                 if (payload.current === payload.total) {                                                                  // Verifica se o cacheamento de todos os arquivos foi concluído.
                     document.getElementById("botoes_Index").style.display = "flex";                                       // Habilita o botão de iniciar o jogo.
