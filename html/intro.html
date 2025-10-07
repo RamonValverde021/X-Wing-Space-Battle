@@ -35,6 +35,12 @@
 <body id="intro">
     <div id="fade-overlay"></div>
 
+    <div id="carregando_jogo" class="painel_carregando_jogo">
+        <div id="barra_carregando" class="status_barra_carregando">
+            <p id="legenda_barra_carregando">Carregando...</p>
+        </div>
+    </div>
+
     <div id="botoes_Index" class="painel_botoes">
         <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
         <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp; Controles
@@ -47,13 +53,13 @@
         // --- LÓGICA DE CARREGAMENTO DO SERVICE WORKER ---
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {                                         // Verifica se o navegador suporta Service Workers e se já há um ativo controlando a página.
             // Se já existe um SW controlando a página, o cache provavelmente já está pronto.
-            // Habilitamos o botão diretamente.
-            document.getElementById("playIntro").disabled = false;                                                        // Habilita o botão de iniciar, pois o cache provavelmente já está pronto.
-            document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";         // Define o texto do botão para "Iniciar Jogo".
+            // Habilitamos os botões diretamente.
+            document.getElementById("botoes_Index").style.display = "flex";                                               // Habilita o botão de iniciar, pois o cache provavelmente já está pronto.
+            document.getElementById("carregando_jogo").style.display = "none";                                            // Esconde a barra de progresso
         } else {                                                                                                          // Caso contrário, se for a primeira visita ou o SW ainda não estiver ativo.
             // Desabilita o botão e mostra o status de carregamento inicial.
-            document.getElementById("playIntro").disabled = true;                                                         // Desabilita o botão enquanto os arquivos são cacheados.
-            document.getElementById("playIntro").innerHTML = "Carregando...";                                             // Mostra "Carregando..." no botão.
+            document.getElementById("botoes_Index").style.display = "none";                                               // Desabilita os botões enquanto os arquivos são cacheados.
+            document.getElementById("carregando_jogo").style.display = "flex";                                            // Mostra "Carregando..."
         }
 
         // Ouve as mensagens do Service Worker
@@ -61,10 +67,10 @@
             const { type, payload } = event.data;                                                                         // Desestrutura os dados da mensagem para obter o tipo e o conteúdo (payload).
             if (type === 'CACHE_PROGRESS') {                                                                              // Verifica se a mensagem é sobre o progresso do cache.
                 const percent = Math.round((payload.current / payload.total) * 100);                                      // Calcula a porcentagem de progresso do cacheamento.
-                document.getElementById("playIntro").innerHTML = `Carregando... ${percent}%`;                             // Atualiza o texto do botão com a porcentagem.
+                document.getElementById("barra_carregando").style.width = `${percent}%`;                                  // Atualiza a largura da barra de progresso com a porcentagemCarregando... ${percent}%`;                             // Atualiza o texto do botão com a porcentagem.
                 if (payload.current === payload.total) {                                                                  // Verifica se o cacheamento de todos os arquivos foi concluído.
-                    document.getElementById("playIntro").disabled = false;                                                // Habilita o botão de iniciar o jogo.
-                    document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱"; // Altera o texto do botão para "Iniciar Jogo".
+                    document.getElementById("botoes_Index").style.display = "flex";                                       // Habilita o botão de iniciar o jogo.
+                    document.getElementById("carregando_jogo").style.display = "none";                                    // Esconde a barra de progresso
                 }
             }
         });
