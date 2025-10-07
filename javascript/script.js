@@ -1,28 +1,40 @@
 window.onload = function () {
 
+    if (isPWA()) {
+        console.log("Rodando como PWA ✅");
+        document.getElementById("intro").style.backgroundColor = "red";
+    } else {
+        console.log("Rodando no navegador 🌐");
+    }
+
     if (isMobile()) {
         console.log("Dispositivo móvel detectado 📱");
     } else {
         console.log("Desktop detectado 💻");
     }
 
-    if (isMobile()) {
-        if (isPWA()) {
-            console.log("App PWA em execução 📲");
-        } else {
-            console.log("Navegador móvel detectado 🌐");
-            const dicaElement = document.getElementById("dica_modo");
-            if (dicaElement) dicaElement.style.display = "block";
-        }
-        // Tanto no PWA quanto no navegador móvel, uma interação do usuário é necessária
-        // para garantir o modo imersivo. O botão "Iniciar Jogo" já chama `ativarModoImersivo`.
-        // Este listener adicional serve como um "backup" para qualquer toque na tela.
-        window.addEventListener('click', ativarModoImersivo, { once: true });
-        window.addEventListener('touchstart', ativarModoImersivo, { once: true });
+    if (isMobile() && !isPWA()) {
+        console.log("Navegador móvel detectado 🌐");
+        // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
+        //alert("Para melhor experiência, adicione este site à tela inicial!");
+        const dicaElement = document.getElementById("dica_modo");       // Obtém o elemento da dica.
+        if (dicaElement) dicaElement.style.display = "block";           // Mostra a dica.
+        window.addEventListener('touchstart', () => {
+            const leituraToque = setInterval(() => {
+                clearInterval(leituraToque);
+                // Em dispositivos móveis, uma interação do usuário é necessária para entrar em tela cheia.
+                ativarModoImersivo();
+            }, 10);
+        }), { once: true };
+    } else if (isMobile() && isPWA()) {
+        console.log("App PWA em execução 📲");
+        // Aqui você pode travar orientação ou iniciar fullscreen
+        const dicaElement = document.getElementById("dica_modo");       // Obtém o elemento da dica.
+        if (dicaElement) dicaElement.style.display = "none";           // Mostra a dica.
     } else {
         console.log("Executando em desktop 💻");
     }
-    
+
     console.log('Modo de exibição atual:', window.matchMedia('(display-mode: standalone)').matches
         ? 'standalone'
         : 'browser');
@@ -30,7 +42,7 @@ window.onload = function () {
 
 function isPWA() {
     return window.matchMedia('(display-mode: standalone)').matches
-        || window.navigator.standalone;
+        || window.navigator.standalone === true;
 }
 
 function isMobile() {
