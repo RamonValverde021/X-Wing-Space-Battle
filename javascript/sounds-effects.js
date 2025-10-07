@@ -120,27 +120,42 @@ function somVitoria() {
     audio.play();                                                   // Toca o audio
 }
 
+let audioEspecialItens;
+
 function somItensEspeciais(item) {
+    const audios = [
+        '../audios/special-item-1.mp3',
+        '../audios/special-item-2.mp3',
+        '../audios/special-item-3.mp3',
+        '../audios/R2D2.mp3',
+        '../audios/star-wars-full-power.mp3'
+    ];
+
     if (item == 1) {
-        const audio = new Audio('../audios/special-item-1.mp3');
-        audio.volume = 0.2;
-        audio.play();
+        audioEspecialItens = new Audio(audios[0]); // 1
+        console.log(audios[0]);
+        audioEspecialItens.volume = 0.2;
+        audioEspecialItens.play();
     } else if (item == 2) {
-        const audio = new Audio('../audios/special-item-2.mp3');
-        audio.volume = 0.2;
-        audio.play();
+        audioEspecialItens = new Audio(audios[1]); // 2
+        console.log(audios[1]);
+        audioEspecialItens.volume = 0.2;
+        audioEspecialItens.play();
     } else if (item == 3) {
-        const audio = new Audio('../audios/star-wars-full-power.mp3');
-        audio.volume = 0.2;
-        audio.play();
+        audioEspecialItens = new Audio(audios[4]); // full
+        console.log(audios[4]);
+        audioEspecialItens.volume = 0.2;
+        audioEspecialItens.play();
     } else if (item == 4) {
-        const audio = new Audio('../audios/R2D2.mp3');
-        audio.volume = 0.2;
-        audio.play();
+        audioEspecialItens = new Audio(audios[3]); // r2d2
+        console.log(audios[3]);
+        audioEspecialItens.volume = 0.2;
+        audioEspecialItens.play();
     } else if (item == 5) {
-        const audio = new Audio('../audios/special-item-3.mp3');
-        audio.volume = 0.2;
-        audio.play();
+        audioEspecialItens = new Audio(audios[2]); // 3
+        console.log(audios[2]);
+        audioEspecialItens.volume = 0.2;
+        audioEspecialItens.play();
     }
 }
 

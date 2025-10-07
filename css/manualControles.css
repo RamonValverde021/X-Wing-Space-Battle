@@ -26,22 +26,65 @@ body#controles {
 
 .painel_comandos {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-content: center;
-    flex-direction: column;
-    height: 100vh;
+    flex-direction: row;
+    height: 100%;
 }
 
 .painel_dados {
     display: flex;
-    justify-content: center;
-    align-content: flex-start;
+    justify-content: flex-start;
+    align-content: center;
     flex-direction: column;
     padding: 50px 20px 2% 5%;
     width: 600px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.painel_itens {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    flex-direction: column;
+    padding: 50px;
+    width: 300px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.conteiner_item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.item_img {
+    height: 50px;
+    margin-right: 30px;
+}
+
+.item_descricao {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.item_titulo {
+    font-size: 25px;
+    color: yellow;
+    font-weight: 500;
+}
+
+.item_descricao .item_legenda {
+    font-size: 20px;
+    color: white;
+}
+
 
 #legenda_instrucoes {
     font-weight: 500;
@@ -51,6 +94,7 @@ body#controles {
 .item_comando {
     font-weight: 500;
     font-size: 25px;
+    display: flex;
     color: yellow;
     padding: 5px 15px;
 }
@@ -103,6 +147,11 @@ body#controles {
         width: 600px;
         height: auto;
         background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .painel_itens {
+        padding: 20px 20px;
+        width: 600px;
     }
 
     .botaoVoltar {

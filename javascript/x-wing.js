@@ -313,23 +313,15 @@ function colisaoXWing() {
             pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
-            if (okResistencePower) return;                                              // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
+            if (okResistencePower) return;                                               // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
             if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
-            okResistencePower = true;                                                   // Habilita a flag do Poder da Resistencia
-            // Efeito de piscar para a transição
-            let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
-            const blinkInterval = setInterval(() => {
-                // Alterna a classe para criar o efeito de piscar
-                xwing.className = (xwing.className === "x-wing_standard") ? "x-wing_resistence-power" : "x-wing_standard";
-                blinkTimes--;                                                            // Decrementa o contador de piscadas
-                if (blinkTimes <= 0) {                                                   // Se o contador chegar a 0
-                    clearInterval(blinkInterval);                                        // Para de piscar
-                    xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
-                }
-            }, 150);                                                                     // Intervalo do pisca-pisca (a cada 150ms)
+            okResistencePower = true;                                                    // Habilita a flag do Poder da Resistencia
+            transicaoEscudo("escudo");                                                   // Chama a função de transição com o modo final de escudo
             setTimeout(() => {                                                           // Define o tempo total do poder e o retorno ao normal
-                okResistencePower = false;                                               // Desabilita a flag do Poder da Resistencia
-                xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
+                if (!okFullPower) {
+                    okResistencePower = false;                                               // Desabilita a flag do Poder da Resistencia
+                    transicaoEscudo("normal");                                               // Chama a função de transição com o modo final normal
+                }
             }, 10000);                                                                   // 10 segundos de duração total do poder
         }
     });
@@ -357,10 +349,12 @@ function colisaoXWing() {
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
             setTimeout(() => {                                                           // Define o tempo total do poder e o retorno ao normal
-                okPowerUp = false;                                                       // Desabilita a flag do Power-Up
-                danoTiroXWing = 2;                                                       // Volta para o dano normal
-                clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
-                iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
+                if (!okFullPower) {
+                    okPowerUp = false;                                                       // Desabilita a flag do Power-Up
+                    danoTiroXWing = 2;                                                       // Volta para o dano normal
+                    clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
+                    iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
+                }
             }, 10000);                                                                   // 10 segundos de duração total do poder
         }
     });
@@ -387,7 +381,7 @@ function colisaoXWing() {
                 audioTrilhaSonoraEstrelaDaMorte.volume = 0;                              // Muta a trilha sonora da Estrela da Morte
             }
             somItensEspeciais(5);                                                        // Toca o som do item especial do Power-Up
-            pontosScore += 100;                                                          // Adiciona 100 pontos na pontuação para cada acerto no Tie Fighter
+            pontosScore += 1000;                                                         // Adiciona 1000 pontos na pontuação para cada acerto no Tie Fighter
             atualizarMenu();                                                             // Atualiza a pontuação no menu
             item.remove();                                                               // Remove o item que colidiu com o X-Wing
             if (okFullPower) return;                                                     // Se o poder já estiver ativo, apenas remove o item e não reinicia o efeito.
@@ -397,17 +391,7 @@ function colisaoXWing() {
             somItensEspeciais(3);                                                        // Toca a trilha sonoroa do Full-Power
             pontosVida = 100;                                                            // Recarrega a vida ao máximo
             atualizarMenu();                                                             // Atualiza a vida no menu
-            // Efeito de piscar para a transição
-            let blinkTimes = 8;                                                          // Número de vezes que vai piscar (4 vezes cada estilo)
-            const blinkInterval = setInterval(() => {
-                // Alterna a classe para criar o efeito de piscar
-                xwing.className = (xwing.className === "x-wing_standard") ? "x-wing_resistence-power" : "x-wing_standard";
-                blinkTimes--;                                                            // Decrementa o contador de piscadas
-                if (blinkTimes <= 0) {                                                   // Se o contador chegar a 0
-                    clearInterval(blinkInterval);                                        // Para de piscar
-                    xwing.className = "x-wing_resistence-power";                         // Garante que a classe final seja a do poder
-                }
-            }, 150);
+            transicaoEscudo("escudo");                                                   // Chama a função de transição com o modo final de escudo
             danoTiroXWing = 5;                                                           // Aumenta o dano dos tiros do X-Wing
             clearInterval(iniciaProjeteisXWing);                                         // Finaliza o loop de atirar no modo Normal
             iniciaProjeteisXWing = setInterval(atirar, 80);                              // Inica em loop a função para atirar com o X-Wing no modo Power-Up
@@ -417,7 +401,7 @@ function colisaoXWing() {
                 danoTiroXWing = 3;                                                       // Volta para o dano normal
                 clearInterval(iniciaProjeteisXWing);                                     // Finaliza o loop de atirar com Power-Up
                 iniciaProjeteisXWing = setInterval(atirar, 150);                         // Inica em loop a função para atirar com o X-Wing no modo normal
-                xwing.className = "x-wing_standard";                                     // Volta para a classe original do X-Wing
+                transicaoEscudo("normal");                                               // Chama a função de transição com o modo final normal
                 if (audioTrilhaSonora.played) {
                     audioTrilhaSonora.volume = 0.2;                                      // Reativa o volume da trilha sonora principal normalmente
                 }
@@ -532,4 +516,23 @@ function giroReversoXWing() {
         }
         xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                            // Aplica a nova rotação.
     }, 20);                                                                              // Executa a cada 20ms para uma animação fluida.
-} 
+}
+
+
+function transicaoEscudo(final) {
+    // Efeito de piscar para a transição
+    let blinkTimes = 8;                                                                  // Número de vezes que vai piscar (4 vezes cada estilo)
+    const blinkInterval = setInterval(() => {
+        // Alterna a classe para criar o efeito de piscar
+        xwing.className = (xwing.className === "x-wing_standard") ? "x-wing_resistence-power" : "x-wing_standard";
+        blinkTimes--;                                                                   // Decrementa o contador de piscadas
+        if (blinkTimes <= 0) {                                                          // Se o contador chegar a 0
+            clearInterval(blinkInterval);                                               // Para de piscar
+            if (final == "escudo") {                                                    // Se o modo final for o de escudo
+                xwing.className = "x-wing_resistence-power";                            // Garante que a classe final seja a do poder
+            } else {
+                xwing.className = "x-wing_standard";                                    // Garante que a classe final seja a normal
+            }
+        }
+    }, 150);
+}

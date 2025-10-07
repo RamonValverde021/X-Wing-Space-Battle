@@ -21,6 +21,19 @@ function xwingEspecialAtaque() {
             gamepadOverlay.style.opacity = 0;                             // Altera seu estilo para 'hidden' para que a interface do gamepad fique invisivel.
         }
     }
+    xwing.className = "x-wing_standard";                                  // Volta para a classe original do X-Wing
+    if (audioEspecialItens.played) {
+        audioEspecialItens.volume = 0;                                    // Muta o audio dos itens especiais
+    }
+    if (audioTrilhaSonora.played) {
+        audioTrilhaSonora.volume = 0;                                     // Muta a trilha sonora principal
+    }
+    if (audioTrilhaSonoraDarthVader.played) {
+        audioTrilhaSonoraDarthVader.volume = 0;                           // Muta a trilha sonora do Darth Vader
+    }
+    if (audioTrilhaSonoraEstrelaDaMorte.played) {
+        audioTrilhaSonoraEstrelaDaMorte.volume = 0;                       // Muta a trilha sonora da Estrela da Morte
+    }
 
     // Define rotação para apontar para cima
     rotacaoXWing = 0;                                                     // Define a variável de rotação do X-Wing para 0

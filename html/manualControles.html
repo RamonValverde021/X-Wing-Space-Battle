@@ -53,8 +53,39 @@
                     &nbsp; de &nbsp; estatisticas</span></span>
         </section>
         <button id="btnManualVoltar" class="botaoVoltar">❰ &nbsp;&nbsp; Voltar &nbsp;&nbsp; ❱</button>
-    </div>
 
+        <section class="painel_itens">
+            <span id="legenda_instrucoes" class="item_comando">Itens &nbsp; Especiais</span><br>
+            <div class="conteiner_item">
+                <img class="item_img" src="../images/special/special-4.png">
+                <div class="item_descricao">
+                    <span class="item_titulo">Vida &nbsp; Extra</span>
+                    <span class="item_legenda">Recupera &nbsp; 30% &nbsp; da &nbsp; vida.</span>
+                </div>
+            </div>
+            <div class="conteiner_item">
+                <img class="item_img" src="../images/special/special-2.png">
+                <div class="item_descricao">
+                    <span class="item_titulo">Resistencia</span>
+                    <span class="item_legenda">Invencibilidade &nbsp; temporaria &nbsp; por &nbsp; 10s.</span>
+                </div>
+            </div>
+            <div class="conteiner_item">
+                <img class="item_img" src="../images/special/special-1.png">
+                <div class="item_descricao">
+                    <span class="item_titulo">Power-Up</span>
+                    <span class="item_legenda">Aumenta &nbsp; o &nbsp; dano &nbsp; e &nbsp; a &nbsp; cadencia &nbsp; de &nbsp; tiro &nbsp; por &nbsp; 10s.</span>
+                </div>
+            </div>
+            <div class="conteiner_item">
+                <img class="item_img" src="../images/special/special-3.png">
+                <div class="item_descricao">
+                    <span class="item_titulo">Full &nbsp; Power</span>
+                    <span class="item_legenda">Ativa &nbsp; todos &nbsp; os &nbsp; bonus &nbsp; e &nbsp; recupera &nbsp; a &nbsp; vida.</span>
+                </div>
+            </div>
+        </section>
+    </div>
     <script>
         document.getElementById("btnManualVoltar").addEventListener("click", function () {
             window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
