@@ -46,7 +46,7 @@
 <body id="intro">
     <div id="fade-overlay"></div>
     
-    <h2 id="dica_modo">Toque &nbsp; na &nbsp; tela &nbsp; 2x &nbsp; vezes &nbsp; para &nbsp; ativar &nbsp; o &nbsp; modo &nbsp; imersivo.</h2>
+    <h2 id="dica_modo">Toque &nbsp; na &nbsp; tela &nbsp; 2x &nbsp; vezes &nbsp; para &nbsp; ativar &nbsp; o &nbsp; modo &nbsp; imersivo.</h2> 
 
     <div id="conteiner_barra_carregando" class="painel_carregando_jogo">
         <div id="barra_carregando" class="status_barra_carregando">
@@ -85,14 +85,6 @@
                     document.getElementById("botoes_Index").style.display = "flex";                                        // Mostra os botões.
                     document.getElementById("conteiner_barra_carregando").style.display = "none";                          // Esconde "Carregando..."
                 }
-            }
-        });
-
-        // Ouve mensagens da página principal (index.html)
-        window.addEventListener('message', (event) => {
-            if (event.data === 'MOSTRAR_DICA_IMERSIVA') {
-                const dicaElement = document.getElementById("dica_modo");
-                if (dicaElement) dicaElement.style.display = "block";
             }
         });
 
