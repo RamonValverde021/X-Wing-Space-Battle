@@ -22,8 +22,8 @@ function xwingEspecialAtaque() {
         }
     }
     xwing.className = "x-wing_standard";                                  // Volta para a classe original do X-Wing
-    if (audioEspecialItens.played) {
-        audioEspecialItens.pause;                                         // Finaliza o audio dos itens especiais
+    if (audioFullPower.played) {
+        audioFullPower.pause;                                         // Finaliza o audio dos itens especiais
     }
     if (audioTrilhaSonora.played) {
         audioTrilhaSonora.pause;                                          // Finaliza a trilha sonora principal

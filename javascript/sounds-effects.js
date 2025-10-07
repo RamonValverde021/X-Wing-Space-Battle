@@ -110,52 +110,45 @@ function somCanhoesEstrelaDaMorte() {
 
 function somSinalObiWan() {
     const audio = new Audio('../audios/use_a_forca_luke.mp3');      // Audio da mensagem de voz do Obi-Wan
-    audio.volume = 0.8;                                               // Volume do audio em 100%
+    audio.volume = 0.8;                                             // Volume do audio em 100%
     audio.play();                                                   // Toca o audio
 }
 
 function somVitoria() {
     const audio = new Audio('../audios/victory_theme.mp3');         // Trilha sonora de vitoria do jogo
-    audio.volume = 0.6;                                               // Volume do audio em 100%
+    audio.volume = 0.6;                                             // Volume do audio em 100%
     audio.play();                                                   // Toca o audio
 }
 
-let audioEspecialItens;
+const audioFullPower = new Audio('../audios/star-wars-full-power.mp3');
 
 function somItensEspeciais(item) {
     const audios = [
         '../audios/special-item-1.mp3',
         '../audios/special-item-2.mp3',
         '../audios/special-item-3.mp3',
-        '../audios/R2D2.mp3',
-        '../audios/star-wars-full-power.mp3'
+        '../audios/R2D2.mp3'
     ];
 
-    if (item == 1) {
-        audioEspecialItens = new Audio(audios[0]); // 1
-        console.log(audios[0]);
-        audioEspecialItens.volume = 0.2;
-        audioEspecialItens.play();
-    } else if (item == 2) {
-        audioEspecialItens = new Audio(audios[1]); // 2
-        console.log(audios[1]);
-        audioEspecialItens.volume = 0.2;
-        audioEspecialItens.play();
-    } else if (item == 3) {
-        audioEspecialItens = new Audio(audios[4]); // full
-        console.log(audios[4]);
-        audioEspecialItens.volume = 0.2;
-        audioEspecialItens.play();
-    } else if (item == 4) {
-        audioEspecialItens = new Audio(audios[3]); // r2d2
-        console.log(audios[3]);
-        audioEspecialItens.volume = 0.2;
-        audioEspecialItens.play();
-    } else if (item == 5) {
-        audioEspecialItens = new Audio(audios[2]); // 3
-        console.log(audios[2]);
-        audioEspecialItens.volume = 0.2;
-        audioEspecialItens.play();
+    if (item == 1) { // 1
+        const audio = new Audio(audios[0]);
+        audio.volume = 0.2;
+        audio.play();
+    } else if (item == 2) { // 2
+        const audio = new Audio(audios[1]);
+        audio.volume = 0.2;
+        audio.play();
+    } else if (item == 3) { // full
+        audioFullPower.volume = 0.2;
+        audioFullPower.play();
+    } else if (item == 4) { // r2d2
+        const audio = new Audio(audios[3]);
+        audio.volume = 0.2;
+        audio.play();
+    } else if (item == 5) { // 3
+        const audio = new Audio(audios[2]);
+        audio.volume = 0.2;
+        audio.play();
     }
 }
 

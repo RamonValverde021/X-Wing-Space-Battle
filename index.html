@@ -28,6 +28,23 @@
     </style>
 </head>
 
+<!--
+    *Usar uma única página e trocar o conteúdo com JavaScript*
+
+    Essa é a forma profissional (e usada por praticamente todos os jogos web e PWAs).
+    Em vez de abrir novos arquivos .html, você mantém um único index.html e carrega o conteúdo dinamicamente via JavaScript.
+
+    Assim o fullscreen continua ativo, porque você nunca sai do index.html.
+    Essa técnica é o SPA (Single Page Application) — usada em frameworks como React, Vue e Angular, mas você pode fazer na mão também.
+
+    *Usar um <iframe>
+
+    Se quiser continuar com páginas separadas, dá pra carregar as outras dentro de um iframe que permanece em fullscreen:
+    Aí você só troca o src do iframe quando quiser mudar de “página”:
+
+    window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
+-->
+
 <body id="index">
     <iframe id="tela_jogo" src="./html/intro.html"></iframe>
 </body>
