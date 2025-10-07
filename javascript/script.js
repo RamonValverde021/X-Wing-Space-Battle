@@ -52,7 +52,6 @@ function isMobile() {
  * Ideal para ser chamado por uma interação do usuário em dispositivos móveis.
  */
 function ativarModoImersivo() {
-    /*
     if (document.documentElement.requestFullscreen) {                                                                   // Verifica se o navegador suporta a API de tela cheia.
         document.documentElement.requestFullscreen().then(() => {                                                       // Solicita que o documento entre em modo de tela cheia.
             // Assim que a tela cheia for ativada com sucesso, esconde a dica.
@@ -63,5 +62,4 @@ function ativarModoImersivo() {
             }
         }).catch(err => console.error("Falha ao entrar em tela cheia:", err));                                          // Captura e exibe no console qualquer erro que ocorra ao tentar entrar em tela cheia.
     }
-        */
 }
