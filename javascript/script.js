@@ -14,7 +14,7 @@ window.onload = function () {
     if (isMobile() && !isPWA()) {
         console.log("Navegador móvel detectado 🌐");
         // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
-        alert("Para melhor experiência, adicione este site à tela inicial!");
+        //alert("Para melhor experiência, adicione este site à tela inicial!");
         window.addEventListener('touchstart', () => {
             const leituraToque = setInterval(() => {
                 clearInterval(leituraToque);
