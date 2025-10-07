@@ -1,5 +1,5 @@
-const CACHE_NAME = "x-wing-space-battle-v1";
-const arquivosParaCache = [
+const CACHE_NAME = "x-wing-space-battle-v1"; // Define o nome e a versão do cache para fácil gerenciamento e atualização.
+const arquivosParaCache = [ // Lista de todos os arquivos (assets) que devem ser armazenados em cache para funcionamento offline.
   // Arquivos Principais
   "./",
   "./index.html",
@@ -7,9 +7,9 @@ const arquivosParaCache = [
   "./html/game.html",
   "./html/manualControles.html",
   "./html/feedback.html",
-  "./html/obrigado.html", // Certifique-se que este arquivo está na raiz do projeto
+  "./html/obrigado.html", 
   "./manifest.json",      // Certifique-se que este arquivo está na raiz do projeto
-  "./service-worker.js",
+  "./service-worker.js",  // Certifique-se que este arquivo está na raiz do projeto
 
   // CSS
   "./css/styles.css",
@@ -46,11 +46,15 @@ const arquivosParaCache = [
   "./images/tie_fighter/tie_fighter_1.png",
   "./images/tie_fighter/vader_fighter.png",
   "./images/explosion/explosion_1.gif",
+  "./images/background_2.png",
   "./images/deathstar/deathstar-1.png",
   "./images/special/special-1.png",
   "./images/special/special-2.png",
   "./images/special/special-3.png",
   "./images/special/special-4.png",
+  "./images/meia_volta.png",
+  "./images/giro_antihorario.png",
+  "./images/giro_horario.png",
 
   // Áudios
   "./audios/forca_sempre_com_vc.mp3",
@@ -91,39 +95,39 @@ const arquivosParaCache = [
   "./audios/R2D2.mp3"
 ];
 
-self.addEventListener("install", (event) => {
-  console.log("SW: Evento de instalação iniciado.");
-  event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      console.log("SW: Cache aberto. Iniciando cache de arquivos.");
+self.addEventListener("install", (event) => {                                          // Adiciona um ouvinte para o evento 'install', que é disparado quando o SW é instalado pela primeira vez.
+  console.log("SW: Evento de instalação iniciado.");                                   // Log para depuração, informa que a instalação começou.
+  event.waitUntil(                                                                     // Garante que o SW não prossiga para a fase de ativação até que o código dentro dele seja concluído.
+    (async () => {                                                                     // Usa uma função assíncrona para poder usar 'await'.
+      const cache = await caches.open(CACHE_NAME);                                     // Abre o cache com o nome definido. Se não existir, ele é criado.
+      console.log("SW: Cache aberto. Iniciando cache de arquivos.");                   // Log para depuração.
 
-      const totalFiles = arquivosParaCache.length;
-      let cachedFiles = 0;
+      const totalFiles = arquivosParaCache.length;                                     // Obtém o número total de arquivos a serem cacheados.
+      let cachedFiles = 0;                                                             // Inicializa um contador para os arquivos já cacheados.
 
-      for (const file of arquivosParaCache) {
-        try {
-          await cache.add(file);
-          cachedFiles++;
+      for (const file of arquivosParaCache) {                                          // Itera sobre cada arquivo na lista 'arquivosParaCache'.
+        try { // Tenta executar o código de cacheamento.
+          await cache.add(file);                                                       // Adiciona o arquivo atual ao cache. O SW faz a requisição e armazena a resposta.
+          cachedFiles++;                                                               // Incrementa o contador de arquivos cacheados com sucesso.
           // Envia o progresso para a página
-          const clients = await self.clients.matchAll({ includeUncontrolled: true });
-          clients.forEach(client => {
-            client.postMessage({ type: 'CACHE_PROGRESS', payload: { total: totalFiles, current: cachedFiles } });
+          const clients = await self.clients.matchAll({ includeUncontrolled: true });  // Obtém uma lista de todos os clientes (abas) controlados por este SW.
+          clients.forEach(client => {                                                  // Itera sobre cada cliente.
+            client.postMessage({ type: 'CACHE_PROGRESS', payload: { total: totalFiles, current: cachedFiles } }); // Envia uma mensagem para o cliente com o progresso do cache.
           });
-        } catch (err) {
-          console.error(`SW: Falha ao cachear o arquivo: ${file}`, err);
+        } catch (err) {                                                                // Se ocorrer um erro ao tentar cachear um arquivo.
+          console.error(`SW: Falha ao cachear o arquivo: ${file}`, err);               // Exibe uma mensagem de erro detalhada no console.
         }
       }
 
-      console.log("SW: Todos os arquivos foram processados.");
+      console.log("SW: Todos os arquivos foram processados.");                         // Log para informar que o processo de cacheamento terminou.
     })()
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+self.addEventListener("fetch", (event) => {                                            // Adiciona um ouvinte para o evento 'fetch', que intercepta todas as requisições de rede da página.
+  event.respondWith(                                                                   // Diz ao navegador que vamos fornecer nossa própria resposta para a requisição.
+    caches.match(event.request).then((response) => {                                   // Tenta encontrar uma resposta correspondente à requisição no cache.
+      return response || fetch(event.request);                                         // Se uma resposta for encontrada no cache (response), a retorna. Senão, faz a requisição à rede (fetch).
     })
   );
 });

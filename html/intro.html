@@ -45,26 +45,26 @@
 
     <script>
         // --- LÓGICA DE CARREGAMENTO DO SERVICE WORKER ---
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {                                         // Verifica se o navegador suporta Service Workers e se já há um ativo controlando a página.
             // Se já existe um SW controlando a página, o cache provavelmente já está pronto.
             // Habilitamos o botão diretamente.
-            document.getElementById("playIntro").disabled = false;
-            document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";
-        } else {
+            document.getElementById("playIntro").disabled = false;                                                        // Habilita o botão de iniciar, pois o cache provavelmente já está pronto.
+            document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";         // Define o texto do botão para "Iniciar Jogo".
+        } else {                                                                                                          // Caso contrário, se for a primeira visita ou o SW ainda não estiver ativo.
             // Desabilita o botão e mostra o status de carregamento inicial.
-            document.getElementById("playIntro").disabled = true;
-            document.getElementById("playIntro").innerHTML = "Carregando...";
+            document.getElementById("playIntro").disabled = true;                                                         // Desabilita o botão enquanto os arquivos são cacheados.
+            document.getElementById("playIntro").innerHTML = "Carregando...";                                             // Mostra "Carregando..." no botão.
         }
 
         // Ouve as mensagens do Service Worker
-        navigator.serviceWorker.addEventListener('message', event => {
-            const { type, payload } = event.data;
-            if (type === 'CACHE_PROGRESS') {
-                const percent = Math.round((payload.current / payload.total) * 100);
-                document.getElementById("playIntro").innerHTML = `Carregando... ${percent}%`;
-                if (payload.current === payload.total) {
-                    document.getElementById("playIntro").disabled = false;
-                    document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";
+        navigator.serviceWorker.addEventListener('message', event => {                                                    // Adiciona um ouvinte para receber mensagens do Service Worker.
+            const { type, payload } = event.data;                                                                         // Desestrutura os dados da mensagem para obter o tipo e o conteúdo (payload).
+            if (type === 'CACHE_PROGRESS') {                                                                              // Verifica se a mensagem é sobre o progresso do cache.
+                const percent = Math.round((payload.current / payload.total) * 100);                                      // Calcula a porcentagem de progresso do cacheamento.
+                document.getElementById("playIntro").innerHTML = `Carregando... ${percent}%`;                             // Atualiza o texto do botão com a porcentagem.
+                if (payload.current === payload.total) {                                                                  // Verifica se o cacheamento de todos os arquivos foi concluído.
+                    document.getElementById("playIntro").disabled = false;                                                // Habilita o botão de iniciar o jogo.
+                    document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱"; // Altera o texto do botão para "Iniciar Jogo".
                 }
             }
         });
