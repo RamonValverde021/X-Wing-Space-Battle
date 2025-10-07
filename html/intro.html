@@ -44,6 +44,31 @@
     <video id="introVideo" src="../images/Intro_X-Wing_Space_Battle.mp4"></video>
 
     <script>
+        // --- LÓGICA DE CARREGAMENTO DO SERVICE WORKER ---
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            // Se já existe um SW controlando a página, o cache provavelmente já está pronto.
+            // Habilitamos o botão diretamente.
+            document.getElementById("playIntro").disabled = false;
+            document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";
+        } else {
+            // Desabilita o botão e mostra o status de carregamento inicial.
+            document.getElementById("playIntro").disabled = true;
+            document.getElementById("playIntro").innerHTML = "Carregando...";
+        }
+
+        // Ouve as mensagens do Service Worker
+        navigator.serviceWorker.addEventListener('message', event => {
+            const { type, payload } = event.data;
+            if (type === 'CACHE_PROGRESS') {
+                const percent = Math.round((payload.current / payload.total) * 100);
+                document.getElementById("playIntro").innerHTML = `Carregando... ${percent}%`;
+                if (payload.current === payload.total) {
+                    document.getElementById("playIntro").disabled = false;
+                    document.getElementById("playIntro").innerHTML = "❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱";
+                }
+            }
+        });
+
         const botoes = document.getElementById("botoes_Index");
         const btnIniciar = document.getElementById("playIntro");
         const btnControles = document.getElementById("btnManualControles");

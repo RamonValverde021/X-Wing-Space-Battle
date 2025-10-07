@@ -92,10 +92,31 @@ const arquivosParaCache = [
 ];
 
 self.addEventListener("install", (event) => {
+  console.log("SW: Evento de instalação iniciado.");
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(arquivosParaCache);
-    })
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      console.log("SW: Cache aberto. Iniciando cache de arquivos.");
+
+      const totalFiles = arquivosParaCache.length;
+      let cachedFiles = 0;
+
+      for (const file of arquivosParaCache) {
+        try {
+          await cache.add(file);
+          cachedFiles++;
+          // Envia o progresso para a página
+          const clients = await self.clients.matchAll({ includeUncontrolled: true });
+          clients.forEach(client => {
+            client.postMessage({ type: 'CACHE_PROGRESS', payload: { total: totalFiles, current: cachedFiles } });
+          });
+        } catch (err) {
+          console.error(`SW: Falha ao cachear o arquivo: ${file}`, err);
+        }
+      }
+
+      console.log("SW: Todos os arquivos foram processados.");
+    })()
   );
 });
 
