@@ -7,60 +7,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="description" content="Jogo estilo retrô de combate espacial inspirado em StarWars">
     <title>StarWars - X-Wing Space Battle</title>
-    <link rel="icon" href="./images/icon-192.png">
-    <link rel="manifest" href="./manifest.json">
-    <script language="JavaScript" src="./javascript/script.js" defer></script>
+    <link rel="icon" href="../images/icon-192.png">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../css/smartphone-size.css">
+    <script language="JavaScript" src="../javascript/script.js" defer></script>
     <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #tela_jogo {
-            position: absolute;
+        /* Div de sobreposição para o efeito de fade-to-black */
+        #fade-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border: none;
+            background-color: black;
+            opacity: 0;
+            pointer-events: none;
+            /* Não bloqueia cliques quando invisível */
+            transition: opacity 5s ease-out;
+            /* Duração da transição de 4 segundos */
+            z-index: 20;
+            /* Fica acima de tudo, exceto o vídeo */
+        }
+
+        #dica_modo {
+            display: none;
+            position: absolute;
+            top: 20%;
+            text-align: center;
+            z-index: 30; 
+            color: yellow;
+            width: 90%;
+            margin: 0 5%;
         }
     </style>
 </head>
 
-<!--
-    *Usar uma única página e trocar o conteúdo com JavaScript*
+<body id="intro">
+    <div id="fade-overlay"></div>
+    
+    <h2 id="dica_modo">Toque &nbsp; na &nbsp; tela &nbsp; 2x &nbsp; vezes &nbsp; para &nbsp; ativar &nbsp; o &nbsp; modo &nbsp; imersivo.</h2>
 
-    Essa é a forma profissional (e usada por praticamente todos os jogos web e PWAs).
-    Em vez de abrir novos arquivos .html, você mantém um único index.html e carrega o conteúdo dinamicamente via JavaScript.
+    <div id="conteiner_barra_carregando" class="painel_carregando_jogo">
+        <div id="barra_carregando" class="status_barra_carregando">
+            <p id="legenda_barra_carregando">Carregando...</p>
+        </div>
+    </div>
 
-    Assim o fullscreen continua ativo, porque você nunca sai do index.html.
-    Essa técnica é o SPA (Single Page Application) — usada em frameworks como React, Vue e Angular, mas você pode fazer na mão também.
+    <div id="botoes_Index" class="painel_botoes">
+        <button id="playIntro" class="botaoIndex">❰ &nbsp;&nbsp; Iniciar &nbsp; Jogo &nbsp;&nbsp; ❱</button>
+        <button id="btnManualControles" class="botaoIndex">❰ &nbsp;&nbsp; Controles
+            &nbsp;&nbsp; ❱</button>
+    </div>
 
-    *Usar um <iframe>
-
-    Se quiser continuar com páginas separadas, dá pra carregar as outras dentro de um iframe que permanece em fullscreen:
-    Aí você só troca o src do iframe quando quiser mudar de “página”:
-
-    window.parent.document.getElementById("tela_jogo").src = "./html/intro.html";
--->
-
-<body id="index">
-
-    <iframe id="tela_jogo" src="./html/intro.html"></iframe>
-<!--
+    <video id="introVideo" src="../images/Intro_X-Wing_Space_Battle.mp4"></video>
     <script>
-        // Registra o Service Worker para funcionalidade PWA e cache offline.
-        if ('serviceWorker' in navigator) {                                               // Verifica se o navegador do usuário suporta a tecnologia Service Worker.
-            window.addEventListener('load', () => {                                       // Aguarda o evento 'load' da página, garantindo que o registro não atrase o carregamento inicial.
-                navigator.serviceWorker.register('/service-worker.js')                    // Tenta registrar o arquivo do Service Worker, localizado na raiz do projeto.
-                    .then(() => console.log("Service Worker registrado com sucesso ✅")) // Se o registro for bem-sucedido, exibe uma mensagem de sucesso no console.
-                    .catch(err => console.error("Erro ao registrar SW:", err, "🚫"));    // Se ocorrer um erro durante o registro, exibe o erro no console.
+        // --- LÓGICA DE CARREGAMENTO DO SERVICE WORKER ---
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {                                          // Verifica se o navegador suporta Service Workers e se já há um ativo controlando a página.
+            // Se já existe um SW controlando a página, o cache provavelmente já está pronto.
+            // Habilitamos o botão diretamente.
+            document.getElementById("botoes_Index").style.display = "flex";                                                // Mostra os botões.
+            document.getElementById("conteiner_barra_carregando").style.display = "none";                                  // Esconde "Carregando..."
+        } else {                                                                                                           // Caso contrário, se for a primeira visita ou o SW ainda não estiver ativo.
+            // Desabilita o botão e mostra o status de carregamento inicial.
+            document.getElementById("botoes_Index").style.display = "none";                                                // Esconde os botões.
+            document.getElementById("conteiner_barra_carregando").style.display = "flex";                                  // Mostra "Carregando..."
+        }
+
+        // Ouve as mensagens do Service Worker
+        navigator.serviceWorker.addEventListener('message', event => {                                                     // Adiciona um ouvinte para receber mensagens do Service Worker.
+            const { type, payload } = event.data;                                                                          // Desestrutura os dados da mensagem para obter o tipo e o conteúdo (payload).
+            if (type === 'CACHE_PROGRESS') {                                                                               // Verifica se a mensagem é sobre o progresso do cache.
+                const percent = Math.round((payload.current / payload.total) * 100);                                       // Calcula a porcentagem de progresso do cacheamento.
+                document.getElementById("barra_carregando").style.width = `${percent}%`;                                   // Atualiza a largura da barra de progresso.
+                document.getElementById("legenda_barra_carregando").innerHTML = `Carregando: &nbsp; ${percent}%...`;       // Atualiza o texto da barra de progresso.
+                if (payload.current === payload.total) {                                                                   // Verifica se o cacheamento de todos os arquivos foi concluído.
+                    document.getElementById("botoes_Index").style.display = "flex";                                        // Mostra os botões.
+                    document.getElementById("conteiner_barra_carregando").style.display = "none";                          // Esconde "Carregando..."
+                }
+            }
+        });
+
+        const botoes = document.getElementById("botoes_Index");
+        const btnIniciar = document.getElementById("playIntro");
+        const btnControles = document.getElementById("btnManualControles");
+        const video = document.getElementById("introVideo");
+        const fadeOverlay = document.getElementById("fade-overlay");
+        let iniciouGame = true;
+
+        // Inicia com o botão Iniciar selecionado
+        btnIniciar.className = "botaoIndexSelecionado";
+        btnControles.className = "botaoIndex";
+
+        btnIniciar.addEventListener("click", function () {
+            // Esconde os botões.
+            botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+
+            // Inicia o áudio e o fade-in da sobreposição ao mesmo tempo.
+            const obiWanAudio = new Audio('../audios/forca_sempre_com_vc.mp3');
+            obiWanAudio.volume = 1.0;
+            obiWanAudio.play();
+            fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+
+            // Quando o áudio (e o fade) terminarem, inicia o vídeo.
+            obiWanAudio.addEventListener("ended", () => {
+                video.style.display = "block";
+                video.play();
             });
-        } 
+        }, { once: true }); // Garante que o evento de clique seja acionado apenas uma vez
+
+        btnControles.addEventListener("click", function () {
+            window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
+        });
+
+
+        btnIniciar.addEventListener("mouseover", () => {
+            btnIniciar.className = "botaoIndexSelecionado";
+            btnIniciar.style.cursor = "pointer";
+            if (btnControles.className === "botaoIndexSelecionado") btnControles.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseover", () => {
+            btnControles.className = "botaoIndexSelecionado";
+            btnControles.style.cursor = "pointer";
+            if (btnIniciar.className === "botaoIndexSelecionado") btnIniciar.className = "botaoIndex";
+        });
+
+        btnIniciar.addEventListener("mouseout", () => {
+            btnIniciar.className = "botaoIndex";
+        });
+
+        btnControles.addEventListener("mouseout", () => {
+            btnControles.className = "botaoIndex";
+        });
+
+        // quando o vídeo terminar → redireciona para o jogo
+        video.addEventListener("ended", () => {
+            window.parent.document.getElementById("tela_jogo").src = "./html/game.html";  // troca para a página do game
+        });
+
+        // Script para ler entradas do controle de X-Box
+        window.addEventListener("gamepadconnected", (e) => {
+            // Guarda o estado dos botões do frame anterior para detectar cliques (ações de um toque)
+            let prevButtons = [];
+            // loop para ler as entradas do controle a cada frame
+            function update() {                                               // Inicia o loop de atualização que lê as entradas do controle a cada quadro.
+                const gp = navigator.getGamepads()[e.gamepad.index];          // Pega o estado atual do gamepad conectado.
+                if (!gp) {                                                    // Verifica se o gamepad foi desconectado.
+                    // Se o controle for desconectado, para a nave
+                    requestAnimationFrame(update);                            // Continua o loop de atualização no próximo quadro.
+                    return;                                                   // Sai da função neste quadro, pois não há controle para ler.
+                }
+                gp.buttons.forEach((button, index) => {                                                            // Itera sobre todos os botões para verificar cliques únicos.
+                    const foiClicado = button.pressed && (!prevButtons[index] || !prevButtons[index].pressed);     // Verifica se o botão foi pressionado neste quadro, mas não no anterior.
+                    if (foiClicado) {
+                        if (index === 9 || index === 0) {        // Botão Start ou A
+                            const botoes = document.getElementById("botoes_Index");
+                            const btnIniciar = document.getElementById("playIntro");
+                            const btnControles = document.getElementById("btnManualControles");
+                            const video = document.getElementById("introVideo");
+                            if (btnIniciar.className === "botaoIndexSelecionado") {
+                                if (iniciouGame) {
+                                    iniciouGame = false;
+                                    // Ativa o modo imersivo também com o controle
+                                    ativarModoImersivo();
+
+                                    botoes.style.display = "none"; // Esconde os botões para uma transição mais limpa
+                                    const obiWanAudio = new Audio('../audios/forca_sempre_com_vc.mp3');
+                                    obiWanAudio.volume = 1.0;
+                                    obiWanAudio.play();
+                                    fadeOverlay.style.opacity = 1; // Inicia a transição de opacidade.
+                                    obiWanAudio.addEventListener("ended", () => {
+                                        video.style.display = "block";
+                                        video.play();
+                                    });
+                                }
+                            } else if (btnControles.className === "botaoIndexSelecionado") {
+                                window.parent.document.getElementById("tela_jogo").src = "./html/manualControles.html";
+                            }
+                        } else if (index === 14) {               // Botão Seta Esquerda
+                            document.getElementById("playIntro").className = "botaoIndexSelecionado";
+                            document.getElementById("btnManualControles").className = "botaoIndex";
+                        } else if (index === 15) {               // Botão Seta Direita
+                            document.getElementById("playIntro").className = "botaoIndex";
+                            document.getElementById("btnManualControles").className = "botaoIndexSelecionado";
+                        }
+                    }
+                });
+                // Salva o estado atual dos botões para comparar no próximo frame
+                prevButtons = gp.buttons.map(b => ({ pressed: b.pressed, value: b.value }));  // Salva o estado atual de todos os botões para a próxima verificação.
+                requestAnimationFrame(update);                                                // Agenda a próxima execução da função 'update' para o próximo quadro de animação.
+            }
+            update();
+        });
+
+        window.addEventListener("gamepaddisconnected", (e) => {   // Adiciona um ouvinte de evento para quando um controle é desconectado.
+            console.log("Controle desconectado:", e.gamepad);     // Exibe no console que o controle foi desconectado.
+        });
     </script>
--->
 </body>
 
 </html>
