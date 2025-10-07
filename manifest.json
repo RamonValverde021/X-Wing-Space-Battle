@@ -2,15 +2,12 @@
   "name": "X-Wing Space Battle",
   "short_name": "X-Wing S.B.",
   "description": "Jogo estilo retrô de combate espacial inspirado em StarWars.",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display_override": [
     "fullscreen",
     "standalone"
   ],
-  "display": [
-    "fullscreen",
-    "standalone"
-  ],
+  "display": "fullscreen",
   "orientation": "landscape-primary",
   "background_color": "#000000",
   "theme_color": "#000000",
