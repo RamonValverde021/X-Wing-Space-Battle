@@ -71,7 +71,7 @@ body#intro {
 
 .painel_botoes {
     position: absolute;
-    display: none;
+    display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: row;
