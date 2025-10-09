@@ -105,8 +105,8 @@ body#controles {
 
 .botaoVoltar {
     position: fixed;
-    bottom: 80px;
-    right: 50px;
+    bottom: 30px;
+    right: 30px;
     text-align: center;
     text-decoration: none;
     font-weight: 500;
@@ -156,7 +156,7 @@ body#controles {
 
     .botaoVoltar {
         bottom: 40px;
-        right: 50px;
+        right: 30px;
         font-size: 20px;
         border: 2px solid yellow;
         border-radius: 10px;
