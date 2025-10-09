@@ -2,7 +2,6 @@ window.onload = function () {
 
     if (isPWA()) {
         console.log("Rodando como PWA ✅");
-        document.getElementById("intro").style.backgroundColor = "red";
     } else {
         console.log("Rodando no navegador 🌐");
     }
@@ -15,24 +14,34 @@ window.onload = function () {
 
     if (isMobile() && !isPWA()) {
         console.log("Navegador móvel detectado 🌐");
-        // Adiciona um listener para o primeiro toque na tela para entrar em modo imersivo.
         //alert("Para melhor experiência, adicione este site à tela inicial!");
-        const dicaElement = document.getElementById("dica_modo");       // Obtém o elemento da dica.
-        if (dicaElement) dicaElement.style.display = "block";           // Mostra a dica.
-        window.addEventListener('touchstart', () => {
-            const leituraToque = setInterval(() => {
-                clearInterval(leituraToque);
-                // Em dispositivos móveis, uma interação do usuário é necessária para entrar em tela cheia.
-                ativarModoImersivo();
-            }, 10);
-        }), { once: true };
     } else if (isMobile() && isPWA()) {
         console.log("App PWA em execução 📲");
         // Aqui você pode travar orientação ou iniciar fullscreen
-        const dicaElement = document.getElementById("dica_modo");       // Obtém o elemento da dica.
-        if (dicaElement) dicaElement.style.display = "none";           // Mostra a dica.
     } else {
         console.log("Executando em desktop 💻");
+    }
+
+    if (isFullscreen()) {
+        const dicaElement = document.getElementById("dica_modo");   // Obtém o elemento da dica.
+        if (dicaElement) dicaElement.style.display = "none";        // Oculta a dica.
+    } else {
+        const dicaElement = document.getElementById("dica_modo");   // Obtém o elemento da dica.
+        if (dicaElement) dicaElement.style.display = "block";       // Mostra a dica.
+        // Uma interação do usuário é necessária para entrar em tela cheia.
+        window.addEventListener('touchstart', () => {
+            const leituraToque = setInterval(() => {
+                clearInterval(leituraToque);
+                ativarModoImersivo();
+            }, 10);
+        }), { once: true };
+
+        window.addEventListener('click', () => {
+            const leituraToque = setInterval(() => {
+                clearInterval(leituraToque);
+                ativarModoImersivo();
+            }, 10);
+        })
     }
 
     console.log('Modo de exibição atual:', window.matchMedia('(display-mode: standalone)').matches
@@ -49,19 +58,42 @@ function isMobile() {
     return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+/* Verifica se está em modo de tela cheia */
+function isFullscreen() {
+    const parentDoc = window.parent.document;
+    const fullscreenElement = parentDoc.fullscreenElement ||
+        parentDoc.webkitFullscreenElement ||
+        parentDoc.mozFullScreenElement ||
+        parentDoc.msFullscreenElement;
+
+    if (fullscreenElement) {
+        console.log("O jogo está em modo fullscreen!");
+        return true;
+    } else {
+        console.log("O jogo NÃO está em fullscreen.");
+        return false;
+    }
+}
+
+
 /**
  * Tenta colocar o jogo em tela cheia e travar a orientação para paisagem.
  * Ideal para ser chamado por uma interação do usuário em dispositivos móveis.
  */
 function ativarModoImersivo() {
-    if (document.documentElement.requestFullscreen) {                                                                   // Verifica se o navegador suporta a API de tela cheia.
-        document.documentElement.requestFullscreen().then(() => {                                                       // Solicita que o documento entre em modo de tela cheia.
-            // Assim que a tela cheia for ativada com sucesso, esconde a dica.
-            const dicaElement = document.getElementById("dica_modo");                                                   // Obtém o elemento da dica.
-            if (dicaElement) dicaElement.style.display = "none";                                                        // Esconde a dica.
-            if (screen.orientation && screen.orientation.lock) {                                                        // Após entrar em tela cheia, verifica se a API de orientação de tela e o método de trava são suportados.
-                screen.orientation.lock('landscape').catch(err => console.error("Falha ao travar a orientação:", err)); // Tenta travar a orientação da tela para paisagem e captura qualquer erro.
+    // Acessa o elemento raiz da página principal (fora do iframe)
+    const parentElement = window.parent.document.documentElement;
+
+    if (parentElement.requestFullscreen) {
+        parentElement.requestFullscreen().then(() => {
+            // Uma vez em tela cheia, podemos esconder a dica que está dentro do iframe
+            const dicaElement = document.getElementById("dica_modo");
+            if (dicaElement) dicaElement.style.display = "none";
+
+            // A lógica de travar a orientação continua a mesma
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => console.error("Falha ao travar a orientação:", err));
             }
-        }).catch(err => console.error("Falha ao entrar em tela cheia:", err));                                          // Captura e exibe no console qualquer erro que ocorra ao tentar entrar em tela cheia.
+        }).catch(err => console.error("Falha ao entrar em tela cheia:", err));
     }
 }
