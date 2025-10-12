@@ -119,7 +119,6 @@
     }
 
     .gameover {
-        padding: 0px 30px;
         top: var(--top-gameover);
     }
 
