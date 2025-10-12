@@ -118,6 +118,11 @@
         top: var(--top-gamewin);
     }
 
+    .gameover {
+        padding: 0px 30px;
+        top: var(--top-gameover);
+    }
+
     .botaoFeedback {
         bottom: 20px;
         font-size: 20px;

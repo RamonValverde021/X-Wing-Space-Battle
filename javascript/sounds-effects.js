@@ -75,7 +75,7 @@ function somVoandoTieFighter() {
     ];
     const randomIndex = Math.floor(Math.random() * audios.length);  // Sorteia índice aleatório entre 0 e 4
     const audio = new Audio(audios[randomIndex]);                   // Cria instância do áudio escolhido
-    audio.volume = 0.1;                                             // Volume do audio em 30%
+    audio.volume = 0.3;                                             // Volume do audio em 30%
     audio.currentTime = 0;                                          // Volta pro início do audio
     audio.play();                                                   // Toca o audio
 }
