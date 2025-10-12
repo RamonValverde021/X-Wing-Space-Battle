@@ -59,7 +59,7 @@
 
         --size-use-a-forca: 80px;
 
-        --top-gameover: 15%;
+        --top-gameover: 10%;
         --top-gamewin: 1%;
     }
 
@@ -119,6 +119,7 @@
     }
 
     .gameover {
+        font-size: 90px;
         top: var(--top-gameover);
     }
 
