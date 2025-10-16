@@ -11,6 +11,7 @@ const darthVaderStrafeInterval = 300;                                           
 function bossDarthVader() {
     clearInterval(iniciaNavesInimigas);                                                                   // Para o intervalo que cria naves inimigas (Tie Fighters) normais.
     clearInterval(iniciaProjeteisTieFighter);                                                             // Para o intervalo que cria projéteis dos Tie Fighters.
+    clearInterval(inciaAtaqueRapido);
     darthVaderDerrotado = false;                                                                          // Garante que a flag de derrota seja resetada para falso no início da batalha.
     audioTrilhaSonora.pause();                                                                            // Pausa a trilha sonora principal do jogo.
     setTimeout(() => trilhaSonoraDarthVader(), 8000);                                                    // Inicia trilha sonora do Darth Vader.

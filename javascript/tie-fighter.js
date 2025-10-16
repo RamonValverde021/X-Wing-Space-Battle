@@ -5,8 +5,17 @@ function navesInimigas() {
     tieFighter.className = "tie_fighter";                                                  // Adiciona a classe do Tie Fighter para aplicar o estilo
     tieFighter.setAttribute("data-vida", 6);                                               // Cria o atributo data-vida para armazenar a vida do Tie Fighter
 
-    // Posição inicial (aleatória na horizontal, topo da tela)
-    const posicaoLeft = Math.floor(Math.random() * (larguraCenario - larguraTieFighter));  // Cria uma posição aleatória na horizontal dentro do cenario para o Tie Fighter
+    // Posição inicial: 66.7% de chance de ser aleatória, 33.3% de chance de ser na posição do X-Wing.
+    let posicaoLeft;
+    const chance = Math.floor(Math.random() * 3); // Gera um número de 0 a 3.
+    if (chance === 0) { // 1 em 3 chances
+        // Posição alinhada com o centro do X-Wing.
+        posicaoLeft = posicaoHorizontal + (larguraXWing / 2) - (larguraTieFighter / 2);
+    } else {
+        // Posição aleatória normal.
+        posicaoLeft = Math.floor(Math.random() * (larguraCenario - larguraTieFighter));
+    }
+
     tieFighter.style.left = posicaoLeft + "px";                                            // Define a posição horizontal do Tie Fighter
     tieFighter.style.top = "0";                                                            // Define a posição vertical do Tie Fighter no topo do cenario
 
@@ -146,58 +155,71 @@ function colisaoTieFighter() {
 
 // Função para criar os projeteis do Tie Fighter
 const construirProjeteisTieFighter = (tieFighter) => {
-    const tieRect = tieFighter.getBoundingClientRect();
-    const centerX = tieRect.left + tieRect.width / 2;
-    const centerY = tieRect.top + tieRect.height / 2;
+    const tieRect = tieFighter.getBoundingClientRect();                                  // Pega as coordenadas e dimensões do Tie Fighter que está atirando.
+    const centerX = tieRect.left + tieRect.width / 2;                                    // Calcula a coordenada X do centro do Tie Fighter.
+    const centerY = tieRect.top + tieRect.height / 2;                                    // Calcula a coordenada Y do centro do Tie Fighter.
 
     // Posições relativas dos canhões em relação ao centro da nave.
     // lx: deslocamento horizontal, ly: deslocamento vertical.
-    const muzzles = [
+    const muzzles = [                                                                    // Define as posições dos canhões de onde os projéteis sairão.
         // Cano esquerdo
         {
-            lx: -larguraProjetilNaves * 2,
-            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)
+            lx: -larguraProjetilNaves * 2,                                               // Deslocamento horizontal (X) do canhão esquerdo.
+            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)                         // Deslocamento vertical (Y) do canhão esquerdo.
         },
         // Cano direito 
         {
-            lx: larguraProjetilNaves * 2,
-            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)
-        }  
+            lx: larguraProjetilNaves * 2,                                                // Deslocamento horizontal (X) do canhão direito.
+            ly: -alturaProjetilNaves / (alturaProjetilNaves / 2)                         // Deslocamento vertical (Y) do canhão direito.
+        }
     ];
-   
-    // Metade das dimensões do projétil para centralizá-lo corretamente.
-    const half_w = larguraProjetilNaves / 2;
-    const half_h = alturaProjetilNaves / 2;
 
-    muzzles.forEach(muzzle => {
+    // Metade das dimensões do projétil para centralizá-lo corretamente.
+    const half_w = larguraProjetilNaves / 2;                                             // Calcula a metade da largura do projétil para ajustes de posição.
+    const half_h = alturaProjetilNaves / 2;                                              // Calcula a metade da altura do projétil para ajustes de posição.
+
+    muzzles.forEach(muzzle => {                                                          // Itera sobre cada canhão para criar um projétil.
         // Calcula a posição de spawn do projétil.
-        const spawnX = centerX + muzzle.lx;
-        const spawnY = centerY + muzzle.ly;
+        const spawnX = centerX + muzzle.lx;                                              // Calcula a posição X inicial do projétil, somando o centro da nave com o deslocamento do canhão.
+        const spawnY = centerY + muzzle.ly;                                              // Calcula a posição Y inicial do projétil, somando o centro da nave com o deslocamento do canhão.
 
         // Cria o elemento do projétil.
-        const tiro = document.createElement("div");
-        tiro.className = "projetil_tie-fighter";
+        const tiro = document.createElement("div");                                      // Cria um novo elemento <div> para representar o projétil.
+        tiro.className = "projetil_tie-fighter";                                         // Aplica a classe CSS "projetil_tie-fighter" para estilizar o projétil.
+
+        // Verifica se a nave que está atirando é a de ataque rápido.
+        if (tieFighter.hasAttribute("data-ataque-rapido")) {                             // Se a nave que está atirando possui o atributo de ataque rápido,
+            tiro.setAttribute("tiro-rapido", "true");                                    // marca o projétil com o atributo "tiro-rapido".
+        }
 
         // Posiciona o canto superior esquerdo do projétil para que seu centro fique na posição de spawn.
-        tiro.style.left = (spawnX - half_w) + "px";
-        tiro.style.top = (spawnY - half_h) + "px";
+        tiro.style.left = (spawnX - half_w) + "px";                                      // Define a posição horizontal do projétil, ajustando para centralizá-lo.
+        tiro.style.top = (spawnY - half_h) + "px";                                       // Define a posição vertical do projétil, ajustando para centralizá-lo.
 
-        cenario.appendChild(tiro);
+        cenario.appendChild(tiro);                                                       // Adiciona o projétil criado ao cenário do jogo.
     });
 }
 
 // Função para atirar
 function criarProjeteisTieFighter() {
-    const tieFighters = document.querySelectorAll(".tie_fighter");                         // Seleciona todos os elementos com a classe tie_fighter, ou seja, todos os Tie Fighters
+    // 1. Lógica dedicada para o TIE de ataque rápido
+    const tieAtaqueRapido = document.querySelector(".tie_fighter[data-ataque-rapido='true']");  // Seleciona apenas o TIE de ataque rápido
+    if (tieAtaqueRapido) {                                                                  // Se o TIE existe
+        construirProjeteisTieFighter(tieAtaqueRapido);                                      // Chama a função para criar os projeteis do TIE de ataque rápido
+        somCanhoesTieFighter();                                                             // Toca o som dos canhões do TIE de ataque rápido
+    }
+
+    // 2. Lógica de sorteio para as naves normais
+    const tieFighters = document.querySelectorAll(".tie_fighter:not([data-ataque-rapido='true'])"); // Seleciona apenas os TIEs normais
     const quantidadeInimigos = tieFighters.length;                                         // Pega a quantidade de Tie Fighters
     if (quantidadeInimigos === 0) return;                                                  // Se não houver Tie Fighters, sai da função
 
     // Decide quantos TIEs vão atirar
-    let disparos = 1;                                                                     // Por padrão, 1 TIE atira
-    if (quantidadeInimigos > 3 && quantidadeInimigos <= 6) disparos = 2;                  // Se houver entre 4 e 6 TIEs, 2 atiram
-    else if (quantidadeInimigos > 6 && quantidadeInimigos <= 9) disparos = 3;             // Se houver entre 7 e 9 TIEs, 3 atiram
-    else if (quantidadeInimigos > 9 && quantidadeInimigos <= 12) disparos = 4;            // Se houver entre 10 e 12 TIEs, 4 atiram
-    else if (quantidadeInimigos > 12 && quantidadeInimigos <= 15) disparos = 5;           // Se houver entre 13 e 15 TIEs, 5 atiram
+    let disparos = 1;                                                                      // Por padrão, 1 TIE atira
+    if (quantidadeInimigos > 3 && quantidadeInimigos <= 6) disparos = 2;                   // Se houver entre 4 e 6 TIEs, 2 atiram
+    else if (quantidadeInimigos > 6 && quantidadeInimigos <= 9) disparos = 3;              // Se houver entre 7 e 9 TIEs, 3 atiram
+    else if (quantidadeInimigos > 9 && quantidadeInimigos <= 12) disparos = 4;             // Se houver entre 10 e 12 TIEs, 4 atiram
+    else if (quantidadeInimigos > 12 && quantidadeInimigos <= 15) disparos = 5;            // Se houver entre 13 e 15 TIEs, 5 atiram
 
     // Sorteia e faz disparos
     for (let i = 0; i < disparos; i++) {                                                  // Para cada disparo
@@ -215,11 +237,65 @@ function moverProjeteisTieFighter() {
     for (let i = 0; i < tiros.length; i++) {                                              // Percorre todos os projeteis
         if (tiros[i]) {                                                                   // Verifica se o projetil existe
             let posicaoTopProjetil = tiros[i].offsetTop;                                  // Pega a posição vertical atual do projetil
-            posicaoTopProjetil += velocidadeProjetilTieFighter;                           // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            if (tiros[i].hasAttribute("tiro-rapido")) {                                   // Verifica se o projetil é um tiro rápido
+                posicaoTopProjetil += velocidadeProjetilTieFighter * 2;                   // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            } else {                                                                      // Se for um tiro comum
+                posicaoTopProjetil += velocidadeProjetilTieFighter;                       // Atualiza a posição vertical do projetil, subtraindo a velocidade do projetil. Equação para mover para cima
+            }
             tiros[i].style.top = posicaoTopProjetil + "px";                               // Atualiza a posição do projetil no cenario
             if (posicaoTopProjetil > alturaCenario) {                                     // Se o projetil sair do cenario (posição menor que -10)
                 tiros[i].remove();                                                        // Remove o projetil do cenario          
             }
         }
+    }
+}
+
+// Cria Tie Figthers de ataque rápido 
+function ataqueRapido() {
+    // Verifica se o X-Wing está parado e se um ataque rápido é permitido.
+    if (direcaoHorizontal === 0 && podeAtaqueRapido) {                                   // Verifica se a nave não se move na horizontal e se o ataque é permitido.
+        // Se a nave acabou de parar, registra o timestamp inicial.
+        if (timestampInicioParadoHorizontal === 0) {                                     // Se o temporizador de inatividade horizontal não foi iniciado,
+            timestampInicioParadoHorizontal = Date.now();                                // marca o tempo atual como o início da contagem.
+        }
+        // Calcula o tempo total que a nave está parada.
+        const tempoParadoHorizontal = Date.now() - timestampInicioParadoHorizontal;      // Calcula há quanto tempo a nave está parada na horizontal.
+
+        // Se o tempo parado exceder 3 segundos (3000 ms).
+        if (tempoParadoHorizontal >= 3000) {                                             // Se o tempo de inatividade exceder 3 segundos,
+            podeAtaqueRapido = false;                                                    // desativa a permissão para novos ataques rápidos até que a nave se mova.
+            timestampInicioParadoHorizontal = 0;                                         // reseta o temporizador para evitar múltiplos ataques imediatos.
+            const tieFighter = document.createElement("div");                            // cria um novo elemento <div> para o Tie Fighter.
+            tieFighter.className = "tie_fighter";                                        // atribui a classe CSS para estilização.
+            tieFighter.setAttribute("data-vida", 6);                                     // define a vida inicial da nave.
+            tieFighter.setAttribute("data-ataque-rapido", "true");                       // marca esta nave como um tipo especial de "ataque rápido".
+
+            // Posição inicial: exatamente acima do X-Wing.
+            const posicaoLeft = posicaoHorizontal + (larguraXWing / 2) - (larguraTieFighter / 2); // calcula a posição horizontal para alinhar com o X-Wing.
+            tieFighter.style.left = posicaoLeft + "px";                                  // aplica a posição horizontal calculada.
+            tieFighter.style.top = `-${alturaTieFighter}px`;                              // posiciona a nave acima da tela para que ela surja.
+            // Calcula o vetor de direção em linha reta para o X-Wing.
+            const tieCenterX = posicaoLeft + larguraTieFighter / 2;                      // calcula o centro X do Tie Fighter.
+            const tieCenterY = -100 + alturaTieFighter / 2;                              // calcula o centro Y do Tie Fighter (considerando sua posição inicial).
+            const xwingCenterX = posicaoHorizontal + larguraXWing / 2;                   // calcula o centro X do X-Wing.
+            const xwingCenterY = positionVertical + alturaXWing / 2;                     // calcula o centro Y do X-Wing.
+
+            const dx = xwingCenterX - tieCenterX;                                        // calcula a diferença no eixo X entre o alvo e a origem.
+            const dy = xwingCenterY - tieCenterY;                                        // calcula a diferença no eixo Y entre o alvo e a origem.
+            const distancia = Math.sqrt(dx * dx + dy * dy) || 1;                         // calcula a distância total (hipotenusa) para normalizar o vetor.
+
+            // Define a velocidade e armazena os componentes normalizados.
+            const speed = velocidadeTieFighter * 3;                                      // define a velocidade da nave como 3x a velocidade padrão dos Tie Fighters.
+            tieFighter.setAttribute("data-vx", ((dx / distancia) * speed).toFixed(2));   // armazena o componente de velocidade horizontal (vx) no atributo da nave.
+            tieFighter.setAttribute("data-vy", ((dy / distancia) * speed).toFixed(2));   // armazena o componente de velocidade vertical (vy) no atributo da nave.
+
+            cenario.appendChild(tieFighter);                                             // adiciona o Tie Fighter criado ao cenário do jogo.
+            somVoandoTieFighter();                                                       // toca o som de voo do Tie Fighter.
+            construirProjeteisTieFighter(tieFighter);                                    // Chama a função para criar os projeteis do Tie Fighter sorteado
+        }
+    } else if (direcaoHorizontal !== 0) {                                                // se a nave se mover na horizontal,
+        // Se a nave se mover, reseta a permissão para o ataque rápido.
+        podeAtaqueRapido = true;                                                         // reativa a permissão para um futuro ataque rápido.
+        timestampInicioParadoHorizontal = 0;                                             // reseta o temporizador de inatividade horizontal.
     }
 }

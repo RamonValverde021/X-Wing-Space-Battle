@@ -22,10 +22,10 @@ const larguraCenario = cenario.style.width = larguraTela;                       
 const alturaCenario = cenario.style.height = alturaTela;                                 // Pega a altura de todod o cenario 
 const larguraXWing = xwing.offsetWidth;                                                  // Pega a largura do X-Wing
 const alturaXWing = xwing.offsetHeight;                                                  // Pega a altura do X-Wing
-const velMaximaRotacaoXWing = 6;                                                         // 8 - Define a velocidade de rotação máxima do X-Wing
+const velMaximaRotacaoXWing = 6;                                                         // Define a velocidade de rotação máxima do X-Wing
 const anguloMaximo = 61;                                                                 // Define o angulo máximo de descida dos Tie Fighters (em graus), soma mais 1
 const velocidadeMaximaCenario = 100;                                                     // Define a velocidade máxima do cenario
-const tempoDePunicao = 8;                                                                // Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
+const tempoDePunicao = 5;                                                                // 8 - Tempo maximo que o X-Wing pode ficar parado sem levar tiro de punição em segundos
 const vidaDarthVader = 660;                                                              // 660 Pontos de vida iniciais do Darth Vader
 const vidaEstrelaDaMorte = 1000;                                                         // 1200 Pontos de vida iniciais da Estrela da Morte
 const recargaBoost = 2000;                                                               // Tempo de recarga do Boost
@@ -39,13 +39,13 @@ let velocidadeProjetilDarthVader = 65;                                          
 let velocidadeProjetilDeathStar = 50;                                                    // Define a velocidade dos projeteis da Estrela da Morte
 let velocidadeProjetilPunicao = 50;                                                      // Define a velocidade dos projeteis de punição
 let velocidadeItemEspecial = 3;                                                          // Define a velocidade de decida dos itens especiais
-let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
 let velRotacaoXWing = 2;                                                                 // 2 - Define a velocidade inicial de rotação do X-Wing
 let alturaProjetilNaves;                                                                 // Altura dos projéteis, obtida do CSS.
 let larguraProjetilNaves;                                                                // Largura dos projéteis, obtida do CSS.
 let larguraTieFighter = 0;                                                               // Define a largura do Tie-Fighter
 let alturaTieFighter = 0;                                                                // Define a altura do Tie-Fighter
 let danoTiroXWing = 3;                                                                   // Define o dano dos tiros do X-Wing
+let velocidadeXWing = 5;                                                                 // 5 - Define a velocidade inicial do X-Wing 
 let velocidadeTieFighter = 1;                                                            // 1 - Define a velocidade inicial dos Tie Fighters 
 let quantidadeTieFighters = 3000;                                                        // 3000 - Define o intervalo inicial em que serão criadas as naves inimigas (em milisegundos)
 let quantidadeMaximaTieFighters = 750;                                                   // 700 - Define o tempo máximo de criação dos Tie Fighters (em milisegundos)
@@ -78,6 +78,8 @@ let direcaoVertical = 0;                                                        
 let tempoParado = 0;                                                                     // Tempo que a nave está parada (ms)
 let folgaColisao = 30;                                                                   // Folga para adentrar nos Tie Fighters para criar a colisão
 let folgaColisaoItens = 20;                                                              // Folga para adentrar nos itens especiais para criar a colisão
+let podeAtaqueRapido = true;                                                             // Flag para controlar o ataque rápido dos Tie Fighters
+let timestampInicioParadoHorizontal = 0;                                                 // Timestamp de quando a nave parou na horizontal para o ataque rápido
 let timestampInicioParado = 0;                                                           // Timestamp de quando a nave parou para uma contagem precisa
 let backgroundPositionY = 0;                                                             // Posição Y do background do cenário para a animação JS
 let estaSendoPunido = false;                                                             // Flag para evitar múltiplos projéteis
@@ -125,6 +127,7 @@ let iniciaFalasDarthVader;
 let iniciaProjeteisDeathStar;
 let iniciaMovimentacaoProjeteisDeathStar;
 let iniciaProjeteisPunicao;
+let inciaAtaqueRapido;
 let iniciaMovimentacaoProjeteisPunicao;
 let iniciaCriarItensEspeciais;
 let iniciaCriarItemFullPower;
@@ -181,6 +184,7 @@ let jogoIniciado = false;                                                       
 document.addEventListener("keydown", function (event) {                                            // Função para iniciar o jogo com apertar do Enter
     if (jogoIniciado == false) {                                                                   // Se o jogo não começou ainda     
         if (event.key === "Enter") {                                                               // Se a tecla apertada for o Enter
+            jogoIniciado = true;                                                                   // Atualiza flag para bloquear o Enter
             btnIniciar.className = "botao-selecionado";                                            // Adiciona a classe botaobotao-selecionado
             setTimeout(() => iniciarJogo(), 800);                                                  // Inicia o jogo
         }
@@ -220,26 +224,27 @@ function iniciarJogo() {
         xwing.style.top = positionVertical + "px";                                                 // Atualiza a posição vertical do X-Wing
         xwing.style.bottom = "";                                                                   // Remove a propriedade bottom para evitar conflitos
         // Inicia os intervalos do jogo
-        document.addEventListener("keydown", teclasControlePressionadas);                          // Inica em loop a função que lê quando pressiona alguma tecla no teclado
-        document.addEventListener("keyup", teclasControleSoltas);                                  // Inica em loop a função que lê quando soltar alguma tecla no teclado
-        document.addEventListener("keypress", teclasControleClicadas);                             // Inica em loop a função que lê quando clicar alguma tecla no teclado
-        iniciaContagemTempoGameplay = setInterval(contagemTempoGameplay, 1000);                    // Inica em loop a função de contagem do tempo de jogo                    
-        iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                                     // Inica em loop a função de movimentação do X-Wing, repetição do loop a cada 20ms
-        iniciaProjeteisXWing = setInterval(atirar, 150);                                           // Inica em loop a função para atirar com o X-Wing
-        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                   // Inica em loop a função de movimentação dos projeteis do X-Wing
-        iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);                   // Inica em loop a construção de naves inimigas
-        iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);                     // Inica em loop a função para movimentação os Tie-Fighters
-        iniciaProjeteisTieFighter = setInterval(criarProjeteisTieFighter, velocidadeDisparosTieFighter);  // Inica em loop a função de criação de disparos dos Tie-Fighters
-        iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);         // Inica em loop a função de movimentação dos projeteis dos Tie-Fighters
-        iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                              // Inica em loop a função de detecção de colisão dos Tie-Fighters
-        iniciaColisaoXWing = setInterval(colisaoXWing, 10);                                        // Inica em loop a função de detecção de colisão do X-Wing 
-        iniciaColisaoDarthVader = setInterval(colisaoDarthVader, 10);                              // Inica em loop a função de detecção de colisão do Darth Vader
-        iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inica em loop a função de detecção de colisão da Estrela da Morte
-        iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inica em loop a função de movimentação da Estrela da Morte
-        iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inica em loop a função de movimentação dos tiros de punição
-        iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inica em loop a função de criação de disparos de punição
+        document.addEventListener("keydown", teclasControlePressionadas);                          // Inicia em loop a função que lê quando pressiona alguma tecla no teclado
+        document.addEventListener("keyup", teclasControleSoltas);                                  // Inicia em loop a função que lê quando soltar alguma tecla no teclado
+        document.addEventListener("keypress", teclasControleClicadas);                             // Inicia em loop a função que lê quando clicar alguma tecla no teclado
+        iniciaContagemTempoGameplay = setInterval(contagemTempoGameplay, 1000);                    // Inicia em loop a função de contagem do tempo de jogo                    
+        iniciaMovimentacaoXWing = setInterval(moverXWing, 20);                                     // Inicia em loop a função de movimentação do X-Wing, repetição do loop a cada 20ms
+        iniciaProjeteisXWing = setInterval(atirar, 150);                                           // Inicia em loop a função para atirar com o X-Wing
+        iniciaMovimentacaoProjeteisXWing = setInterval(moverProjeteisXWing, 50);                   // Inicia em loop a função de movimentação dos projeteis do X-Wing
+        iniciaNavesInimigas = setInterval(navesInimigas, quantidadeTieFighters);                   // Inicia em loop a construção de naves inimigas
+        iniciaMovimentacaoNavesInimigas = setInterval(moverNavesInimigas, 50);                     // Inicia em loop a função para movimentação os Tie-Fighters
+        iniciaProjeteisTieFighter = setInterval(criarProjeteisTieFighter, velocidadeDisparosTieFighter);  // Inicia em loop a função de criação de disparos dos Tie-Fighters
+        iniciaMovimentacaoProjeteisTieFighter = setInterval(moverProjeteisTieFighter, 50);         // Inicia em loop a função de movimentação dos projeteis dos Tie-Fighters
+        iniciaColisaoTieFighter = setInterval(colisaoTieFighter, 10);                              // Inicia em loop a função de detecção de colisão dos Tie-Fighters
+        iniciaColisaoXWing = setInterval(colisaoXWing, 10);                                        // Inicia em loop a função de detecção de colisão do X-Wing 
+        iniciaColisaoDarthVader = setInterval(colisaoDarthVader, 10);                              // Inicia em loop a função de detecção de colisão do Darth Vader
+        iniciaColisaoEstrelaDaMorte = setInterval(colisaoEstrelaDaMorte, 10);                      // Inicia em loop a função de detecção de colisão da Estrela da Morte
+        iniciaMovimentoTorpedoEspecial = setInterval(movimentarProjetilEspecial, 20);              // Inicia em loop a função de movimentação da Estrela da Morte
+        iniciaMovimentacaoProjeteisPunicao = setInterval(moverProjeteisPunicao, 20);               // Inicia em loop a função de movimentação dos tiros de punição
+        iniciaProjeteisPunicao = setInterval(criarProjeteisPunicao, 20);                           // Inicia em loop a função de criação de disparos de punição
+        inciaAtaqueRapido = setInterval(ataqueRapido, 20);                                         // Inicia em loop a criação de TieFighters direcionais
 
-        iniciaRotacaoXWing = setInterval(() => {                                                   // Inica em loop a função para rotacionar o X-Wing
+        iniciaRotacaoXWing = setInterval(() => {                                                   // Inicia em loop a função para rotacionar o X-Wing
             if (giroHorario) {                                                                     // Se a flag giroHorario for verdadeira
                 rotacaoXWing -= velRotacaoXWing;                                                   // Decrementa a rotação do X-Wing
                 xwing.style.transform = `rotate(${rotacaoXWing}deg)`;                              // Aplica a rotação no X-Wing
@@ -314,6 +319,7 @@ function gameOver() {
         clearInterval(iniciaCriarItemFullPower);
         clearInterval(iniciaProjeteisDarthVader);
         clearInterval(iniciaFalasDarthVader);
+        clearInterval(inciaAtaqueRapido);
         if (okBatalhaDarthVader) clearInterval(iniciaMovimentacaoDarthVader);
         tiroContinuo = false;
         estaAtirando = false;
@@ -370,4 +376,3 @@ function gameOver() {
 function reiniciarJogo() {
     location.reload();
 }
-
