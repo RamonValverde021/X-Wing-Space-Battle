@@ -1,4 +1,5 @@
-const CACHE_NAME = "x-wing-space-battle-v1"; // Define o nome e a versão do cache para fácil gerenciamento e atualização.
+// IMPORTANTE: Mude a versão (v2, v3, etc.) a cada nova atualização!
+const CACHE_NAME = "x-wing-space-battle-v2"; // Define o nome e a versão do cache para fácil gerenciamento e atualização.
 const arquivosParaCache = [ // Lista de todos os arquivos (assets) que devem ser armazenados em cache para funcionamento offline.
   // Arquivos Principais
   "./",
@@ -120,6 +121,27 @@ self.addEventListener("install", (event) => {                                   
       }
 
       console.log("SW: Todos os arquivos foram processados.");                         // Log para informar que o processo de cacheamento terminou.
+    })()
+  );
+});
+
+self.addEventListener("activate", (event) => {                                         // Adiciona um ouvinte para o evento 'activate', que é disparado após a instalação de um novo SW.
+  console.log("SW: Evento de ativação iniciado.");                                     // Log para depuração.
+  event.waitUntil(                                                                     // Garante que o SW espere a limpeza do cache antigo antes de se tornar totalmente ativo.
+    (async () => {                                                                     // Usa uma função assíncrona para poder usar 'await'.
+      const cacheNames = await caches.keys();                                          // Pega uma lista com os nomes de todos os caches existentes.
+      await Promise.all(                                                               // Espera que todas as promessas de exclusão de cache sejam resolvidas.
+        cacheNames
+          .filter((name) => {                                                          // Filtra a lista de nomes de cache.
+            // Retorna 'true' para os caches que NÃO são o cache atual, marcando-os para exclusão.
+            return name !== CACHE_NAME;
+          })
+          .map((name) => {                                                             // Para cada nome de cache antigo...
+            // Deleta o cache antigo.
+            console.log(`SW: Deletando cache antigo: ${name}`);                        // Log para informar qual cache está sendo deletado.
+            return caches.delete(name);
+          })
+      );
     })()
   );
 });
